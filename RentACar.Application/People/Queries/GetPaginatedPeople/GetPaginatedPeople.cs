@@ -9,7 +9,7 @@ namespace RentACar.Application.People.Queries.GetPaginatedPeople
 {
     public record PeopleFilter(string? FirstName, string? LastName, string? PhoneNumber);
 
-    public class GetPaginatedPeopleQuery : IRequest<PaginationResponse<PersonDto>>
+    public record GetPaginatedPeopleQuery : IRequest<PaginationResponse<PersonDto>>
     {
         public PaginationFilter<PeopleFilter> PaginationFilter { get; set; } = new PaginationFilter<PeopleFilter>();
     }

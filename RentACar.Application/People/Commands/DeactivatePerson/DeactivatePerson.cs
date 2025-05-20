@@ -4,7 +4,7 @@ using RentACar.Application.Common.Interfaces;
 
 namespace RentACar.Application.People.Commands.DeactivatePerson
 {
-    public class DeactivatePersonCommand : IRequest
+    public record DeactivatePersonCommand : IRequest
     {
         public int PersonId { get; set; }
     }

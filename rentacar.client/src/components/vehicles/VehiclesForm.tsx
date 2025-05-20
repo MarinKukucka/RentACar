@@ -1,12 +1,12 @@
 import { VehicleDto } from "../../api/api";
 
 interface Props {
-    vehicles?: VehicleDto;
+    vehicle?: VehicleDto;
     onClose: () => void;
     onSuccess: () => void;
 }
 
-function VehiclesForm({ person, onClose, onSuccess }: Props) {
+function VehiclesForm({ vehicle, onClose, onSuccess }: Props) {
     return <>Vehicles form</>;
 }
 

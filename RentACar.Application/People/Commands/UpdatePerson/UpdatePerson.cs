@@ -5,7 +5,7 @@ using RentACar.Application.People.Dtos;
 
 namespace RentACar.Application.People.Commands.UpdatePerson
 {
-    public class UpdatePersonCommand : IRequest<PersonDto?>
+    public record UpdatePersonCommand : IRequest<PersonDto?>
     {
         public int Id { get; set; }
         public string? FirstName { get; set; }

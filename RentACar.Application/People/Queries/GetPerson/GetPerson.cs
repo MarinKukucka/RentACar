@@ -5,7 +5,7 @@ using RentACar.Application.People.Dtos;
 
 namespace RentACar.Application.People.Queries.GetPerson
 {
-    public class GetPersonQuery : IRequest<PersonDto>
+    public record GetPersonQuery : IRequest<PersonDto>
     {
         public int PersonId { get; init; }
     }

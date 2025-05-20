@@ -623,12 +623,22 @@ export class VehicleClient extends ApiClientBase {
         this.baseUrl = this.getBaseUrl("", baseUrl);
     }
 
-    getPaginatedVehicles(paginationFilter_Filter_VIN: string | null | undefined, paginationFilter_Filter_LicensePlate: string | null | undefined, paginationFilter_CurrentPage: number | undefined, paginationFilter_PageSize: number | undefined, paginationFilter_SortBy: string | undefined, paginationFilter_SortOrder: string | undefined): Promise<VehicleDto> {
+    getPaginatedVehicles(paginationFilter_Filter_VIN: string | null | undefined, paginationFilter_Filter_LicensePlate: string | null | undefined, paginationFilter_Filter_Year: number | null | undefined, paginationFilter_Filter_Mileage: number | null | undefined, paginationFilter_Filter_VehicleType: VehicleType | null | undefined, paginationFilter_Filter_Transmission: Transmission | null | undefined, paginationFilter_Filter_FuelType: FuelType | null | undefined, paginationFilter_CurrentPage: number | undefined, paginationFilter_PageSize: number | undefined, paginationFilter_SortBy: string | undefined, paginationFilter_SortOrder: string | undefined): Promise<PaginationResponseOfVehicleDto> {
         let url_ = this.baseUrl + "/api/Vehicle?";
         if (paginationFilter_Filter_VIN !== undefined && paginationFilter_Filter_VIN !== null)
             url_ += "PaginationFilter.Filter.VIN=" + encodeURIComponent("" + paginationFilter_Filter_VIN) + "&";
         if (paginationFilter_Filter_LicensePlate !== undefined && paginationFilter_Filter_LicensePlate !== null)
             url_ += "PaginationFilter.Filter.LicensePlate=" + encodeURIComponent("" + paginationFilter_Filter_LicensePlate) + "&";
+        if (paginationFilter_Filter_Year !== undefined && paginationFilter_Filter_Year !== null)
+            url_ += "PaginationFilter.Filter.Year=" + encodeURIComponent("" + paginationFilter_Filter_Year) + "&";
+        if (paginationFilter_Filter_Mileage !== undefined && paginationFilter_Filter_Mileage !== null)
+            url_ += "PaginationFilter.Filter.Mileage=" + encodeURIComponent("" + paginationFilter_Filter_Mileage) + "&";
+        if (paginationFilter_Filter_VehicleType !== undefined && paginationFilter_Filter_VehicleType !== null)
+            url_ += "PaginationFilter.Filter.VehicleType=" + encodeURIComponent("" + paginationFilter_Filter_VehicleType) + "&";
+        if (paginationFilter_Filter_Transmission !== undefined && paginationFilter_Filter_Transmission !== null)
+            url_ += "PaginationFilter.Filter.Transmission=" + encodeURIComponent("" + paginationFilter_Filter_Transmission) + "&";
+        if (paginationFilter_Filter_FuelType !== undefined && paginationFilter_Filter_FuelType !== null)
+            url_ += "PaginationFilter.Filter.FuelType=" + encodeURIComponent("" + paginationFilter_Filter_FuelType) + "&";
         if (paginationFilter_CurrentPage === null)
             throw new Error("The parameter 'paginationFilter_CurrentPage' cannot be null.");
         else if (paginationFilter_CurrentPage !== undefined)
@@ -661,7 +671,7 @@ export class VehicleClient extends ApiClientBase {
         });
     }
 
-    protected processGetPaginatedVehicles(response: Response): Promise<VehicleDto> {
+    protected processGetPaginatedVehicles(response: Response): Promise<PaginationResponseOfVehicleDto> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 401) {
@@ -682,7 +692,7 @@ export class VehicleClient extends ApiClientBase {
             return response.text().then((_responseText) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = VehicleDto.fromJS(resultData200);
+            result200 = PaginationResponseOfVehicleDto.fromJS(resultData200);
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -690,7 +700,56 @@ export class VehicleClient extends ApiClientBase {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<VehicleDto>(null as any);
+        return Promise.resolve<PaginationResponseOfVehicleDto>(null as any);
+    }
+
+    deleteVehicle(id: number): Promise<void> {
+        let url_ = this.baseUrl + "/api/Vehicle/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "DELETE",
+            headers: {
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processDeleteVehicle(_response));
+        });
+    }
+
+    protected processDeleteVehicle(response: Response): Promise<void> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 401) {
+            return response.text().then((_responseText) => {
+            let result401: any = null;
+            let resultData401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result401 = ProblemDetails.fromJS(resultData401);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result401);
+            });
+        } else if (status === 403) {
+            return response.text().then((_responseText) => {
+            let result403: any = null;
+            let resultData403 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result403 = ProblemDetails.fromJS(resultData403);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result403);
+            });
+        } else if (status === 204) {
+            return response.text().then((_responseText) => {
+            return;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<void>(null as any);
     }
 }
 
@@ -1117,6 +1176,66 @@ export interface ICreateUserAndPersonCommand {
     email: string | undefined;
     password: string | undefined;
     role: string | undefined;
+}
+
+export class PaginationResponseOfVehicleDto implements IPaginationResponseOfVehicleDto {
+    items!: VehicleDto[];
+    currentPage!: number;
+    pageSize!: number;
+    totalPages!: number;
+    totalItems!: number;
+
+    constructor(data?: IPaginationResponseOfVehicleDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(VehicleDto.fromJS(item));
+            }
+            this.currentPage = _data["currentPage"];
+            this.pageSize = _data["pageSize"];
+            this.totalPages = _data["totalPages"];
+            this.totalItems = _data["totalItems"];
+        }
+    }
+
+    static fromJS(data: any): PaginationResponseOfVehicleDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PaginationResponseOfVehicleDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : <any>undefined);
+        }
+        data["currentPage"] = this.currentPage;
+        data["pageSize"] = this.pageSize;
+        data["totalPages"] = this.totalPages;
+        data["totalItems"] = this.totalItems;
+        return data;
+    }
+}
+
+export interface IPaginationResponseOfVehicleDto {
+    items: VehicleDto[];
+    currentPage: number;
+    pageSize: number;
+    totalPages: number;
+    totalItems: number;
 }
 
 export class VehicleDto implements IVehicleDto {

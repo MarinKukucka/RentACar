@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { CreateUserAndPersonCommand, PersonClient } from "../api"
-import { PeopleFilters } from "../../routes/_authorizedRoutes/people";
+import { PeopleFilters } from "../../components/people/People";
 
 export const useFetchPaginatedPeopleQuery = (request: PeopleFilters) => {
     return useQuery({

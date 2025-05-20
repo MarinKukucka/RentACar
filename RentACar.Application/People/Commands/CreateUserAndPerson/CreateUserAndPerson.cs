@@ -5,7 +5,7 @@ using RentACar.Domain.Entities;
 
 namespace RentACar.Application.People.Commands.CreateUserAndPerson
 {
-    public class CreateUserAndPersonCommand : IRequest<PersonDto>
+    public record CreateUserAndPersonCommand : IRequest<PersonDto>
     {
         public string? FirstName { get; set; }
         public string? LastName { get; set; }

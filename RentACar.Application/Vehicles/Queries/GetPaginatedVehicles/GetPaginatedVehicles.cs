@@ -4,12 +4,13 @@ using RentACar.Application.Common.Extensions;
 using RentACar.Application.Common.Interfaces;
 using RentACar.Application.Common.Models.Pagination;
 using RentACar.Application.Vehicles.Dtos;
+using RentACar.Domain.Enums;
 
 namespace RentACar.Application.Vehicles.Queries.GetPaginatedVehicles
 {
-    public record VehiclesFilter(string? VIN, string? LicensePlate);
+    public record VehiclesFilter(string? VIN, string? LicensePlate, int? Year, int? Mileage, VehicleType? VehicleType, Transmission? Transmission, FuelType? FuelType);
 
-    public class GetPaginatedVehiclesQuery : IRequest<PaginationResponse<VehicleDto>>
+    public record GetPaginatedVehiclesQuery : IRequest<PaginationResponse<VehicleDto>>
     {
         public PaginationFilter<VehiclesFilter> PaginationFilter { get; set; } = new PaginationFilter<VehiclesFilter>();
     }
