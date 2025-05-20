@@ -1,0 +1,59 @@
+﻿.form-buttons {
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+.ant-layout-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.ant-page-header {
+    padding-inline: unset !important;
+}
+
+.logo {
+    height: 100%;
+    width: 7.5vw;
+    padding-bottom: 3.5px;
+    border-radius: 6px;
+    overflow: hidden;
+
+    display: flex;
+    align-items: center;
+
+    margin-right: 15px;
+}
+
+.logo-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ant-layout-header .ant-menu .ant-menu-item.antd-item-push-right {
+    margin-left: auto;
+}
+
+.header-menu {
+    display: flex;
+    flex-grow: 1;
+}
+
+.header-layout{
+    height: 8rem;
+}
+
+.ant-menu-overflow .antd-menu-item-vis-hover {
+    pointer-events: auto !important;
+    color: #ff4d4f !important;
+}
+
+.antd-menu-item-vis-hover:hover {
+    background-color: rgba(0, 0, 0, 0.06) !important;
+    cursor: pointer !important;
+}
