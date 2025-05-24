@@ -94,7 +94,7 @@ function VehiclesForm({ vehicle, onClose, onSuccess }: Props) {
                 label="Mileage"
                 rules={[{ required: true }]}
             >
-                <InputNumber />
+                <InputNumber addonAfter="km" />
             </Form.Item>
 
             <Form.Item
@@ -143,7 +143,7 @@ function VehiclesForm({ vehicle, onClose, onSuccess }: Props) {
             </Form.Item>
 
             <Form.Item name="power" label="Power" rules={[{ required: true }]}>
-                <InputNumber />
+                <InputNumber addonAfter="hp" />
             </Form.Item>
 
             <Form.Item name="seats" label="Seats" rules={[{ required: true }]}>
@@ -175,7 +175,11 @@ function VehiclesForm({ vehicle, onClose, onSuccess }: Props) {
                 ]}
             >
                 <Select<number>
-                    placeholder="Please choose a model"
+                    placeholder={
+                        selectedBrandId
+                            ? "Please choose a model"
+                            : "First choose a brand"
+                    }
                     options={modelOptions}
                     disabled={!selectedBrandId}
                 />

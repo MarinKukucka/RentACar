@@ -14,7 +14,7 @@ import { FilterValue, SorterResult } from "antd/es/table/interface";
 import { EllipsisOutlined, PlusOutlined } from "@ant-design/icons";
 import { PageHeader } from "@ant-design/pro-layout";
 import { DrawerSchema, SearchSortPaginationSchema } from "../../models/search";
-import { VehicleDto } from "../../api/api";
+import { FuelType, Transmission, VehicleDto, VehicleType } from "../../api/api";
 import { TableParamsChange } from "../../helpers/SearchHelper";
 import { DrawerState } from "../../models/enums";
 import { getSearchFilter } from "../../helpers/FilterHelper";
@@ -157,7 +157,7 @@ function Vehicles() {
             sorter: true,
         },
         {
-            title: "mileage",
+            title: "mileage (km)",
             dataIndex: "mileage",
             ...getSearchFilter(),
             filteredValue:
@@ -171,6 +171,7 @@ function Vehicles() {
             filteredValue:
                 search.vehicleType !== undefined ? [search.vehicleType] : null,
             sorter: true,
+            render: (value: number) => VehicleType[value],
         },
         {
             title: "transmission",
@@ -181,6 +182,7 @@ function Vehicles() {
                     ? [search.transmission]
                     : null,
             sorter: true,
+            render: (value: number) => Transmission[value],
         },
         {
             title: "fuelType",
@@ -189,6 +191,7 @@ function Vehicles() {
             filteredValue:
                 search.fuelType !== undefined ? [search.fuelType] : null,
             sorter: true,
+            render: (value: number) => FuelType[value],
         },
         {
             title: "actions",
