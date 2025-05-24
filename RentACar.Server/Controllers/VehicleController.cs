@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using RentACar.Application.Common.Models.Pagination;
+using RentACar.Application.Vehicles.Commands.CreateVehicle;
 using RentACar.Application.Vehicles.Commands.DeleteVehicle;
 using RentACar.Application.Vehicles.Dtos;
 using RentACar.Application.Vehicles.Queries.GetPaginatedVehicles;
@@ -15,6 +16,15 @@ namespace RentACar.Server.Controllers
         {
             var result = await mediator.Send(query);
             return TypedResults.Ok(result);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<NoContent> CreateVehicle([FromBody] CreateVehicleCommand command)
+        {
+            await mediator.Send(command);
+            return TypedResults.NoContent();
         }
 
         [HttpDelete("{id}")]

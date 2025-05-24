@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { VehicleClient } from "../api"
+import { CreateVehicleCommand, VehicleClient } from "../api"
 import { VehiclesFilter } from "../../components/vehicles/Vehicles";
 
 export const useFetchPaginatedVehiclesQuery = (request: VehiclesFilter) => {
@@ -19,6 +19,19 @@ export const useFetchPaginatedVehiclesQuery = (request: VehiclesFilter) => {
                 request.sortBy,
                 request.sortOrder
             );
+        }
+    })
+}
+
+export const useCreateVehicleMutation = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (command: CreateVehicleCommand) => {
+            return await new VehicleClient().createVehicle(command);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({queryKey: ['vehicles']});
         }
     })
 }

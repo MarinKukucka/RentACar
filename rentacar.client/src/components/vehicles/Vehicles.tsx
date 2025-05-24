@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useNavigate, useRouter } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 import * as v from "valibot";
 import { useCallback, useEffect, useState } from "react";
 import {
@@ -24,6 +24,7 @@ import {
     useDeleteVehicleMutation,
     useFetchPaginatedVehiclesQuery,
 } from "../../api/vehicles/vehicles";
+import { Route } from "../../routes/_authorizedRoutes/vehicles/index";
 
 const VehiclesFilter = v.intersect([
     SearchSortPaginationSchema,
@@ -47,10 +48,9 @@ function Vehicles() {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [vehicleToDelete, setVehicleToDelete] = useState<VehicleDto>();
 
-    const { routeTree } = useRouter();
-    const search: VehiclesFilter = routeTree.useSearch();
+    const search: VehiclesFilter = Route.useSearch();
 
-    const navigate = useNavigate({ from: routeTree.fullPath });
+    const navigate = useNavigate({ from: Route.fullPath });
 
     const { data: vehicles, isLoading } =
         useFetchPaginatedVehiclesQuery(search);

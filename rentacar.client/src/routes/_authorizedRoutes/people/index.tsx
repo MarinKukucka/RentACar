@@ -10,5 +10,5 @@ export const Route = createFileRoute("/_authorizedRoutes/people/")({
 });
 
 function PeopleGeneralView() {
-    <People />;
+    return <People />;
 }

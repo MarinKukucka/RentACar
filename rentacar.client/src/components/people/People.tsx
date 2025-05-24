@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useNavigate, useRouter } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 import { PageHeader } from "@ant-design/pro-layout";
 import * as v from "valibot";
 import { useCallback, useEffect, useState } from "react";
@@ -29,6 +29,7 @@ import { DrawerState } from "../../models/enums";
 import { getSearchFilter } from "../../helpers/FilterHelper";
 import { defaultTablePagination, DRAWER_WIDTH } from "../../config/constants";
 import PeopleForm from "./PeopleForm";
+import { Route } from "../../routes/_authorizedRoutes/people/index";
 
 const PeopleFilters = v.intersect([
     SearchSortPaginationSchema,
@@ -48,10 +49,9 @@ function People() {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [personToDelete, setPersonToDelete] = useState<PersonDto>();
 
-    const { routeTree } = useRouter();
-    const search: PeopleFilters = routeTree.useSearch();
+    const search: PeopleFilters = Route.useSearch();
 
-    const navigate = useNavigate({ from: routeTree.fullPath });
+    const navigate = useNavigate({ from: Route.fullPath });
 
     const { data: people, isLoading } = useFetchPaginatedPeopleQuery(search);
 
