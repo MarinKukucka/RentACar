@@ -1638,16 +1638,16 @@ export enum VehicleType {
 }
 
 export enum Transmission {
-    Automatic = 0,
-    Manual = 1,
+    Automatic = 1,
+    Manual = 2,
 }
 
 export enum FuelType {
-    Diesel = 0,
-    Petrol = 1,
-    Electric = 2,
-    Hybrid = 3,
-    Gas = 4,
+    Diesel = 1,
+    Petrol = 2,
+    Electric = 3,
+    Hybrid = 4,
+    Gas = 5,
 }
 
 export class CreateVehicleCommand implements ICreateVehicleCommand {
