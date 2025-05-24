@@ -2,7 +2,7 @@
 import { useCallback, useState } from "react";
 import { CreateVehicleCommand, VehicleDto } from "../../api/api";
 import { useCreateVehicleMutation } from "../../api/vehicles/vehicles";
-import { Button, Form, Input, Row, Select } from "antd";
+import { Button, Form, Input, InputNumber, Row, Select } from "antd";
 import { SaveOutlined } from "@ant-design/icons";
 import {
     getFuelTypeOptions,
@@ -27,9 +27,8 @@ function VehiclesForm({ vehicle, onClose, onSuccess }: Props) {
     const [form] = Form.useForm();
 
     const { data: brandOptions } = useFetchBrandOptions();
-    const { data: modelOptions } = useFetchModelOptionsByBrandId(
-        selectedBrandId ?? 0
-    );
+    const { data: modelOptions } =
+        useFetchModelOptionsByBrandId(selectedBrandId);
     const { data: locationOptions } = useFetchLocationOptions();
 
     const { mutateAsync: createVehicle } = useCreateVehicleMutation();
@@ -51,8 +50,6 @@ function VehiclesForm({ vehicle, onClose, onSuccess }: Props) {
         },
         [createVehicle, onClose, onSuccess]
     );
-
-    console.log("Selected brand ID:", selectedBrandId);
 
     const handleValuesChange = useCallback(
         (changedValues: Record<string, any>) => {
@@ -89,7 +86,7 @@ function VehiclesForm({ vehicle, onClose, onSuccess }: Props) {
             </Form.Item>
 
             <Form.Item name="year" label="Year" rules={[{ required: true }]}>
-                <Input />
+                <InputNumber />
             </Form.Item>
 
             <Form.Item
@@ -97,12 +94,12 @@ function VehiclesForm({ vehicle, onClose, onSuccess }: Props) {
                 label="Mileage"
                 rules={[{ required: true }]}
             >
-                <Input />
+                <InputNumber />
             </Form.Item>
 
             <Form.Item
-                label="vehicleType"
-                name="Vehicle type"
+                name="vehicleType"
+                label="Vehicle type"
                 rules={[
                     {
                         required: true,
@@ -116,8 +113,8 @@ function VehiclesForm({ vehicle, onClose, onSuccess }: Props) {
             </Form.Item>
 
             <Form.Item
-                label="transmission"
-                name="Transmission"
+                name="transmission"
+                label="Transmission"
                 rules={[
                     {
                         required: true,
@@ -131,8 +128,8 @@ function VehiclesForm({ vehicle, onClose, onSuccess }: Props) {
             </Form.Item>
 
             <Form.Item
-                label="fuelType"
-                name="Fuel type"
+                name="fuelType"
+                label="Fuel type"
                 rules={[
                     {
                         required: true,
@@ -146,16 +143,16 @@ function VehiclesForm({ vehicle, onClose, onSuccess }: Props) {
             </Form.Item>
 
             <Form.Item name="power" label="Power" rules={[{ required: true }]}>
-                <Input />
+                <InputNumber />
             </Form.Item>
 
             <Form.Item name="seats" label="Seats" rules={[{ required: true }]}>
-                <Input />
+                <InputNumber />
             </Form.Item>
 
             <Form.Item
-                label="brandId"
-                name="Brand"
+                name="brandId"
+                label="Brand"
                 rules={[
                     {
                         required: true,
@@ -169,8 +166,8 @@ function VehiclesForm({ vehicle, onClose, onSuccess }: Props) {
             </Form.Item>
 
             <Form.Item
-                label="modelId"
-                name="Model"
+                name="modelId"
+                label="Model"
                 rules={[
                     {
                         required: true,
@@ -185,8 +182,8 @@ function VehiclesForm({ vehicle, onClose, onSuccess }: Props) {
             </Form.Item>
 
             <Form.Item
-                label="locationId"
-                name="Location"
+                name="locationId"
+                label="Location"
                 rules={[
                     {
                         required: true,
