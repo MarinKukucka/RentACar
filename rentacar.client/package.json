@@ -20,6 +20,7 @@
     "dayjs": "^1.11.13",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-i18next": "^15.5.2",
     "valibot": "^1.1.0"
   },
   "devDependencies": {

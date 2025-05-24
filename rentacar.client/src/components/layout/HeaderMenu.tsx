@@ -1,11 +1,12 @@
 import {
     CarOutlined,
+    GlobalOutlined,
     LoginOutlined,
     LogoutOutlined,
     UserOutlined,
 } from "@ant-design/icons";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Menu, MenuProps } from "antd";
+import { Dropdown, Menu, MenuProps } from "antd";
 import {
     ADMIN,
     checkUserInRole,
@@ -13,6 +14,9 @@ import {
 } from "../../helpers/UserHelper";
 import { useLogoutMutation } from "../../api/auth/auth";
 import { useCallback, useEffect, useState } from "react";
+import LanguagesMenu from "./LanguagesMenu";
+import { useTranslation } from "react-i18next";
+import translations from "../../config/localization/translations";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -20,6 +24,7 @@ function HeaderMenu() {
     const [isAdmin, setIsAdmin] = useState<boolean>();
     const [isAuth, setIsAuth] = useState<boolean | null>(null);
 
+    const { t } = useTranslation();
     const navigate = useNavigate();
 
     const { mutateAsync: logout } = useLogoutMutation();
@@ -51,19 +56,32 @@ function HeaderMenu() {
             {
                 key: "vehicles",
                 icon: <CarOutlined />,
-                label: <Link to="/vehicles">VEHICLES</Link>,
+                label: (
+                    <Link to="/vehicles">{t(translations.vehicles.title)}</Link>
+                ),
             },
             {
                 key: "profile",
                 icon: <UserOutlined />,
-                label: <Link to="/Profile">PROFILE</Link>,
+                label: (
+                    <Link to="/Profile">{t(translations.profile.title)}</Link>
+                ),
+            },
+            {
+                key: "languages",
+                icon: <GlobalOutlined />,
+                label: (
+                    <Dropdown dropdownRender={() => <LanguagesMenu />}>
+                        {t(translations.general.language)}
+                    </Dropdown>
+                ),
             },
             {
                 key: "logout",
                 icon: <LogoutOutlined />,
                 label: (
                     <Link to="/" onClick={handleLogout}>
-                        LOG OUT
+                        {t(translations.authorization.logout)}
                     </Link>
                 ),
             },
@@ -73,7 +91,9 @@ function HeaderMenu() {
                 {
                     key: "people",
                     icon: <UserOutlined />,
-                    label: <Link to="/people">PEOPLE</Link>,
+                    label: (
+                        <Link to="/people">{t(translations.people.title)}</Link>
+                    ),
                 },
                 ...items,
             ];
@@ -83,7 +103,11 @@ function HeaderMenu() {
             {
                 key: "login",
                 icon: <LoginOutlined />,
-                label: <Link to="/Login">Log in</Link>,
+                label: (
+                    <Link to="/Login">
+                        {t(translations.authorization.login)}
+                    </Link>
+                ),
             },
         ];
     }

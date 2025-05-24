@@ -1,9 +1,11 @@
-import { Button, Form, Input, Row, Select } from "antd";
+import { Form, Input, Select } from "antd";
 import { CreateUserAndPersonCommand, PersonDto } from "../../api/api";
 import { useCreateUserAndPersonMutation } from "../../api/people/people";
 import { useCallback } from "react";
 import { roles } from "../../config/constants";
-import { SaveOutlined } from "@ant-design/icons";
+import FormButtons from "../common/FormButtons";
+import translations from "../../config/localization/translations";
+import { useTranslation } from "react-i18next";
 
 interface Props {
     person?: PersonDto;
@@ -12,6 +14,8 @@ interface Props {
 }
 
 function PeopleForm({ person, onClose, onSuccess }: Props) {
+    const { t } = useTranslation();
+
     const { mutateAsync: createUserAndPerson } =
         useCreateUserAndPersonMutation();
 
@@ -40,7 +44,7 @@ function PeopleForm({ person, onClose, onSuccess }: Props) {
         >
             <Form.Item
                 name="firstName"
-                label="First name"
+                label={t(translations.people.firstName)}
                 rules={[{ required: true }]}
                 initialValue={person}
             >
@@ -49,7 +53,7 @@ function PeopleForm({ person, onClose, onSuccess }: Props) {
 
             <Form.Item
                 name="lastName"
-                label="Last name"
+                label={t(translations.people.lastName)}
                 rules={[{ required: true }]}
             >
                 <Input />
@@ -57,27 +61,31 @@ function PeopleForm({ person, onClose, onSuccess }: Props) {
 
             <Form.Item
                 name="phoneNumber"
-                label="Phone number"
+                label={t(translations.people.phoneNumber)}
                 rules={[{ required: true }]}
             >
                 <Input />
             </Form.Item>
 
-            <Form.Item name="email" label="Email" rules={[{ required: true }]}>
+            <Form.Item
+                name="email"
+                label={t(translations.people.email)}
+                rules={[{ required: true }]}
+            >
                 <Input />
             </Form.Item>
 
             <Form.Item
                 name="password"
-                label="Password"
+                label={t(translations.people.password)}
                 rules={[{ required: true }]}
             >
                 <Input.Password />
             </Form.Item>
 
             <Form.Item
-                label="Role"
                 name="role"
+                label={t(translations.people.role)}
                 rules={[
                     {
                         required: true,
@@ -85,7 +93,7 @@ function PeopleForm({ person, onClose, onSuccess }: Props) {
                 ]}
             >
                 <Select
-                    placeholder="Please choose a role"
+                    placeholder={t(translations.people.rolePlaceholder)}
                     options={roles.map((role) => {
                         return {
                             value: role,
@@ -94,15 +102,8 @@ function PeopleForm({ person, onClose, onSuccess }: Props) {
                     })}
                 />
             </Form.Item>
-            <Row className="form-buttons">
-                <Button type="default" onClick={onClose}>
-                    Cancel
-                </Button>
-                <Button type="primary" htmlType="submit">
-                    <SaveOutlined />
-                    Save
-                </Button>
-            </Row>
+
+            <FormButtons onClose={onClose} />
         </Form>
     );
 }

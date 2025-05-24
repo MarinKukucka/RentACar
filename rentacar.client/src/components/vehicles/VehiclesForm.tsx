@@ -2,8 +2,7 @@
 import { useCallback, useState } from "react";
 import { CreateVehicleCommand, VehicleDto } from "../../api/api";
 import { useCreateVehicleMutation } from "../../api/vehicles/vehicles";
-import { Button, Form, Input, InputNumber, Row, Select } from "antd";
-import { SaveOutlined } from "@ant-design/icons";
+import { Form, Input, InputNumber, Select } from "antd";
 import {
     getFuelTypeOptions,
     getTransmissionOptions,
@@ -12,6 +11,9 @@ import {
 import { useFetchModelOptionsByBrandId } from "../../api/models/models";
 import { useFetchLocationOptions } from "../../api/locations/locations";
 import { useFetchBrandOptions } from "../../api/brands/brands";
+import FormButtons from "../common/FormButtons";
+import { useTranslation } from "react-i18next";
+import translations from "../../config/localization/translations";
 
 interface Props {
     vehicle?: VehicleDto;
@@ -24,6 +26,7 @@ function VehiclesForm({ vehicle, onClose, onSuccess }: Props) {
         number | undefined
     >();
 
+    const { t } = useTranslation();
     const [form] = Form.useForm();
 
     const { data: brandOptions } = useFetchBrandOptions();
@@ -73,25 +76,33 @@ function VehiclesForm({ vehicle, onClose, onSuccess }: Props) {
             style={{ maxWidth: 500 }}
             initialValues={vehicle}
         >
-            <Form.Item name="vin" label="VIN" rules={[{ required: true }]}>
-                <Input />
-            </Form.Item>
-
             <Form.Item
-                name="licensePlate"
-                label="License plate"
+                name="vin"
+                label={t(translations.vehicles.vin)}
                 rules={[{ required: true }]}
             >
                 <Input />
             </Form.Item>
 
-            <Form.Item name="year" label="Year" rules={[{ required: true }]}>
+            <Form.Item
+                name="licensePlate"
+                label={t(translations.vehicles.licensePlate)}
+                rules={[{ required: true }]}
+            >
+                <Input />
+            </Form.Item>
+
+            <Form.Item
+                name="year"
+                label={t(translations.vehicles.year)}
+                rules={[{ required: true }]}
+            >
                 <InputNumber />
             </Form.Item>
 
             <Form.Item
                 name="mileage"
-                label="Mileage"
+                label={t(translations.vehicles.mileage)}
                 rules={[{ required: true }]}
             >
                 <InputNumber addonAfter="km" />
@@ -99,7 +110,7 @@ function VehiclesForm({ vehicle, onClose, onSuccess }: Props) {
 
             <Form.Item
                 name="vehicleType"
-                label="Vehicle type"
+                label={t(translations.vehicles.vehicleType)}
                 rules={[
                     {
                         required: true,
@@ -107,14 +118,16 @@ function VehiclesForm({ vehicle, onClose, onSuccess }: Props) {
                 ]}
             >
                 <Select<number>
-                    placeholder="Please choose a vehicle type"
+                    placeholder={t(
+                        translations.vehicles.chooseVehicleTypePlaceholder
+                    )}
                     options={vehicleTypeOptions}
                 />
             </Form.Item>
 
             <Form.Item
                 name="transmission"
-                label="Transmission"
+                label={t(translations.vehicles.transmission)}
                 rules={[
                     {
                         required: true,
@@ -122,14 +135,16 @@ function VehiclesForm({ vehicle, onClose, onSuccess }: Props) {
                 ]}
             >
                 <Select<number>
-                    placeholder="Please choose a transmission"
+                    placeholder={t(
+                        translations.vehicles.chooseTransmissionPlaceholder
+                    )}
                     options={transmissionOptions}
                 />
             </Form.Item>
 
             <Form.Item
                 name="fuelType"
-                label="Fuel type"
+                label={t(translations.vehicles.fuelType)}
                 rules={[
                     {
                         required: true,
@@ -137,22 +152,32 @@ function VehiclesForm({ vehicle, onClose, onSuccess }: Props) {
                 ]}
             >
                 <Select<number>
-                    placeholder="Please choose a fuel type"
+                    placeholder={t(
+                        translations.vehicles.chooseFuelTypePlaceholder
+                    )}
                     options={fuelTypeOptions}
                 />
             </Form.Item>
 
-            <Form.Item name="power" label="Power" rules={[{ required: true }]}>
+            <Form.Item
+                name="power"
+                label={t(translations.vehicles.power)}
+                rules={[{ required: true }]}
+            >
                 <InputNumber addonAfter="hp" />
             </Form.Item>
 
-            <Form.Item name="seats" label="Seats" rules={[{ required: true }]}>
+            <Form.Item
+                name="seats"
+                label={t(translations.vehicles.seats)}
+                rules={[{ required: true }]}
+            >
                 <InputNumber />
             </Form.Item>
 
             <Form.Item
                 name="brandId"
-                label="Brand"
+                label={t(translations.vehicles.brand)}
                 rules={[
                     {
                         required: true,
@@ -160,14 +185,16 @@ function VehiclesForm({ vehicle, onClose, onSuccess }: Props) {
                 ]}
             >
                 <Select<number>
-                    placeholder="Please choose a brand"
+                    placeholder={t(
+                        translations.vehicles.chooseBrandPlaceholder
+                    )}
                     options={brandOptions}
                 />
             </Form.Item>
 
             <Form.Item
                 name="modelId"
-                label="Model"
+                label={t(translations.vehicles.model)}
                 rules={[
                     {
                         required: true,
@@ -175,11 +202,11 @@ function VehiclesForm({ vehicle, onClose, onSuccess }: Props) {
                 ]}
             >
                 <Select<number>
-                    placeholder={
+                    placeholder={t(
                         selectedBrandId
-                            ? "Please choose a model"
-                            : "First choose a brand"
-                    }
+                            ? translations.vehicles.chooseModelPlaceholder
+                            : translations.vehicles.chooseBrandFirstPlaceholder
+                    )}
                     options={modelOptions}
                     disabled={!selectedBrandId}
                 />
@@ -187,7 +214,7 @@ function VehiclesForm({ vehicle, onClose, onSuccess }: Props) {
 
             <Form.Item
                 name="locationId"
-                label="Location"
+                label={t(translations.vehicles.location)}
                 rules={[
                     {
                         required: true,
@@ -195,20 +222,14 @@ function VehiclesForm({ vehicle, onClose, onSuccess }: Props) {
                 ]}
             >
                 <Select<number>
-                    placeholder="Please choose a location"
+                    placeholder={t(
+                        translations.vehicles.chooseLocationPlaceholder
+                    )}
                     options={locationOptions}
                 />
             </Form.Item>
 
-            <Row className="form-buttons">
-                <Button type="default" onClick={onClose}>
-                    Cancel
-                </Button>
-                <Button type="primary" htmlType="submit">
-                    <SaveOutlined />
-                    Save
-                </Button>
-            </Row>
+            <FormButtons onClose={onClose} />
         </Form>
     );
 }

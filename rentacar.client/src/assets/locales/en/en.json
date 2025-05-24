@@ -1,0 +1,73 @@
+{
+    "translation": {
+        "general": {
+            "save": "Save",
+            "cancel": "Cancel",
+            "search": "Search",
+            "clear": "Clear",
+            "filter": "Filter",
+            "language": "Language",
+            "disable": "Disable",
+            "add": "Add",
+            "delete": "Delete",
+            "yes": "Yes",
+            "no": "No",
+            "actions": "Actions"
+        },
+        "authorization": {
+            "email": "Email",
+            "password": "Password",
+            "login": "LOG IN",
+            "logout": "LOG OUT"
+        },
+        "profile": {
+            "title": "Profile",
+            "accountInformation": "Account information",
+            "email": "Email",
+            "oldPassword": "Old password",
+            "newPassword": "New password",
+            "oldPasswordRequired": "Old password is required",
+            "personalInformation": "Personal information",
+            "firstName": "First name",
+            "lastName": "Last name",
+            "phoneNumber": "Phone number"
+        },
+        "people": {
+            "title": "People",
+            "firstName": "First name",
+            "lastName": "Last name",
+            "isActive": "Active",
+            "addClient": "Add client",
+            "confirmDeactivatePerson": "Are you sure that you want to disable this persons account?",
+            "phoneNumber": "Phone number",
+            "email": "Email",
+            "password": "Password",
+            "role": "Role",
+            "chooseRolePlaceholder": "Please choose a role"
+        },
+        "vehicles": {
+            "title": "Vehicles",
+            "vin": "VIN",
+            "licensePlate": "License plate",
+            "year": "Year",
+            "mileage": "Mileage (km)",
+            "vehicleType": "Vehicle type",
+            "chooseVehicleTypePlaceholder": "Please choose a vehicle type",
+            "transmission": "Transmission",
+            "chooseTransmissionPlaceholder": "Please choose a transmission type",
+            "fuelType": "Fuel type",
+            "chooseFuelTypePlaceholder": "Please choose a fuel type",
+            "addVehicle": "Add vehicle",
+            "confirmDeleteVehicle": "Are you sure that you want to delete this vehicle?",
+            "power": "Power (hp)",
+            "seats": "Seats",
+            "brand": "Brand",
+            "chooseBrandPlaceholder": "Please choose a brand",
+            "model": "Model",
+            "chooseModelPlaceholder": "Please choose a model",
+            "chooseBrandFirstPlaceholder": "Please choose a brand first",
+            "location": "Location",
+            "chooseLocationPlaceholder": "Please choose a location"
+        }
+    }
+}

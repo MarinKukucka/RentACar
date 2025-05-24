@@ -4,6 +4,8 @@ import { RadioChangeEvent } from "antd/es/radio";
 import { FilterConfirmProps } from "antd/es/table/interface";
 import React from "react";
 import { Option } from "../../models/options";
+import { useTranslation } from "react-i18next";
+import translations from "../../config/localization/translations";
 
 interface Props {
     selectedKeys: React.Key[];
@@ -14,6 +16,8 @@ interface Props {
 }
 
 const RadioFilter: React.FC<Props> = (props: Props): React.ReactElement => {
+    const { t } = useTranslation();
+
     const { selectedKeys, setSelectedKeys, confirm, clearFilters, options } =
         props;
 
@@ -41,14 +45,14 @@ const RadioFilter: React.FC<Props> = (props: Props): React.ReactElement => {
                     icon={<SearchOutlined />}
                     size="small"
                 >
-                    Search
+                    {t(translations.general.search)}
                 </Button>
                 <Button
                     onClick={() => (clearFilters ? clearFilters() : undefined)}
                     icon={<CloseOutlined />}
                     size="small"
                 >
-                    Clear
+                    {t(translations.general.clear)}
                 </Button>
                 <Button
                     type="link"
@@ -57,7 +61,7 @@ const RadioFilter: React.FC<Props> = (props: Props): React.ReactElement => {
                         confirm({ closeDropdown: false });
                     }}
                 >
-                    Filter
+                    {t(translations.general.filter)}
                 </Button>
             </Space>
         </Space>

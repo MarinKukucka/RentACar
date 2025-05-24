@@ -25,6 +25,8 @@ import {
     useFetchPaginatedVehiclesQuery,
 } from "../../api/vehicles/vehicles";
 import { Route } from "../../routes/_authorizedRoutes/vehicles/index";
+import { useTranslation } from "react-i18next";
+import translations from "../../config/localization/translations";
 
 const VehiclesFilter = v.intersect([
     SearchSortPaginationSchema,
@@ -48,8 +50,8 @@ function Vehicles() {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [vehicleToDelete, setVehicleToDelete] = useState<VehicleDto>();
 
+    const { t } = useTranslation();
     const search: VehiclesFilter = Route.useSearch();
-
     const navigate = useNavigate({ from: Route.fullPath });
 
     const { data: vehicles, isLoading } =
@@ -133,14 +135,14 @@ function Vehicles() {
 
     const columns = [
         {
-            title: "vin",
+            title: t(translations.vehicles.vin),
             dataIndex: "vin",
             ...getSearchFilter(),
             filteredValue: search.vin !== undefined ? [search.vin] : null,
             sorter: true,
         },
         {
-            title: "license plate",
+            title: t(translations.vehicles.licensePlate),
             dataIndex: "licensePlate",
             ...getSearchFilter(),
             filteredValue:
@@ -150,14 +152,14 @@ function Vehicles() {
             sorter: true,
         },
         {
-            title: "year",
+            title: t(translations.vehicles.year),
             dataIndex: "year",
             ...getSearchFilter(),
             filteredValue: search.year !== undefined ? [search.year] : null,
             sorter: true,
         },
         {
-            title: "mileage (km)",
+            title: t(translations.vehicles.mileage),
             dataIndex: "mileage",
             ...getSearchFilter(),
             filteredValue:
@@ -165,7 +167,7 @@ function Vehicles() {
             sorter: true,
         },
         {
-            title: "vehicleType",
+            title: t(translations.vehicles.vehicleType),
             dataIndex: "vehicleType",
             ...getSearchFilter(),
             filteredValue:
@@ -174,7 +176,7 @@ function Vehicles() {
             render: (value: number) => VehicleType[value],
         },
         {
-            title: "transmission",
+            title: t(translations.vehicles.transmission),
             dataIndex: "transmission",
             ...getSearchFilter(),
             filteredValue:
@@ -185,7 +187,7 @@ function Vehicles() {
             render: (value: number) => Transmission[value],
         },
         {
-            title: "fuelType",
+            title: t(translations.vehicles.fuelType),
             dataIndex: "fuelType",
             ...getSearchFilter(),
             filteredValue:
@@ -194,19 +196,19 @@ function Vehicles() {
             render: (value: number) => FuelType[value],
         },
         {
-            title: "actions",
+            title: t(translations.general.actions),
             key: "actions",
             render: (record: VehicleDto) => {
                 const menuItems = [
                     {
-                        key: "disable",
+                        key: "delete",
                         label: (
                             <Button
                                 type="text"
                                 danger
                                 onClick={() => showDeleteModal(record)}
                             >
-                                Delete
+                                {t(translations.general.delete)}
                             </Button>
                         ),
                     },
@@ -229,7 +231,7 @@ function Vehicles() {
     return (
         <>
             <PageHeader
-                title="Workers"
+                title={t(translations.vehicles.title)}
                 extra={[
                     <Button
                         key="1"
@@ -237,7 +239,7 @@ function Vehicles() {
                         onClick={() => handleDrawerMode(DrawerState.Create)}
                     >
                         <PlusOutlined />
-                        Add vehicle
+                        {t(translations.vehicles.addVehicle)}
                     </Button>,
                 ]}
             />
@@ -258,7 +260,7 @@ function Vehicles() {
             />
 
             <Drawer
-                title="Add"
+                title={t(translations.vehicles.addVehicle)}
                 open={!!search.drawerState}
                 onClose={() => handleDrawerMode(DrawerState.Closed)}
                 destroyOnClose
@@ -272,12 +274,12 @@ function Vehicles() {
             </Drawer>
 
             <Modal
-                title="Are you sure that you want to delete this vehicle?"
+                title={t(translations.vehicles.confirmDeleteVehicle)}
                 open={isDeleteModalOpen}
                 onOk={handleDeleteConfirm}
                 onCancel={handleDeleteCancel}
-                okText="Yes"
-                cancelText="No"
+                okText={t(translations.general.yes)}
+                cancelText={t(translations.general.no)}
             />
         </>
     );

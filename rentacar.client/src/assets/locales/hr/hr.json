@@ -1,0 +1,73 @@
+{
+    "translation": {
+        "general": {
+            "save": "Spremi",
+            "cancel": "Odustani",
+            "search": "Pretraži",
+            "clear": "Očisti",
+            "filter": "Filtriraj",
+            "language": "Jezik",
+            "disable": "Deaktivirati",
+            "add": "Dodaj",
+            "delete": "Obriši",
+            "yes": "Da",
+            "no": "Ne",
+            "actions": "Akcije"
+        },
+        "authorization": {
+            "email": "Email",
+            "password": "Lozinka",
+            "login": "PRIJAVA",
+            "logout": "ODJAVA"
+        },
+        "profile": {
+            "title": "Profil",
+            "accountInformation": "Informacije o računu",
+            "email": "Email",
+            "oldPassword": "Stara lozinka",
+            "newPassword": "Nova lozinka",
+            "oldPasswordRequired": "Stara lozinka je obavezna",
+            "personalInformation": "Osobne informacije",
+            "firstName": "Ime",
+            "lastName": "Prezime",
+            "phoneNumber": "Broj mobitela"
+        },
+        "people": {
+            "title": "Ljudi",
+            "firstName": "Ime",
+            "lastName": "Prezime",
+            "isActive": "Aktivan",
+            "addClient": "Dodaj klijenta",
+            "confirmDeactivatePerson": "Jeste li sigurni da želite deaktivirati račun ove osobe?",
+            "phoneNumber": "Broj mobitela",
+            "email": "Email",
+            "password": "Lozinka",
+            "role": "Uloga",
+            "chooseRolePlaceholder": "Molimo odaberite ulogu"
+        },
+        "vehicles": {
+            "title": "Vozila",
+            "vin": "VIN",
+            "licensePlate": "Registracija",
+            "year": "Godište",
+            "mileage": "Kilometraža",
+            "vehicleType": "Tip vozila",
+            "chooseVehicleTypePlaceholder": "Molimo odaberite tip vozila",
+            "transmission": "Mjenjač",
+            "chooseTransmissionPlaceholder": "Molimo odaberite tip mjenjača",
+            "fuelType": "Gorivo",
+            "chooseFuelTypePlaceholder": "Molimo odaberite tip goriva",
+            "addVehicle": "Dodaj vozilo",
+            "confirmDeleteVehicle": "Jeste li sigurni da želite obrisati ovo vozilo?",
+            "power": "Snaga (hp)",
+            "seats": "Broj sjedala",
+            "brand": "Brend",
+            "chooseBrandPlaceholder": "Molimo odaberite brend",
+            "model": "Model",
+            "chooseModelPlaceholder": "Molimo odaberite model",
+            "chooseBrandFirstPlaceholder": "Molimo prvo odaberite brend",
+            "location": "Lokacija",
+            "chooseLocationPlaceholder": "Molimo odaberite lokaciju"
+        }
+    }
+}

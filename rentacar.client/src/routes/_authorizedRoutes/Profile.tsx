@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createFileRoute } from "@tanstack/react-router";
 import {
     useFetchUserInfoQuery,
@@ -7,12 +8,16 @@ import Title from "antd/es/typography/Title";
 import { Button, Card, Divider, Form, Input, Spin } from "antd";
 import { UpdateUserInfoRequest } from "../../api/api";
 import { useCallback } from "react";
+import { useTranslation } from "react-i18next";
+import translations from "../../config/localization/translations";
 
 export const Route = createFileRoute("/_authorizedRoutes/Profile")({
     component: Profile,
 });
 
 function Profile() {
+    const { t } = useTranslation();
+
     const { data: person, isLoading } = useFetchUserInfoQuery();
 
     const { mutateAsync: updateUserInfo } = useUpdateUserInfoMutation();
@@ -23,7 +28,6 @@ function Profile() {
         async (values: UpdateUserInfoRequest) => {
             try {
                 await updateUserInfo(values);
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
             } catch (err: any) {
                 console.error("Server validation failed:", err.data ?? err);
             }
@@ -37,7 +41,7 @@ function Profile() {
 
     return (
         <div>
-            <Title level={3}>Profile</Title>
+            <Title level={3}>{t(translations.profile.title)}</Title>
             <Form
                 onFinish={handleSubmit}
                 labelCol={{ span: 10 }}
@@ -46,22 +50,27 @@ function Profile() {
                 initialValues={person}
             >
                 <Card>
-                    <Divider orientation="left">Account information</Divider>
+                    <Divider orientation="left">
+                        {t(translations.profile.accountInformation)}
+                    </Divider>
 
-                    <Form.Item label="email" name="email">
+                    <Form.Item
+                        name="email"
+                        label={t(translations.profile.email)}
+                    >
                         <Input />
                     </Form.Item>
 
                     <Form.Item<UpdateUserInfoRequest>
-                        label="old password"
                         name="oldPassword"
+                        label={t(translations.profile.oldPassword)}
                     >
                         <Input.Password autoComplete="current-password" />
                     </Form.Item>
 
                     <Form.Item<UpdateUserInfoRequest>
-                        label="new password"
                         name="newPassword"
+                        label={t(translations.profile.newPassword)}
                         dependencies={["oldPassword"]}
                         rules={[
                             ({ getFieldValue }) => ({
@@ -82,25 +91,27 @@ function Profile() {
                         <Input.Password autoComplete="new-password" />
                     </Form.Item>
 
-                    <Divider orientation="left">Personal information</Divider>
+                    <Divider orientation="left">
+                        {t(translations.profile.personalInformation)}
+                    </Divider>
 
                     <Form.Item<UpdateUserInfoRequest>
-                        label="first name"
                         name="firstName"
+                        label={t(translations.profile.firstName)}
                     >
                         <Input />
                     </Form.Item>
 
                     <Form.Item<UpdateUserInfoRequest>
-                        label="last name"
                         name="lastName"
+                        label={t(translations.profile.lastName)}
                     >
                         <Input />
                     </Form.Item>
 
                     <Form.Item<UpdateUserInfoRequest>
-                        label="phone number"
                         name="phoneNumber"
+                        label={t(translations.profile.phoneNumber)}
                     >
                         <Input />
                     </Form.Item>
@@ -115,7 +126,7 @@ function Profile() {
 
                     <Form.Item wrapperCol={{ offset: 10 }}>
                         <Button type="primary" htmlType="submit">
-                            SAVE
+                            {t(translations.general.save)}
                         </Button>
                     </Form.Item>
                 </Card>

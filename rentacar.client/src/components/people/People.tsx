@@ -30,6 +30,8 @@ import { getSearchFilter } from "../../helpers/FilterHelper";
 import { defaultTablePagination, DRAWER_WIDTH } from "../../config/constants";
 import PeopleForm from "./PeopleForm";
 import { Route } from "../../routes/_authorizedRoutes/people/index";
+import { useTranslation } from "react-i18next";
+import translations from "../../config/localization/translations";
 
 const PeopleFilters = v.intersect([
     SearchSortPaginationSchema,
@@ -49,8 +51,8 @@ function People() {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [personToDelete, setPersonToDelete] = useState<PersonDto>();
 
+    const { t } = useTranslation();
     const search: PeopleFilters = Route.useSearch();
-
     const navigate = useNavigate({ from: Route.fullPath });
 
     const { data: people, isLoading } = useFetchPaginatedPeopleQuery(search);
@@ -133,7 +135,7 @@ function People() {
 
     const columns = [
         {
-            title: "first name",
+            title: t(translations.people.firstName),
             dataIndex: "firstName",
             ...getSearchFilter(),
             filteredValue:
@@ -141,7 +143,7 @@ function People() {
             sorter: true,
         },
         {
-            title: "last name",
+            title: t(translations.people.lastName),
             dataIndex: "lastName",
             ...getSearchFilter(),
             filteredValue:
@@ -149,13 +151,13 @@ function People() {
             sorter: true,
         },
         {
-            title: "isActive",
+            title: t(translations.people.isActive),
             dataIndex: "isActive",
             render: (isActive: boolean) =>
                 isActive ? <CheckOutlined /> : <XOutlined />,
         },
         {
-            title: "actions",
+            title: t(translations.general.actions),
             key: "actions",
             render: (record: PersonDto) => {
                 const menuItems = [
@@ -167,7 +169,7 @@ function People() {
                                 danger
                                 onClick={() => showDeleteModal(record)}
                             >
-                                Disable
+                                {t(translations.general.disable)}
                             </Button>
                         ),
                     },
@@ -190,7 +192,7 @@ function People() {
     return (
         <>
             <PageHeader
-                title="Workers"
+                title={t(translations.people.title)}
                 extra={[
                     <Button
                         key="1"
@@ -198,7 +200,7 @@ function People() {
                         onClick={() => handleDrawerMode(DrawerState.Create)}
                     >
                         <PlusOutlined />
-                        Add client
+                        {t(translations.people.addClient)}
                     </Button>,
                 ]}
             />
@@ -219,7 +221,7 @@ function People() {
             />
 
             <Drawer
-                title="Add"
+                title={t(translations.people.addClient)}
                 open={!!search.drawerState}
                 onClose={() => handleDrawerMode(DrawerState.Closed)}
                 destroyOnClose
@@ -233,12 +235,12 @@ function People() {
             </Drawer>
 
             <Modal
-                title="Are you sure that you want to disable this person?"
+                title={t(translations.people.confirmDeactivatePerson)}
                 open={isDeleteModalOpen}
                 onOk={handleDeleteConfirm}
                 onCancel={handleDeleteCancel}
-                okText="Yes"
-                cancelText="No"
+                okText={t(translations.general.yes)}
+                cancelText={t(translations.general.no)}
             />
         </>
     );

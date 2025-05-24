@@ -1,0 +1,73 @@
+const translations = {
+    general: {
+        cancel: 'general.cancel',
+        save: 'general.save',
+        search: 'general.search',
+        clear: 'general.clear',
+        filter: 'general.filter',
+        language: 'general.language',
+        disable: 'general.disable',
+        add: 'general.add',
+        delete: 'general.delete',
+        yes: 'general.yes',
+        no: 'general.no',
+        actions: 'general.actions'
+    },
+    authorization: {
+        email: 'authorization.email',
+        password: 'authorization.password',
+        login: 'authorization.login',
+        logout: 'authorization.logout'
+    },
+    profile: {
+        title: 'profile.title',
+        accountInformation: 'profile.accountInformation',
+        email: 'profile.email',
+        oldPassword: 'profile.oldPassword',
+        newPassword: 'profile.newPassword',
+        oldPasswordRequired: 'profile.oldPasswordRequired',
+        personalInformation: 'profile.personalInformation',
+        firstName: 'profile.firstName',
+        lastName: 'profile.lastName',
+        phoneNumber: 'profile.phoneNumber'
+    },
+    people: {
+        title: 'people.title',
+        firstName: 'profile.firstName',
+        lastName: 'profile.lastName',
+        isActive: 'people.isActive',
+        addClient: 'people.addClient',
+        confirmDeactivatePerson: 'people.confirmDelete',
+        phoneNumber: 'people.phoneNumber',
+        email: 'people.email',
+        password: 'people.password',
+        role: 'people.role',
+        chooseRolePlaceholder: 'people.chooseRolePlaceholder',
+    },
+    vehicles: {
+        title: 'vehicles.title',
+        vin: 'vehicles.vin',
+        licensePlate: 'vehicles.licensePlate',
+        year: 'vehicles.year',
+        mileage: 'vehicles.mileage',
+        vehicleType: 'vehicles.vehicleType',
+        chooseVehicleTypePlaceholder: 'vehicles.chooseVehicleTypePlaceholder',
+        transmission: 'vehicles.transmission',
+        chooseTransmissionPlaceholder: 'vehicles.chooseTransmissionPlaceholder',
+        fuelType: 'vehicles.fuelType',
+        chooseFuelTypePlaceholder: 'vehicles.chooseFuelTypePlaceholder',
+        addVehicle: 'vehicles.addVehicle',
+        confirmDeleteVehicle: 'vehicles.confirmDeleteVehicle',
+        power: 'vehicles.power',
+        seats: 'vehicles.seats',
+        brand: 'vehicles.brand',
+        chooseBrandPlaceholder: 'vehicles.chooseBrandPlaceholder',
+        model: 'vehicles.model',
+        chooseModelPlaceholder: 'vehicles.chooseModelPlaceholder',
+        chooseBrandFirstPlaceholder: 'vehicles.chooseBrandFirstPlaceholder',
+        location: 'vehicles.location',
+        chooseLocationPlaceholder: 'vehicles.chooseLocationPlaceholder',
+    }
+}
+
+export default translations;

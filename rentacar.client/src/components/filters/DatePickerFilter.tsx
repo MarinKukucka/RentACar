@@ -4,6 +4,8 @@ import { FilterConfirmProps } from "antd/es/table/interface";
 import dayjs from "dayjs";
 import React from "react";
 import { defaultFormat } from "../../config/constants";
+import { useTranslation } from "react-i18next";
+import translations from "../../config/localization/translations";
 
 interface Props {
     selectedKeys: React.Key[];
@@ -15,6 +17,8 @@ interface Props {
 const DatePickerFilter: React.FC<Props> = (
     props: Props
 ): React.ReactElement => {
+    const { t } = useTranslation();
+
     const { selectedKeys, setSelectedKeys, confirm, clearFilters } = props;
 
     return (
@@ -35,14 +39,14 @@ const DatePickerFilter: React.FC<Props> = (
                     icon={<SearchOutlined />}
                     size="small"
                 >
-                    Search
+                    {t(translations.general.search)}
                 </Button>
                 <Button
                     onClick={() => (clearFilters ? clearFilters() : undefined)}
                     icon={<CloseOutlined />}
                     size="small"
                 >
-                    Clear
+                    {t(translations.general.clear)}
                 </Button>
                 <Button
                     type="link"
@@ -51,7 +55,7 @@ const DatePickerFilter: React.FC<Props> = (
                         confirm({ closeDropdown: false });
                     }}
                 >
-                    Filter
+                    {t(translations.general.filter)}
                 </Button>
             </Space>
         </Space>

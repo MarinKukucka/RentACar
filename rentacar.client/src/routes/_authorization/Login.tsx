@@ -4,12 +4,15 @@ import { useCallback } from "react";
 import { useLoginMutation } from "../../api/auth/auth";
 import { LoginDto } from "../../api/api";
 import "./Authorization.css";
+import { useTranslation } from "react-i18next";
+import translations from "../../config/localization/translations";
 
 export const Route = createFileRoute("/_authorization/Login")({
     component: Login,
 });
 
 function Login() {
+    const { t } = useTranslation();
     const navigate = useNavigate();
 
     const { mutateAsync: login } = useLoginMutation();
@@ -37,22 +40,22 @@ function Login() {
                         autoComplete="off"
                     >
                         <Form.Item
-                            label="Email"
                             name="email"
+                            label={t(translations.authorization.email)}
                             rules={[{ required: true }]}
                         >
                             <Input />
                         </Form.Item>
                         <Form.Item
-                            label="Password"
                             name="password"
+                            label={t(translations.authorization.password)}
                             rules={[{ required: true }]}
                         >
                             <Input.Password />
                         </Form.Item>
                         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
                             <Button type="primary" htmlType="submit">
-                                Login
+                                {t(translations.authorization.login)}
                             </Button>
                         </Form.Item>
                     </Form>
