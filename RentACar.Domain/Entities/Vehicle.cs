@@ -28,13 +28,15 @@ namespace RentACar.Domain.Entities
 
         public bool IsAvailable { get; set; }
 
+        public required decimal Price { get; set; }
+
 
         public int? ModelId { get; set; }
         
-        public Model? Model { get; set; }
+        public virtual Model? Model { get; set; }
 
         public int? LocationId { get; set; }
 
-        public Location? Location { get; set; }
+        public virtual Location? Location { get; set; }
     }
 }

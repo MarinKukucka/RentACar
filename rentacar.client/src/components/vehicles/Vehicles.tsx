@@ -39,6 +39,7 @@ const VehiclesFilter = v.intersect([
         vehicleType: v.optional(v.number()),
         transmission: v.optional(v.number()),
         fuelType: v.optional(v.number()),
+        price: v.optional(v.number()),
         selectedVehicleId: v.optional(v.number()),
     }),
 ]);
@@ -194,6 +195,14 @@ function Vehicles() {
                 search.fuelType !== undefined ? [search.fuelType] : null,
             sorter: true,
             render: (value: number) => FuelType[value],
+        },
+        {
+            title: t(translations.vehicles.price),
+            dataIndex: "price",
+            ...getSearchFilter(),
+            filteredValue: search.price !== undefined ? [search.price] : null,
+            sorter: true,
+            render: (value: number) => <p>€{value}/day</p>,
         },
         {
             title: t(translations.general.actions),

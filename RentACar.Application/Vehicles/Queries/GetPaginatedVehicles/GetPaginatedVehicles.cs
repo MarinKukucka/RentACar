@@ -8,7 +8,7 @@ using RentACar.Domain.Enums;
 
 namespace RentACar.Application.Vehicles.Queries.GetPaginatedVehicles
 {
-    public record VehiclesFilter(string? VIN, string? LicensePlate, int? Year, int? Mileage, VehicleType? VehicleType, Transmission? Transmission, FuelType? FuelType);
+    public record VehiclesFilter(string? VIN, string? LicensePlate, int? Year, int? Mileage, VehicleType? VehicleType, Transmission? Transmission, FuelType? FuelType, decimal Price);
 
     public record GetPaginatedVehiclesQuery : IRequest<PaginationResponse<VehicleDto>>
     {

@@ -26,6 +26,8 @@ namespace RentACar.Application.Vehicles.Commands.CreateVehicle
 
         public int Seats { get; set; }
 
+        public decimal Price { get; set; }
+
         public int ModelId { get; set; }
 
         public int LocationId { get; set; }

@@ -8,6 +8,6 @@ namespace RentACar.Domain.Entities
         [StringLength(50)]
         public required string Name { get; set; }
 
-        public List<Model>? Models { get; set; }
+        public virtual List<Model>? Models { get; set; }
     }
 }

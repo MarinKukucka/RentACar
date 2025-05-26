@@ -21,7 +21,10 @@ function Login() {
         async (values: LoginDto) => {
             try {
                 await login(values);
-                navigate({ to: "/" });
+
+                window.dispatchEvent(new Event("authChange"));
+
+                navigate({ to: "/people" });
             } catch {
                 console.log("Failed");
             }

@@ -14,11 +14,21 @@ export const useFetchPaginatedVehiclesQuery = (request: VehiclesFilter) => {
                 request.vehicleType,
                 request.transmission,
                 request.fuelType,
+                request.price,
                 request.currentPage,
                 request.pageSize,
                 request.sortBy,
                 request.sortOrder
             );
+        }
+    })
+}
+
+export const useFetchSimpleVehiclesQuery = () => {
+    return useQuery({
+        queryKey: ['simpleVehicles'],
+        queryFn: async () => {
+            return await new VehicleClient().getSimpleVehicles();
         }
     })
 }

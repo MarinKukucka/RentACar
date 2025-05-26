@@ -5,17 +5,25 @@ using RentACar.Application.Vehicles.Commands.CreateVehicle;
 using RentACar.Application.Vehicles.Commands.DeleteVehicle;
 using RentACar.Application.Vehicles.Dtos;
 using RentACar.Application.Vehicles.Queries.GetPaginatedVehicles;
+using RentACar.Application.Vehicles.Queries.GetSimpleVehicles;
 
 namespace RentACar.Server.Controllers
 {
     public class VehicleController(IMediator mediator) : ApiController
     {
-        [HttpGet]
+        [HttpGet("paginated")]
         [ProducesResponseType(typeof(PaginationResponse<VehicleDto>), StatusCodes.Status200OK)]
         public async Task<Results<Ok<PaginationResponse<VehicleDto>>, ValidationProblem>> GetPaginatedVehicles([FromQuery] GetPaginatedVehiclesQuery query)
         {
             var result = await mediator.Send(query);
             return TypedResults.Ok(result);
+        }
+
+        [HttpGet("simple")]
+        [ProducesResponseType(typeof(List<SimpleVehicleDto>), StatusCodes.Status200OK)]
+        public async Task<List<SimpleVehicleDto>> GetSimpleVehicles()
+        {
+            return await mediator.Send(new GetSimpleVehiclesQuery());
         }
 
         [HttpPost]

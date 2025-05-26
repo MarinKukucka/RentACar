@@ -176,6 +176,14 @@ function VehiclesForm({ vehicle, onClose, onSuccess }: Props) {
             </Form.Item>
 
             <Form.Item
+                name="price"
+                label={t(translations.vehicles.price)}
+                rules={[{ required: true }]}
+            >
+                <InputNumber addonAfter="€/day" />
+            </Form.Item>
+
+            <Form.Item
                 name="brandId"
                 label={t(translations.vehicles.brand)}
                 rules={[

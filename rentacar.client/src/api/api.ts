@@ -833,8 +833,8 @@ export class VehicleClient extends ApiClientBase {
         this.baseUrl = this.getBaseUrl("", baseUrl);
     }
 
-    getPaginatedVehicles(paginationFilter_Filter_VIN: string | null | undefined, paginationFilter_Filter_LicensePlate: string | null | undefined, paginationFilter_Filter_Year: number | null | undefined, paginationFilter_Filter_Mileage: number | null | undefined, paginationFilter_Filter_VehicleType: VehicleType | null | undefined, paginationFilter_Filter_Transmission: Transmission | null | undefined, paginationFilter_Filter_FuelType: FuelType | null | undefined, paginationFilter_CurrentPage: number | undefined, paginationFilter_PageSize: number | undefined, paginationFilter_SortBy: string | undefined, paginationFilter_SortOrder: string | undefined): Promise<PaginationResponseOfVehicleDto> {
-        let url_ = this.baseUrl + "/api/Vehicle?";
+    getPaginatedVehicles(paginationFilter_Filter_VIN: string | null | undefined, paginationFilter_Filter_LicensePlate: string | null | undefined, paginationFilter_Filter_Year: number | null | undefined, paginationFilter_Filter_Mileage: number | null | undefined, paginationFilter_Filter_VehicleType: VehicleType | null | undefined, paginationFilter_Filter_Transmission: Transmission | null | undefined, paginationFilter_Filter_FuelType: FuelType | null | undefined, paginationFilter_Filter_Price: number | undefined, paginationFilter_CurrentPage: number | undefined, paginationFilter_PageSize: number | undefined, paginationFilter_SortBy: string | undefined, paginationFilter_SortOrder: string | undefined): Promise<PaginationResponseOfVehicleDto> {
+        let url_ = this.baseUrl + "/api/Vehicle/paginated?";
         if (paginationFilter_Filter_VIN !== undefined && paginationFilter_Filter_VIN !== null)
             url_ += "PaginationFilter.Filter.VIN=" + encodeURIComponent("" + paginationFilter_Filter_VIN) + "&";
         if (paginationFilter_Filter_LicensePlate !== undefined && paginationFilter_Filter_LicensePlate !== null)
@@ -849,6 +849,10 @@ export class VehicleClient extends ApiClientBase {
             url_ += "PaginationFilter.Filter.Transmission=" + encodeURIComponent("" + paginationFilter_Filter_Transmission) + "&";
         if (paginationFilter_Filter_FuelType !== undefined && paginationFilter_Filter_FuelType !== null)
             url_ += "PaginationFilter.Filter.FuelType=" + encodeURIComponent("" + paginationFilter_Filter_FuelType) + "&";
+        if (paginationFilter_Filter_Price === null)
+            throw new Error("The parameter 'paginationFilter_Filter_Price' cannot be null.");
+        else if (paginationFilter_Filter_Price !== undefined)
+            url_ += "PaginationFilter.Filter.Price=" + encodeURIComponent("" + paginationFilter_Filter_Price) + "&";
         if (paginationFilter_CurrentPage === null)
             throw new Error("The parameter 'paginationFilter_CurrentPage' cannot be null.");
         else if (paginationFilter_CurrentPage !== undefined)
@@ -911,6 +915,63 @@ export class VehicleClient extends ApiClientBase {
             });
         }
         return Promise.resolve<PaginationResponseOfVehicleDto>(null as any);
+    }
+
+    getSimpleVehicles(): Promise<SimpleVehicleDto[]> {
+        let url_ = this.baseUrl + "/api/Vehicle/simple";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetSimpleVehicles(_response));
+        });
+    }
+
+    protected processGetSimpleVehicles(response: Response): Promise<SimpleVehicleDto[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 401) {
+            return response.text().then((_responseText) => {
+            let result401: any = null;
+            let resultData401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result401 = ProblemDetails.fromJS(resultData401);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result401);
+            });
+        } else if (status === 403) {
+            return response.text().then((_responseText) => {
+            let result403: any = null;
+            let resultData403 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result403 = ProblemDetails.fromJS(resultData403);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result403);
+            });
+        } else if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(SimpleVehicleDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<SimpleVehicleDto[]>(null as any);
     }
 
     createVehicle(command: CreateVehicleCommand): Promise<void> {
@@ -1557,6 +1618,7 @@ export class VehicleDto implements IVehicleDto {
     power!: number;
     seats!: number;
     isAvailable!: boolean;
+    price!: number;
     model!: string;
     location!: string;
 
@@ -1582,6 +1644,7 @@ export class VehicleDto implements IVehicleDto {
             this.power = _data["power"];
             this.seats = _data["seats"];
             this.isAvailable = _data["isAvailable"];
+            this.price = _data["price"];
             this.model = _data["model"];
             this.location = _data["location"];
         }
@@ -1607,6 +1670,7 @@ export class VehicleDto implements IVehicleDto {
         data["power"] = this.power;
         data["seats"] = this.seats;
         data["isAvailable"] = this.isAvailable;
+        data["price"] = this.price;
         data["model"] = this.model;
         data["location"] = this.location;
         return data;
@@ -1625,6 +1689,7 @@ export interface IVehicleDto {
     power: number;
     seats: number;
     isAvailable: boolean;
+    price: number;
     model: string;
     location: string;
 }
@@ -1650,6 +1715,54 @@ export enum FuelType {
     Gas = 5,
 }
 
+export class SimpleVehicleDto implements ISimpleVehicleDto {
+    id!: number;
+    name!: string;
+    image!: string | undefined;
+    price!: number;
+
+    constructor(data?: ISimpleVehicleDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.name = _data["name"];
+            this.image = _data["image"];
+            this.price = _data["price"];
+        }
+    }
+
+    static fromJS(data: any): SimpleVehicleDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new SimpleVehicleDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["image"] = this.image;
+        data["price"] = this.price;
+        return data;
+    }
+}
+
+export interface ISimpleVehicleDto {
+    id: number;
+    name: string;
+    image: string | undefined;
+    price: number;
+}
+
 export class CreateVehicleCommand implements ICreateVehicleCommand {
     vin!: string;
     licensePlate!: string;
@@ -1660,6 +1773,7 @@ export class CreateVehicleCommand implements ICreateVehicleCommand {
     fuelType!: FuelType;
     power!: number;
     seats!: number;
+    price!: number;
     modelId!: number;
     locationId!: number;
 
@@ -1683,6 +1797,7 @@ export class CreateVehicleCommand implements ICreateVehicleCommand {
             this.fuelType = _data["fuelType"];
             this.power = _data["power"];
             this.seats = _data["seats"];
+            this.price = _data["price"];
             this.modelId = _data["modelId"];
             this.locationId = _data["locationId"];
         }
@@ -1706,6 +1821,7 @@ export class CreateVehicleCommand implements ICreateVehicleCommand {
         data["fuelType"] = this.fuelType;
         data["power"] = this.power;
         data["seats"] = this.seats;
+        data["price"] = this.price;
         data["modelId"] = this.modelId;
         data["locationId"] = this.locationId;
         return data;
@@ -1722,6 +1838,7 @@ export interface ICreateVehicleCommand {
     fuelType: FuelType;
     power: number;
     seats: number;
+    price: number;
     modelId: number;
     locationId: number;
 }

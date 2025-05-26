@@ -55,6 +55,7 @@ const translations = {
         transmission: 'vehicles.transmission',
         chooseTransmissionPlaceholder: 'vehicles.chooseTransmissionPlaceholder',
         fuelType: 'vehicles.fuelType',
+        price: 'vehicles.price',
         chooseFuelTypePlaceholder: 'vehicles.chooseFuelTypePlaceholder',
         addVehicle: 'vehicles.addVehicle',
         confirmDeleteVehicle: 'vehicles.confirmDeleteVehicle',
