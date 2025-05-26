@@ -4,19 +4,19 @@
     "Models": [
       {
         "Name": "A3",
-        "File": { "Name": "a3.jpg" }
+        "File": { "Name": "a3.png" }
       },
       {
-        "Name": "A4",
-        "File": { "Name": "a4.jpg" }
+        "Name": "A5",
+        "File": { "Name": "a5.png" }
       },
       {
         "Name": "A6",
-        "File": { "Name": "a6.jpg" }
+        "File": { "Name": "a6.png" }
       },
       {
         "Name": "Q5",
-        "File": { "Name": "q5.jpg" }
+        "File": { "Name": "q5.png" }
       }
     ]
   },
@@ -25,19 +25,19 @@
     "Models": [
       {
         "Name": "3 Series",
-        "File": { "Name": "series3.jpg" }
+        "File": { "Name": "series3.png" }
       },
       {
         "Name": "5 Series",
-        "File": { "Name": "series5.jpg" }
+        "File": { "Name": "series5.png" }
       },
       {
         "Name": "X3",
-        "File": { "Name": "x3.jpg" }
+        "File": { "Name": "x3.png" }
       },
       {
         "Name": "X5",
-        "File": { "Name": "x5.jpg" }
+        "File": { "Name": "x5.png" }
       }
     ]
   },
@@ -46,19 +46,19 @@
     "Models": [
       {
         "Name": "500",
-        "File": { "Name": "500.jpg" }
+        "File": { "Name": "500.png" }
       },
       {
         "Name": "Panda",
-        "File": { "Name": "panda.jpg" }
+        "File": { "Name": "panda.png" }
       },
       {
         "Name": "Tipo",
-        "File": { "Name": "tipo.jpg" }
+        "File": { "Name": "tipo.png" }
       },
       {
         "Name": "Punto",
-        "File": { "Name": "punto.jpg" }
+        "File": { "Name": "punto.png" }
       }
     ]
   },
@@ -67,11 +67,11 @@
     "Models": [
       {
         "Name": "Fiesta",
-        "File": { "Name": "fiesta.jpg" }
+        "File": { "Name": "fiesta.png" }
       },
       {
         "Name": "Explorer",
-        "File": { "Name": "explorer.jpg" }
+        "File": { "Name": "explorer.png" }
       }
     ]
   },
@@ -80,11 +80,11 @@
     "Models": [
       {
         "Name": "Civic",
-        "File": { "Name": "civic.jpg" }
+        "File": { "Name": "civic.png" }
       },
       {
         "Name": "Accord",
-        "File": { "Name": "accord.jpg" }
+        "File": { "Name": "accord.png" }
       }
     ]
   },
@@ -93,7 +93,7 @@
     "Models": [
       {
         "Name": "Sportage",
-        "File": { "Name": "sportage.jpg" }
+        "File": { "Name": "sportage.png" }
       }
     ]
   },
@@ -102,19 +102,19 @@
     "Models": [
       {
         "Name": "C-Class",
-        "File": { "Name": "c-class.jpg" }
+        "File": { "Name": "c-class.png" }
       },
       {
         "Name": "E-Class",
-        "File": { "Name": "e-class.jpg" }
+        "File": { "Name": "e-class.png" }
       },
       {
         "Name": "S-Class",
-        "File": { "Name": "s-class.jpg" }
+        "File": { "Name": "s-class.png" }
       },
       {
         "Name": "GLE",
-        "File": { "Name": "gle.jpg" }
+        "File": { "Name": "gle.png" }
       }
     ]
   },
@@ -123,15 +123,15 @@
     "Models": [
       {
         "Name": "Clio",
-        "File": { "Name": "clio.jpg" }
+        "File": { "Name": "clio.png" }
       },
       {
         "Name": "Megane",
-        "File": { "Name": "megane.jpg" }
+        "File": { "Name": "megane.png" }
       },
       {
         "Name": "Kadjar",
-        "File": { "Name": "kadjar.jpg" }
+        "File": { "Name": "kadjar.png" }
       }
     ]
   },
@@ -140,11 +140,11 @@
     "Models": [
       {
         "Name": "Corolla",
-        "File": { "Name": "corolla.jpg" }
+        "File": { "Name": "corolla.png" }
       },
       {
         "Name": "Prius",
-        "File": { "Name": "prius.jpg" }
+        "File": { "Name": "prius.png" }
       }
     ]
   },
@@ -153,15 +153,15 @@
     "Models": [
       {
         "Name": "Golf",
-        "File": { "Name": "golf.jpg" }
+        "File": { "Name": "golf.png" }
       },
       {
         "Name": "Passat",
-        "File": { "Name": "passat.jpg" }
+        "File": { "Name": "passat.png" }
       },
       {
         "Name": "Tiguan",
-        "File": { "Name": "tiguan.jpg" }
+        "File": { "Name": "tiguan.png" }
       }
     ]
   }
