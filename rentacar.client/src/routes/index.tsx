@@ -14,6 +14,7 @@ import {
     Row,
 } from "antd";
 import { useFetchSimpleVehiclesQuery } from "../api/vehicles/vehicles";
+import { useFetchLocations } from "../api/locations/locations";
 
 export const Route = createFileRoute("/")({
     component: MainPage,
@@ -22,26 +23,9 @@ export const Route = createFileRoute("/")({
 const { Header, Content, Footer } = Layout;
 const { RangePicker } = DatePicker;
 
-const featuredCars = [
-    {
-        id: 1,
-        name: "Tesla Model 3",
-        image: "https://source.unsplash.com/featured/?tesla,car",
-    },
-    {
-        id: 2,
-        name: "BMW 5 Series",
-        image: "https://source.unsplash.com/featured/?bmw,car",
-    },
-    {
-        id: 3,
-        name: "Audi A4",
-        image: "https://source.unsplash.com/featured/?audi,car",
-    },
-];
-
 function MainPage() {
     const { data: simpleVehicles } = useFetchSimpleVehiclesQuery();
+    const { data: locations } = useFetchLocations();
 
     const onFinish = (values: any) => {
         console.log("Search parameters:", values);
@@ -124,11 +108,11 @@ function MainPage() {
                 </Card>
 
                 <Carousel autoplay style={{ marginBottom: "50px" }}>
-                    {featuredCars.map((car) => (
-                        <div key={car.id}>
+                    {simpleVehicles?.map((vehicle) => (
+                        <div key={vehicle.id}>
                             <img
-                                src={car.image}
-                                alt={car.name}
+                                src={vehicle.image}
+                                alt={vehicle.name}
                                 style={{
                                     width: "100%",
                                     height: "400px",
@@ -144,39 +128,34 @@ function MainPage() {
                                     color: "#fff",
                                 }}
                             >
-                                {car.name}
+                                {vehicle.name}
                             </h2>
                         </div>
                     ))}
                 </Carousel>
 
-                <h2 style={{ marginBottom: "20px" }}>Available Cars</h2>
+                <h2 style={{ marginBottom: "20px" }}>Our Locations</h2>
                 <Row gutter={[16, 16]}>
-                    {simpleVehicles?.map((car) => (
-                        <Col key={car.id} xs={24} sm={12} md={8} lg={6}>
+                    {locations?.map((location) => (
+                        <Col key={location.id} xs={24} sm={12} md={8} lg={6}>
                             <Card
                                 hoverable
-                                cover={
-                                    <img
-                                        src={`${"https://localhost:7159"}/${car.image}`}
-                                        alt={car.name}
-                                        style={{ padding: 10 }}
-                                    />
-                                }
+                                // cover={
+                                //     <img
+                                //         src={`${"https://localhost:7159"}/${location.image}`}
+                                //         alt={car.name}
+                                //         style={{ padding: 10 }}
+                                //     />
+                                // }
                             >
                                 <Card.Meta
-                                    title={car.name}
-                                    description={"€" + car.price + "/day"}
+                                    title={location.name}
+                                    description={
+                                        location.address +
+                                        " " +
+                                        location.phoneNumber
+                                    }
                                 />
-                                <Button
-                                    type="link"
-                                    style={{
-                                        marginTop: "10px",
-                                        paddingLeft: 0,
-                                    }}
-                                >
-                                    View Details
-                                </Button>
                             </Card>
                         </Col>
                     ))}

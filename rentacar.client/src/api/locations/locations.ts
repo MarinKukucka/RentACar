@@ -10,3 +10,12 @@ export const useFetchLocationOptions = () => {
         },
     });
 };
+
+export const useFetchLocations = () => {
+    return useQuery({
+        queryKey: ["locations"],
+        queryFn: async () => {
+            return await new LocationClient().getLocations();
+        },
+    })
+}
