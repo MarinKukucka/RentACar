@@ -40,7 +40,7 @@
             "firstName": "Ime",
             "lastName": "Prezime",
             "isActive": "Aktivan",
-            "addClient": "Dodaj klijenta",
+            "addWorker": "Dodaj radnika",
             "confirmDeactivatePerson": "Jeste li sigurni da želite deaktivirati račun ove osobe?",
             "phoneNumber": "Broj mobitela",
             "email": "Email",
@@ -71,7 +71,8 @@
             "chooseModelPlaceholder": "Molimo odaberite model",
             "chooseBrandFirstPlaceholder": "Molimo prvo odaberite brend",
             "location": "Lokacija",
-            "chooseLocationPlaceholder": "Molimo odaberite lokaciju"
+            "chooseLocationPlaceholder": "Molimo odaberite lokaciju",
+            "ourVehicles": "Naša vozila"
         },
         "locations": {
             "ourLocations": "Naše lokacije"

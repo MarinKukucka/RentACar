@@ -200,7 +200,7 @@ function People() {
                         onClick={() => handleDrawerMode(DrawerState.Create)}
                     >
                         <PlusOutlined />
-                        {t(translations.people.addClient)}
+                        {t(translations.people.addWorker)}
                     </Button>,
                 ]}
             />
@@ -221,7 +221,7 @@ function People() {
             />
 
             <Drawer
-                title={t(translations.people.addClient)}
+                title={t(translations.people.addWorker)}
                 open={!!search.drawerState}
                 onClose={() => handleDrawerMode(DrawerState.Closed)}
                 destroyOnClose

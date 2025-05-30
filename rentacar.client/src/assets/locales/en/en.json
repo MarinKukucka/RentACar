@@ -1,7 +1,7 @@
 {
     "translation": {
         "general": {
-            "appname": "CARcarAPP",
+            "appName": "CARcarAPP",
             "save": "Save",
             "cancel": "Cancel",
             "search": "Search",
@@ -40,7 +40,7 @@
             "firstName": "First name",
             "lastName": "Last name",
             "isActive": "Active",
-            "addClient": "Add client",
+            "addWorker": "Add worker",
             "confirmDeactivatePerson": "Are you sure that you want to disable this persons account?",
             "phoneNumber": "Phone number",
             "email": "Email",
@@ -71,7 +71,8 @@
             "chooseModelPlaceholder": "Please choose a model",
             "chooseBrandFirstPlaceholder": "Please choose a brand first",
             "location": "Location",
-            "chooseLocationPlaceholder": "Please choose a location"
+            "chooseLocationPlaceholder": "Please choose a location",
+            "ourVehicles": "Our vehicles"
         },
         "locations": {
             "ourLocations": "Our locations"

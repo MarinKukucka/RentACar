@@ -39,7 +39,7 @@ const translations = {
         firstName: 'profile.firstName',
         lastName: 'profile.lastName',
         isActive: 'people.isActive',
-        addClient: 'people.addClient',
+        addWorker: 'people.addWorker',
         confirmDeactivatePerson: 'people.confirmDelete',
         phoneNumber: 'people.phoneNumber',
         email: 'people.email',
@@ -71,6 +71,7 @@ const translations = {
         chooseBrandFirstPlaceholder: 'vehicles.chooseBrandFirstPlaceholder',
         location: 'vehicles.location',
         chooseLocationPlaceholder: 'vehicles.chooseLocationPlaceholder',
+        ourVehicles: 'vehicles.ourVehicles'
     },
     locations: {
         ourLocations: 'locations.ourLocations'
