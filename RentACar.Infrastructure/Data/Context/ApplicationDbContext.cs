@@ -32,7 +32,21 @@ namespace RentACar.Infrastructure.Data.Context
 
         public DbSet<Location> Locations => Set<Location>();
 
+        public DbSet<Reservation> Reservations => Set<Reservation>();
+
         public DbSet<ExtraService> ExtraServices => Set<ExtraService>();
+
+        public DbSet<ReservationExtras> ReservationExtras => Set<ReservationExtras>();
+
+        public DbSet<ReservationPhoto> ReservationPhotos => Set<ReservationPhoto>();
+
+        public DbSet<Rental> Rentals => Set<Rental>();
+
+        public DbSet<RentalPhoto> RentalPhotos => Set<RentalPhoto>();
+
+        public DbSet<Invoice> Invoices => Set<Invoice>();
+
+        public DbSet<Payment> Payments => Set<Payment>();
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

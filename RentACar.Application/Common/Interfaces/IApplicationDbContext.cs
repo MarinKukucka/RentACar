@@ -21,7 +21,22 @@ namespace RentACar.Application.Common.Interfaces
 
         DbSet<Location> Locations { get; }
 
+        DbSet<Reservation> Reservations { get; }
+
         DbSet<ExtraService> ExtraServices { get; }
+
+        DbSet<ReservationExtras> ReservationExtras { get; }
+
+        DbSet<ReservationPhoto> ReservationPhotos { get; }
+
+        DbSet<Rental> Rentals { get; }
+
+        DbSet<RentalPhoto> RentalPhotos { get; }
+
+        DbSet<Invoice> Invoices { get; }
+
+        DbSet<Payment> Payments { get; }
+        
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 
