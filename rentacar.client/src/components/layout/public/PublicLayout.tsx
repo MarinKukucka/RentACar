@@ -4,8 +4,8 @@ import { CarOutlined, GlobalOutlined } from "@ant-design/icons";
 import { Header } from "antd/es/layout/layout";
 import { Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
-import translations from "../../config/localization/translations";
-import LanguagesMenu from "./LanguagesMenu";
+import translations from "../../../config/localization/translations";
+import LanguagesMenu from "../LanguagesMenu";
 
 interface Props {
     children?: React.ReactNode;

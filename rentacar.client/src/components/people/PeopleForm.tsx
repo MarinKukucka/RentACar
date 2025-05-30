@@ -93,7 +93,7 @@ function PeopleForm({ person, onClose, onSuccess }: Props) {
                 ]}
             >
                 <Select
-                    placeholder={t(translations.people.rolePlaceholder)}
+                    placeholder={t(translations.people.chooseRolePlaceholder)}
                     options={roles.map((role) => {
                         return {
                             value: role,

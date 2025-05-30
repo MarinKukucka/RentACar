@@ -1,8 +1,8 @@
 import { Layout as AntLayout, theme } from "antd";
 import { Header } from "antd/es/layout/layout";
 import { Link, Outlet } from "@tanstack/react-router";
-import HeaderMenu from "./HeaderMenu";
-import "./Layout.css";
+import HeaderMenu from "./AuthHeaderMenu";
+import "../Layout.css";
 
 const { Content } = AntLayout;
 

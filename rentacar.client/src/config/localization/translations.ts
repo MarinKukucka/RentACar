@@ -71,6 +71,9 @@ const translations = {
         chooseBrandFirstPlaceholder: 'vehicles.chooseBrandFirstPlaceholder',
         location: 'vehicles.location',
         chooseLocationPlaceholder: 'vehicles.chooseLocationPlaceholder',
+    },
+    locations: {
+        ourLocations: 'locations.ourLocations'
     }
 }
 

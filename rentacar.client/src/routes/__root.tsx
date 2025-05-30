@@ -1,9 +1,9 @@
 import { createRootRoute, Outlet } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { isAuthenticated } from "../helpers/UserHelper";
-import AuthLayout from "../components/layout/AuthLayout";
-import PublicLayout from "../components/layout/PublicLayout";
+import AuthLayout from "../components/layout/auth/AuthLayout";
 import { Spin } from "antd";
+import PublicLayout from "../components/layout/public/PublicLayout";
 
 export const Route = createRootRoute({
     component: RouteLayout,

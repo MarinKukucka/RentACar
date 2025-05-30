@@ -14,6 +14,10 @@ import {
 } from "antd";
 import { useFetchSimpleVehiclesQuery } from "../api/vehicles/vehicles";
 import { useFetchLocations } from "../api/locations/locations";
+import translations from "../config/localization/translations";
+import { useTranslation } from "react-i18next";
+import { chunk } from "lodash";
+import { SimpleVehicleDto } from "../api/api";
 
 export const Route = createFileRoute("/")({
     component: MainPage,
@@ -23,6 +27,8 @@ const { Content, Footer } = Layout;
 const { RangePicker } = DatePicker;
 
 function MainPage() {
+    const { t } = useTranslation();
+
     const { data: simpleVehicles } = useFetchSimpleVehiclesQuery();
     const { data: locations } = useFetchLocations();
 
@@ -71,33 +77,45 @@ function MainPage() {
                 </Card>
 
                 <Carousel autoplay style={{ marginBottom: "50px" }}>
-                    {simpleVehicles?.map((vehicle) => (
-                        <div key={vehicle.id}>
-                            <img
-                                src={`${"https://localhost:7159"}/${vehicle.image}`}
-                                alt={vehicle.name}
-                                style={{
-                                    width: "100%",
-                                    height: "400px",
-                                    objectFit: "cover",
-                                    borderRadius: "8px",
-                                }}
-                            />
-                            <h2
-                                style={{
-                                    position: "absolute",
-                                    bottom: "20px",
-                                    left: "50px",
-                                    color: "#fff",
-                                }}
-                            >
-                                {vehicle.name}
-                            </h2>
-                        </div>
-                    ))}
+                    {chunk(simpleVehicles || [], 4).map(
+                        (vehicleGroup: SimpleVehicleDto[], index: number) => (
+                            <div key={index}>
+                                <Row gutter={16} justify="center">
+                                    {vehicleGroup.map((vehicle) => (
+                                        <Col
+                                            key={vehicle.id}
+                                            xs={24}
+                                            sm={12}
+                                            md={6}
+                                        >
+                                            <Card
+                                                hoverable
+                                                cover={
+                                                    <img
+                                                        src={`https://localhost:7159/${vehicle.image}`}
+                                                        alt={vehicle.name}
+                                                        style={{
+                                                            height: "200px",
+                                                            objectFit: "cover",
+                                                        }}
+                                                    />
+                                                }
+                                            >
+                                                <Card.Meta
+                                                    title={vehicle.name}
+                                                />
+                                            </Card>
+                                        </Col>
+                                    ))}
+                                </Row>
+                            </div>
+                        )
+                    )}
                 </Carousel>
 
-                <h2 style={{ marginBottom: "20px" }}>Our Locations</h2>
+                <h2 style={{ marginBottom: "20px" }}>
+                    {t(translations.locations.ourLocations)}
+                </h2>
                 <Row gutter={[16, 16]}>
                     {locations?.map((location) => (
                         <Col key={location.id} xs={24} sm={12} md={8} lg={6}>

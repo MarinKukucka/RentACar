@@ -72,6 +72,9 @@
             "chooseBrandFirstPlaceholder": "Please choose a brand first",
             "location": "Location",
             "chooseLocationPlaceholder": "Please choose a location"
+        },
+        "locations": {
+            "ourLocations": "Our locations"
         }
     }
 }

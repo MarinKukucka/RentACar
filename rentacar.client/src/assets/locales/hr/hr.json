@@ -72,6 +72,9 @@
             "chooseBrandFirstPlaceholder": "Molimo prvo odaberite brend",
             "location": "Lokacija",
             "chooseLocationPlaceholder": "Molimo odaberite lokaciju"
+        },
+        "locations": {
+            "ourLocations": "Naše lokacije"
         }
     }
 }

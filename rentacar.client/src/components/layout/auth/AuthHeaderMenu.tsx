@@ -11,16 +11,16 @@ import {
     ADMIN,
     checkUserInRole,
     isAuthenticated,
-} from "../../helpers/UserHelper";
-import { useLogoutMutation } from "../../api/auth/auth";
+} from "../../../helpers/UserHelper";
+import { useLogoutMutation } from "../../../api/auth/auth";
 import { useCallback, useEffect, useState } from "react";
-import LanguagesMenu from "./LanguagesMenu";
+import LanguagesMenu from "../LanguagesMenu";
 import { useTranslation } from "react-i18next";
-import translations from "../../config/localization/translations";
+import translations from "../../../config/localization/translations";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
-function HeaderMenu() {
+function AuthHeaderMenu() {
     const [isAdmin, setIsAdmin] = useState<boolean>();
     const [isAuth, setIsAuth] = useState<boolean | null>(null);
 
@@ -122,4 +122,4 @@ function HeaderMenu() {
     );
 }
 
-export default HeaderMenu;
+export default AuthHeaderMenu;
