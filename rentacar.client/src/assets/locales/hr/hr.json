@@ -1,6 +1,7 @@
 {
     "translation": {
         "general": {
+            "appName": "CARcarAPP",
             "save": "Spremi",
             "cancel": "Odustani",
             "search": "Pretraži",
@@ -12,7 +13,9 @@
             "delete": "Obriši",
             "yes": "Da",
             "no": "Ne",
-            "actions": "Akcije"
+            "actions": "Akcije",
+            "aboutUs": "O nama",
+            "contact": "Kontakt"
         },
         "authorization": {
             "email": "Email",

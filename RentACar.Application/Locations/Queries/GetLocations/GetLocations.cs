@@ -13,7 +13,16 @@ namespace RentACar.Application.Locations.Queries.GetLocations
         {
             return await _context.Locations
                 .AsNoTrackingWithIdentityResolution()
-                .ProjectToType<LocationDto>()
+                .Include(l => l.City)
+                .Select(l => new LocationDto
+                {
+                    Id = l.Id,
+                    Name = l.Name,
+                    Address = l.Address,
+                    PhoneNumber = l.PhoneNumber,
+                    City = l.City != null ? l.City.Name : "",
+                    Image = l.File != null ? l.File.Path : ""
+                })
                 .ToListAsync(cancellationToken);    
         }
     }

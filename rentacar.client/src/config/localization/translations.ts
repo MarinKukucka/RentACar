@@ -1,5 +1,6 @@
 const translations = {
     general: {
+        appName: 'general.appName',
         cancel: 'general.cancel',
         save: 'general.save',
         search: 'general.search',
@@ -11,7 +12,9 @@ const translations = {
         delete: 'general.delete',
         yes: 'general.yes',
         no: 'general.no',
-        actions: 'general.actions'
+        actions: 'general.actions',
+        aboutUs: 'general.aboutUs',
+        contact: 'general.contact'
     },
     authorization: {
         email: 'authorization.email',

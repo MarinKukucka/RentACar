@@ -1,7 +1,19 @@
-﻿using RentACar.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using RentACar.Domain.Entities;
+using System.Text.Json;
 
 namespace RentACar.Infrastructure.Data.Context
 {
+    public class LocationSeed
+    {
+        public string Name { get; set; } = default!;
+        public string Address { get; set; } = default!;
+        public string PhoneNumber { get; set; } = default!;
+        public string CityName { get; set; } = default!;
+        public FileSeed? File { get; set; } 
+    }
+
+
     public partial class ApplicationDbContextInitialiser
     {
         public async Task SeedCitiesAndLocationsAsync()
@@ -38,40 +50,48 @@ namespace RentACar.Infrastructure.Data.Context
 
             if (context.Locations.Any()) return;
 
-            var locations = new List<Location>()
+            string baseDir = AppContext.BaseDirectory;
+            string seedJson = Path.Combine(baseDir, "Data", "SeedData", "seedLocations.json");
+            string imagesRoot = Path.Combine(baseDir, "Data", "SeedData", "images", "locations");
+
+            var json = await System.IO.File.ReadAllTextAsync(seedJson);
+            var locationSeeds = JsonSerializer.Deserialize<List<LocationSeed>>(json)!;
+
+            foreach (var seed in locationSeeds)
             {
-                new()
+                var city = await context.Cities.FirstOrDefaultAsync(c => c.Name == seed.CityName);
+                if (city == null) continue;
+
+                int? fileId = null;
+
+                if (seed.File != null)
                 {
-                    Name = "Zagreb - Airport",
-                    Address = "Ulica Rudolfa Fizira 21",
-                    PhoneNumber = "01 123 456",
-                    City = zagrebCity
-                },
-                new()
-                {
-                    Name = "Zagreb - Maksimir",
-                    Address = "Maksimirska cesta 128",
-                    PhoneNumber = "01 654 321",
-                    City = zagrebCity
-                },
-                new()
-                {
-                    Name = "Varaždin - SD",
-                    Address = "Ulica Petra Krešimira IV 42",
-                    PhoneNumber = "042 987 654",
-                    City = varazdinCity
-                },
-                new()
-                {
-                    Name = "Đakovo - Kino",
-                    Address = "Ulica kralja Tomislava 8",
-                    PhoneNumber = "031 456 789",
-                    City =dakovoCity
+                    var imagePath = Path.Combine(imagesRoot, seed.File.Name);
+                    var relativePath = fileService.SeedFile(imagePath);
+
+                    var file = new Domain.Entities.File
+                    {
+                        Name = seed.File.Name,
+                        Path = relativePath
+                    };
+
+                    context.Files.Add(file);
+                    await context.SaveChangesAsync();
+
+                    fileId = file.Id;
                 }
 
-            };
+                var location = new Location
+                {
+                    Name = seed.Name,
+                    Address = seed.Address,
+                    PhoneNumber = seed.PhoneNumber,
+                    CityId = city.Id,
+                    FileId = fileId
+                };
 
-            context.Locations.AddRange(locations);
+                context.Locations.Add(location);
+            }
 
             await context.SaveChangesAsync();
 

@@ -1,0 +1,38 @@
+﻿[
+  {
+    "Name": "Zagreb - Airport",
+    "Address": "Ulica Rudolfa Fizira 21",
+    "PhoneNumber": "01 123 456",
+    "CityName": "Zagreb",
+    "File": {
+      "Name": "zagreb-airport.png"
+    }
+  },
+  {
+    "Name": "Zagreb - Maksimir",
+    "Address": "Maksimirska cesta 128",
+    "PhoneNumber": "01 654 321",
+    "CityName": "Zagreb",
+    "File": {
+      "Name": "zagreb-maksimir.png"
+    }
+  },
+  {
+    "Name": "Varaždin - SD",
+    "Address": "Ulica Petra Krešimira IV 42",
+    "PhoneNumber": "042 987 654",
+    "CityName": "Varaždin",
+    "File": {
+      "Name": "varazdin-sd.png"
+    }
+  },
+  {
+    "Name": "Đakovo - kino",
+    "Address": "Ulica kralja Tomislava 8",
+    "PhoneNumber": "031 456 789",
+    "CityName": "Đakovo",
+    "File": {
+      "Name": "đakovo-kino.png"
+    }
+  }
+]

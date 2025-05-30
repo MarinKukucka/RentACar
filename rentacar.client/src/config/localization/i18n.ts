@@ -9,7 +9,7 @@ i18n.use(initReactI18next).init({
         en: enJSON,
         hr: hrJSON,
     },
-    lng: languages.hr, 
+    lng: languages.en, 
     keySeparator: '.',
     fallbackLng: languages.en, 
     interpolation: {

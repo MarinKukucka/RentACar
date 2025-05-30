@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { CarOutlined, SearchOutlined } from "@ant-design/icons";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { SearchOutlined } from "@ant-design/icons";
+import { createFileRoute } from "@tanstack/react-router";
 import {
     Button,
     Card,
@@ -10,7 +10,6 @@ import {
     Form,
     Input,
     Layout,
-    Menu,
     Row,
 } from "antd";
 import { useFetchSimpleVehiclesQuery } from "../api/vehicles/vehicles";
@@ -20,7 +19,7 @@ export const Route = createFileRoute("/")({
     component: MainPage,
 });
 
-const { Header, Content, Footer } = Layout;
+const { Content, Footer } = Layout;
 const { RangePicker } = DatePicker;
 
 function MainPage() {
@@ -33,42 +32,6 @@ function MainPage() {
 
     return (
         <Layout>
-            <Header
-                style={{
-                    position: "fixed",
-                    zIndex: 1,
-                    width: "100%",
-                    display: "flex",
-                    alignItems: "center",
-                }}
-            >
-                <div
-                    style={{
-                        color: "#fff",
-                        fontSize: "1.5rem",
-                        marginRight: "2rem",
-                        display: "flex",
-                        alignItems: "center",
-                    }}
-                >
-                    <CarOutlined style={{ marginRight: "0.5rem" }} />
-                    Rent A Car
-                </div>
-                <Menu
-                    theme="dark"
-                    mode="horizontal"
-                    defaultSelectedKeys={["home"]}
-                >
-                    <Menu.Item key="home">Home</Menu.Item>
-                    <Menu.Item key="fleet">Fleet</Menu.Item>
-                    <Menu.Item key="about">About Us</Menu.Item>
-                    <Menu.Item key="contact">Contact</Menu.Item>
-                    <Menu.Item key="login">
-                        <Link to="/Login">Log in</Link>
-                    </Menu.Item>
-                </Menu>
-            </Header>
-
             <Content style={{ padding: "100px 50px 50px" }}>
                 <Card style={{ marginBottom: "50px" }}>
                     <Form
@@ -111,7 +74,7 @@ function MainPage() {
                     {simpleVehicles?.map((vehicle) => (
                         <div key={vehicle.id}>
                             <img
-                                src={vehicle.image}
+                                src={`${"https://localhost:7159"}/${vehicle.image}`}
                                 alt={vehicle.name}
                                 style={{
                                     width: "100%",
@@ -140,22 +103,18 @@ function MainPage() {
                         <Col key={location.id} xs={24} sm={12} md={8} lg={6}>
                             <Card
                                 hoverable
-                                // cover={
-                                //     <img
-                                //         src={`${"https://localhost:7159"}/${location.image}`}
-                                //         alt={car.name}
-                                //         style={{ padding: 10 }}
-                                //     />
-                                // }
+                                cover={
+                                    <img
+                                        src={`${"https://localhost:7159"}/${location.image}`}
+                                        alt={location.name}
+                                        style={{ padding: 10 }}
+                                        height="250px"
+                                    />
+                                }
                             >
-                                <Card.Meta
-                                    title={location.name}
-                                    description={
-                                        location.address +
-                                        " " +
-                                        location.phoneNumber
-                                    }
-                                />
+                                <b>{location.name}</b>
+                                <p>{location.address}</p>
+                                <p>{location.phoneNumber}</p>
                             </Card>
                         </Col>
                     ))}

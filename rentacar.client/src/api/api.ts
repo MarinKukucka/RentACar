@@ -1437,6 +1437,7 @@ export class LocationDto implements ILocationDto {
     address!: string;
     phoneNumber!: string;
     city!: string;
+    image!: string;
 
     constructor(data?: ILocationDto) {
         if (data) {
@@ -1454,6 +1455,7 @@ export class LocationDto implements ILocationDto {
             this.address = _data["address"];
             this.phoneNumber = _data["phoneNumber"];
             this.city = _data["city"];
+            this.image = _data["image"];
         }
     }
 
@@ -1471,6 +1473,7 @@ export class LocationDto implements ILocationDto {
         data["address"] = this.address;
         data["phoneNumber"] = this.phoneNumber;
         data["city"] = this.city;
+        data["image"] = this.image;
         return data;
     }
 }
@@ -1481,6 +1484,7 @@ export interface ILocationDto {
     address: string;
     phoneNumber: string;
     city: string;
+    image: string;
 }
 
 export class PaginationResponseOfPersonDto implements IPaginationResponseOfPersonDto {

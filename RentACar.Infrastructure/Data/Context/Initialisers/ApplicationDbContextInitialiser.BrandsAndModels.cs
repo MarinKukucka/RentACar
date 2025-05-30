@@ -28,8 +28,8 @@ namespace RentACar.Infrastructure.Data.Context
             if (context.Brands.Any()) return;
 
             string baseDir = AppContext.BaseDirectory;
-            string seedJson = Path.Combine(baseDir, "Data", "SeedData", "seedData.json");
-            string imagesRoot = Path.Combine(baseDir, "Data", "SeedData", "images");
+            string seedJson = Path.Combine(baseDir, "Data", "SeedData", "seedBrandsAndModels.json");
+            string imagesRoot = Path.Combine(baseDir, "Data", "SeedData", "images", "brandAndModels");
 
             var json = await System.IO.File.ReadAllTextAsync(seedJson);
             var brandSeeds = JsonSerializer.Deserialize<List<BrandSeed>>(json)!;

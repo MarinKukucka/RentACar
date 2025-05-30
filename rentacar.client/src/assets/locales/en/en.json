@@ -1,6 +1,7 @@
 {
     "translation": {
         "general": {
+            "appname": "CARcarAPP",
             "save": "Save",
             "cancel": "Cancel",
             "search": "Search",
@@ -12,7 +13,9 @@
             "delete": "Delete",
             "yes": "Yes",
             "no": "No",
-            "actions": "Actions"
+            "actions": "Actions",
+            "aboutUs": "About us",
+            "contact": "Contact"
         },
         "authorization": {
             "email": "Email",
