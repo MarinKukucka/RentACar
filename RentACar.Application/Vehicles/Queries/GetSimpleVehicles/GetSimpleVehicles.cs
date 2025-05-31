@@ -13,6 +13,7 @@ namespace RentACar.Application.Vehicles.Queries.GetSimpleVehicles
         {
             return await _context.Vehicles
                 .AsNoTrackingWithIdentityResolution()
+                .Where(v => v.IsAvailable)
                 .Select(v => new SimpleVehicleDto {
                     Id = v.Id,
                     Name = v.Model != null && v.Model.Brand != null ? v.Model.Brand.Name + " " + v.Model.Name.ToString() : "",

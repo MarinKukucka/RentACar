@@ -1,58 +1,96 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { SearchOutlined } from "@ant-design/icons";
-import { Button, Card, DatePicker, Form, Input } from "antd";
+import { Button, Card, DatePicker, Form, Select } from "antd";
 import { useTranslation } from "react-i18next";
 import translations from "../../config/localization/translations";
+import {
+    datePickerFormatProps,
+    defaultDateFormat,
+} from "../../helpers/FormatHelper";
+import { useCallback } from "react";
+import * as v from "valibot";
+import { useNavigate } from "@tanstack/react-router";
+import { useFetchLocationOptions } from "../../api/locations/locations";
 
-const { RangePicker } = DatePicker;
+const SearchFilter = v.object({
+    pickupLocationId: v.optional(v.number()),
+    pickupDate: v.optional(v.date()),
+    dropOffDate: v.optional(v.date()),
+});
+
+export type SearchFilter = v.InferOutput<typeof SearchFilter>;
 
 function Search() {
     const { t } = useTranslation();
+    const navigate = useNavigate();
 
-    const onFinish = (values: any) => {
-        console.log("Search parameters:", values);
-    };
+    const { data: locationOptions } = useFetchLocationOptions();
+
+    // #region Callbacks
+
+    const handleSubmitSearch = useCallback(
+        (values: {
+            pickupLocationId: number;
+            pickupDate: Date;
+            dropOffDate: Date;
+        }) => {
+            const { pickupLocationId, pickupDate, dropOffDate } = values;
+
+            navigate({
+                to: "/SearchResults",
+                search: {
+                    pickupLocationId: pickupLocationId,
+                    pickupDate: pickupDate,
+                    dropOffDate: dropOffDate,
+                },
+            });
+        },
+        [navigate]
+    );
+
+    // #endregion
 
     return (
         <Card style={{ marginBottom: "50px" }}>
             <Form
                 layout="inline"
-                onFinish={onFinish}
+                onFinish={handleSubmitSearch}
                 style={{ width: "100%", justifyContent: "center" }}
             >
                 <Form.Item
-                    name="pickupLocations"
+                    name="pickupLocationId"
                     rules={[
                         {
                             required: true,
                         },
                     ]}
                 >
-                    <Input
-                        placeholder="Pickup Location"
-                        prefix={<SearchOutlined />}
-                        style={{ width: 200 }}
+                    <Select<number>
+                        placeholder={t(
+                            translations.vehicles.chooseLocationPlaceholder
+                        )}
+                        options={locationOptions}
                     />
                 </Form.Item>
                 <Form.Item
-                    name="dropOffLocation"
+                    name="pickupDate"
                     rules={[
                         {
                             required: true,
                         },
                     ]}
+                    {...datePickerFormatProps}
                 >
-                    <Input
-                        placeholder="Drop Off Location"
-                        prefix={<SearchOutlined />}
-                        style={{ width: 200 }}
-                    />
+                    <DatePicker format={defaultDateFormat} />
                 </Form.Item>
                 <Form.Item
-                    name="dates"
-                    rules={[{ required: true, message: "Select dates!" }]}
+                    name="dropOffDate"
+                    rules={[
+                        {
+                            required: true,
+                        },
+                    ]}
+                    {...datePickerFormatProps}
                 >
-                    <RangePicker />
+                    <DatePicker format={defaultDateFormat} />
                 </Form.Item>
                 <Form.Item>
                     <Button type="primary" htmlType="submit">

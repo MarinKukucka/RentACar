@@ -75,6 +75,15 @@ const translations = {
     },
     locations: {
         ourLocations: 'locations.ourLocations'
+    },
+    enums: {
+        vehicleType: {
+            Sedan: 'enums.vehicleType.Sedan',
+            SUV: 'enums.vehicleType.SUV',
+            Coupe: 'enums.vehicleType.Coupe',
+            Convertible: 'enums.vehicleType.Convertible',
+            Hatchback: 'enums.vehicleType.Hatchback'
+        }
     }
 }
 

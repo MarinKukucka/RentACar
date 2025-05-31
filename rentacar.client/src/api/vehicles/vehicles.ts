@@ -33,6 +33,15 @@ export const useFetchSimpleVehiclesQuery = () => {
     })
 }
 
+export const useFetchSearchResultVehiclesQuery = (pickupLocationId?: number, pickupDate?: Date, dropOffDate?: Date) => {
+    return useQuery({
+        queryKey: ['searchResultvehicles', pickupLocationId, pickupDate, dropOffDate],
+        queryFn: async () => {
+            return await new VehicleClient().getSearchResultVehicles(pickupLocationId, pickupDate, dropOffDate);
+        }
+    })
+}
+
 export const useCreateVehicleMutation = () => {
     const queryClient = useQueryClient();
 

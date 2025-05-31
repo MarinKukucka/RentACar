@@ -5,6 +5,7 @@ using RentACar.Application.Vehicles.Commands.CreateVehicle;
 using RentACar.Application.Vehicles.Commands.DeleteVehicle;
 using RentACar.Application.Vehicles.Dtos;
 using RentACar.Application.Vehicles.Queries.GetPaginatedVehicles;
+using RentACar.Application.Vehicles.Queries.GetSearchResultVehicles;
 using RentACar.Application.Vehicles.Queries.GetSimpleVehicles;
 
 namespace RentACar.Server.Controllers
@@ -24,6 +25,13 @@ namespace RentACar.Server.Controllers
         public async Task<List<SimpleVehicleDto>> GetSimpleVehicles()
         {
             return await mediator.Send(new GetSimpleVehiclesQuery());
+        }
+
+        [HttpGet("searchResult")]
+        [ProducesResponseType(typeof(List<VehicleDto>), StatusCodes.Status200OK)]
+        public async Task<List<VehicleDto>> GetSearchResultVehicles([FromQuery] GetSearchResultVehiclesQuery query)
+        {
+            return await mediator.Send(query);
         }
 
         [HttpPost]

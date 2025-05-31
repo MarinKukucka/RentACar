@@ -14,6 +14,7 @@ namespace RentACar.Application.Brands.Queries.GetBrandOptions
             return await _context.Brands
                 .AsNoTrackingWithIdentityResolution()
                 .ProjectToType<OptionsDto>()
+                .OrderBy(b => b.Name)
                 .ToListAsync(cancellationToken);
         }
     }

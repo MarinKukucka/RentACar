@@ -1,4 +1,5 @@
 import { FuelType, OptionsDto, Transmission, VehicleType } from "../api/api";
+import translations from "../config/localization/translations";
 
 export interface SelectOption {
     label: string | undefined;
@@ -42,4 +43,20 @@ export const getFuelTypeOptions = () => {
             label: key,
             value: value,
         }));
+};
+
+export const getEnumTranslation = (
+    enumName: keyof typeof translations.enums,
+    enumValue: string
+): string => {
+    if (!enumValue) {
+        return '';
+    }
+    const enumTranslation: { [key: string]: string } = translations.enums[enumName];
+
+    if (enumTranslation) {
+        return enumTranslation[enumValue.toLowerCase()];
+    }
+
+    return '';
 };

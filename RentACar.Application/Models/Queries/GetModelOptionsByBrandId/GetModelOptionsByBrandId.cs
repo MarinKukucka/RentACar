@@ -15,6 +15,7 @@ namespace RentACar.Application.Models.Queries.GetModelOptionsByBrandId
                 .AsNoTrackingWithIdentityResolution()
                 .Where(m => m.BrandId == request.BrandId)
                 .ProjectToType<OptionsDto>()
+                .OrderBy(m => m.Name)
                 .ToListAsync(cancellationToken);
         }
     }

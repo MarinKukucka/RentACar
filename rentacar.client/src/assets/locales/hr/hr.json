@@ -76,6 +76,15 @@
         },
         "locations": {
             "ourLocations": "Naše lokacije"
+        },
+        "enums": {
+            "vehicleType": {
+                "Sedan": "Sedan",
+                "SUV": "SUV",
+                "Coupe": "Coupe",
+                "Convertible": "Convertible",
+                "Hatchback": "Hatchback"
+            }
         }
     }
 }

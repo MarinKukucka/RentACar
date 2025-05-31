@@ -1,4 +1,5 @@
-﻿using RentACar.Domain.Enums;
+﻿using RentACar.Application.Models.Dtos;
+using RentACar.Domain.Enums;
 
 namespace RentACar.Application.Vehicles.Dtos
 {
@@ -28,7 +29,7 @@ namespace RentACar.Application.Vehicles.Dtos
 
         public decimal Price { get; set; }
 
-        public required string Model { get; set; }
+        public ModelDto? Model { get; set; }
 
         public required string Location { get; set; }
     }

@@ -13,6 +13,7 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as AuthorizedRoutesImport } from './routes/_authorizedRoutes'
 import { Route as IndexImport } from './routes/index'
+import { Route as PublicRoutesSearchResultsImport } from './routes/_publicRoutes/SearchResults'
 import { Route as AuthorizedRoutesProfileImport } from './routes/_authorizedRoutes/Profile'
 import { Route as AuthorizationLoginImport } from './routes/_authorization/Login'
 import { Route as AuthorizedRoutesVehiclesIndexImport } from './routes/_authorizedRoutes/vehicles/index'
@@ -28,6 +29,12 @@ const AuthorizedRoutesRoute = AuthorizedRoutesImport.update({
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const PublicRoutesSearchResultsRoute = PublicRoutesSearchResultsImport.update({
+  id: '/_publicRoutes/SearchResults',
+  path: '/SearchResults',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -89,6 +96,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthorizedRoutesProfileImport
       parentRoute: typeof AuthorizedRoutesImport
     }
+    '/_publicRoutes/SearchResults': {
+      id: '/_publicRoutes/SearchResults'
+      path: '/SearchResults'
+      fullPath: '/SearchResults'
+      preLoaderRoute: typeof PublicRoutesSearchResultsImport
+      parentRoute: typeof rootRoute
+    }
     '/_authorizedRoutes/people/': {
       id: '/_authorizedRoutes/people/'
       path: '/people'
@@ -128,6 +142,7 @@ export interface FileRoutesByFullPath {
   '': typeof AuthorizedRoutesRouteWithChildren
   '/Login': typeof AuthorizationLoginRoute
   '/Profile': typeof AuthorizedRoutesProfileRoute
+  '/SearchResults': typeof PublicRoutesSearchResultsRoute
   '/people': typeof AuthorizedRoutesPeopleIndexRoute
   '/vehicles': typeof AuthorizedRoutesVehiclesIndexRoute
 }
@@ -137,6 +152,7 @@ export interface FileRoutesByTo {
   '': typeof AuthorizedRoutesRouteWithChildren
   '/Login': typeof AuthorizationLoginRoute
   '/Profile': typeof AuthorizedRoutesProfileRoute
+  '/SearchResults': typeof PublicRoutesSearchResultsRoute
   '/people': typeof AuthorizedRoutesPeopleIndexRoute
   '/vehicles': typeof AuthorizedRoutesVehiclesIndexRoute
 }
@@ -147,21 +163,37 @@ export interface FileRoutesById {
   '/_authorizedRoutes': typeof AuthorizedRoutesRouteWithChildren
   '/_authorization/Login': typeof AuthorizationLoginRoute
   '/_authorizedRoutes/Profile': typeof AuthorizedRoutesProfileRoute
+  '/_publicRoutes/SearchResults': typeof PublicRoutesSearchResultsRoute
   '/_authorizedRoutes/people/': typeof AuthorizedRoutesPeopleIndexRoute
   '/_authorizedRoutes/vehicles/': typeof AuthorizedRoutesVehiclesIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '' | '/Login' | '/Profile' | '/people' | '/vehicles'
+  fullPaths:
+    | '/'
+    | ''
+    | '/Login'
+    | '/Profile'
+    | '/SearchResults'
+    | '/people'
+    | '/vehicles'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '' | '/Login' | '/Profile' | '/people' | '/vehicles'
+  to:
+    | '/'
+    | ''
+    | '/Login'
+    | '/Profile'
+    | '/SearchResults'
+    | '/people'
+    | '/vehicles'
   id:
     | '__root__'
     | '/'
     | '/_authorizedRoutes'
     | '/_authorization/Login'
     | '/_authorizedRoutes/Profile'
+    | '/_publicRoutes/SearchResults'
     | '/_authorizedRoutes/people/'
     | '/_authorizedRoutes/vehicles/'
   fileRoutesById: FileRoutesById
@@ -171,12 +203,14 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthorizedRoutesRoute: typeof AuthorizedRoutesRouteWithChildren
   AuthorizationLoginRoute: typeof AuthorizationLoginRoute
+  PublicRoutesSearchResultsRoute: typeof PublicRoutesSearchResultsRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthorizedRoutesRoute: AuthorizedRoutesRouteWithChildren,
   AuthorizationLoginRoute: AuthorizationLoginRoute,
+  PublicRoutesSearchResultsRoute: PublicRoutesSearchResultsRoute,
 }
 
 export const routeTree = rootRoute
@@ -191,7 +225,8 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/_authorizedRoutes",
-        "/_authorization/Login"
+        "/_authorization/Login",
+        "/_publicRoutes/SearchResults"
       ]
     },
     "/": {
@@ -211,6 +246,9 @@ export const routeTree = rootRoute
     "/_authorizedRoutes/Profile": {
       "filePath": "_authorizedRoutes/Profile.tsx",
       "parent": "/_authorizedRoutes"
+    },
+    "/_publicRoutes/SearchResults": {
+      "filePath": "_publicRoutes/SearchResults.tsx"
     },
     "/_authorizedRoutes/people/": {
       "filePath": "_authorizedRoutes/people/index.tsx",

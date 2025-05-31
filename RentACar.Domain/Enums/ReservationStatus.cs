@@ -2,10 +2,10 @@
 {
     public enum ReservationStatus
     {
-        Reserved = 1,
+        Pending = 1,
         Confirmed,
-        PickedUp,
-        Returned,
-        Canceled
+        Cancelled,
+        Completed,
+        NoShow
     }
 }

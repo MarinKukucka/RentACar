@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createFileRoute } from "@tanstack/react-router";
 import { Layout } from "antd";
 import VehiclesCarousel from "../components/vehicles/VehiclesCarousel";
@@ -9,7 +8,7 @@ export const Route = createFileRoute("/")({
     component: MainPage,
 });
 
-const { Content, Footer } = Layout;
+const { Content } = Layout;
 
 function MainPage() {
     return (
@@ -21,10 +20,6 @@ function MainPage() {
 
                 <LocationsShow />
             </Content>
-
-            <Footer style={{ textAlign: "center" }}>
-                Rent A Car ©2025 Created by Marin Kukučka
-            </Footer>
         </Layout>
     );
 }

@@ -11,7 +11,6 @@ function PublicHeaderMenu() {
     return (
         <Header
             style={{
-                position: "fixed",
                 zIndex: 1,
                 width: "100%",
                 display: "flex",

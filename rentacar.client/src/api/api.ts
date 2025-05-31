@@ -1031,6 +1031,69 @@ export class VehicleClient extends ApiClientBase {
         return Promise.resolve<SimpleVehicleDto[]>(null as any);
     }
 
+    getSearchResultVehicles(pickupLocationId: number | null | undefined, pickupDate: Date | null | undefined, dropOffDate: Date | null | undefined): Promise<VehicleDto[]> {
+        let url_ = this.baseUrl + "/api/Vehicle/searchResult?";
+        if (pickupLocationId !== undefined && pickupLocationId !== null)
+            url_ += "PickupLocationId=" + encodeURIComponent("" + pickupLocationId) + "&";
+        if (pickupDate !== undefined && pickupDate !== null)
+            url_ += "PickupDate=" + encodeURIComponent(pickupDate ? "" + pickupDate.toISOString() : "") + "&";
+        if (dropOffDate !== undefined && dropOffDate !== null)
+            url_ += "DropOffDate=" + encodeURIComponent(dropOffDate ? "" + dropOffDate.toISOString() : "") + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetSearchResultVehicles(_response));
+        });
+    }
+
+    protected processGetSearchResultVehicles(response: Response): Promise<VehicleDto[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 401) {
+            return response.text().then((_responseText) => {
+            let result401: any = null;
+            let resultData401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result401 = ProblemDetails.fromJS(resultData401);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result401);
+            });
+        } else if (status === 403) {
+            return response.text().then((_responseText) => {
+            let result403: any = null;
+            let resultData403 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result403 = ProblemDetails.fromJS(resultData403);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result403);
+            });
+        } else if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(VehicleDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<VehicleDto[]>(null as any);
+    }
+
     createVehicle(command: CreateVehicleCommand): Promise<void> {
         let url_ = this.baseUrl + "/api/Vehicle";
         url_ = url_.replace(/[?&]$/, "");
@@ -1732,7 +1795,7 @@ export class VehicleDto implements IVehicleDto {
     seats!: number;
     isAvailable!: boolean;
     price!: number;
-    model!: string;
+    model!: ModelDto | undefined;
     location!: string;
 
     constructor(data?: IVehicleDto) {
@@ -1758,7 +1821,7 @@ export class VehicleDto implements IVehicleDto {
             this.seats = _data["seats"];
             this.isAvailable = _data["isAvailable"];
             this.price = _data["price"];
-            this.model = _data["model"];
+            this.model = _data["model"] ? ModelDto.fromJS(_data["model"]) : <any>undefined;
             this.location = _data["location"];
         }
     }
@@ -1784,7 +1847,7 @@ export class VehicleDto implements IVehicleDto {
         data["seats"] = this.seats;
         data["isAvailable"] = this.isAvailable;
         data["price"] = this.price;
-        data["model"] = this.model;
+        data["model"] = this.model ? this.model.toJSON() : <any>undefined;
         data["location"] = this.location;
         return data;
     }
@@ -1803,7 +1866,7 @@ export interface IVehicleDto {
     seats: number;
     isAvailable: boolean;
     price: number;
-    model: string;
+    model: ModelDto | undefined;
     location: string;
 }
 
@@ -1826,6 +1889,54 @@ export enum FuelType {
     Electric = 3,
     Hybrid = 4,
     Gas = 5,
+}
+
+export class ModelDto implements IModelDto {
+    id!: number;
+    brandName!: string;
+    modelName!: string;
+    image!: string | undefined;
+
+    constructor(data?: IModelDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.brandName = _data["brandName"];
+            this.modelName = _data["modelName"];
+            this.image = _data["image"];
+        }
+    }
+
+    static fromJS(data: any): ModelDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ModelDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["brandName"] = this.brandName;
+        data["modelName"] = this.modelName;
+        data["image"] = this.image;
+        return data;
+    }
+}
+
+export interface IModelDto {
+    id: number;
+    brandName: string;
+    modelName: string;
+    image: string | undefined;
 }
 
 export class SimpleVehicleDto implements ISimpleVehicleDto {

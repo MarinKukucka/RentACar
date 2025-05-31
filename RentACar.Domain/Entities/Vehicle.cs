@@ -38,5 +38,8 @@ namespace RentACar.Domain.Entities
         public int? LocationId { get; set; }
 
         public virtual Location? Location { get; set; }
+
+        
+        public virtual List<Reservation>? Reservations { get; set; }
     }
 }
