@@ -9,6 +9,7 @@ import { useCallback } from "react";
 import * as v from "valibot";
 import { useNavigate } from "@tanstack/react-router";
 import { useFetchLocationOptions } from "../../api/locations/locations";
+import { CloseOutlined } from "@ant-design/icons";
 
 const SearchFilter = v.object({
     pickupLocationId: v.optional(v.number()),
@@ -18,7 +19,13 @@ const SearchFilter = v.object({
 
 export type SearchFilter = v.InferOutput<typeof SearchFilter>;
 
-function Search() {
+interface Props {
+    resultSearch?: boolean;
+    onClose?: () => void;
+    searchFilter?: SearchFilter;
+}
+
+function Search({ resultSearch, onClose, searchFilter }: Props) {
     const { t } = useTranslation();
     const navigate = useNavigate();
 
@@ -42,8 +49,10 @@ function Search() {
                     dropOffDate: dropOffDate,
                 },
             });
+
+            if (onClose) onClose();
         },
-        [navigate]
+        [navigate, onClose]
     );
 
     // #endregion
@@ -54,7 +63,14 @@ function Search() {
                 layout="inline"
                 onFinish={handleSubmitSearch}
                 style={{ width: "100%", justifyContent: "center" }}
+                initialValues={searchFilter}
             >
+                {resultSearch && (
+                    <CloseOutlined
+                        style={{ marginRight: 20 }}
+                        onClick={onClose}
+                    />
+                )}
                 <Form.Item
                     name="pickupLocationId"
                     rules={[

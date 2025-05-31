@@ -19,3 +19,13 @@ export const useFetchLocations = () => {
         },
     })
 }
+
+export const useFetchLocationByIdQuery = (id?: number) => {
+    return useQuery({
+        queryKey: ["location", id],
+        queryFn: async () => {
+            return await new LocationClient().getLocationById(id!);
+        },
+        enabled: !!id,
+    })
+}

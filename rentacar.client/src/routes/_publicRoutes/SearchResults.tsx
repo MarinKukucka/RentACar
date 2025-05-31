@@ -1,17 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createFileRoute } from "@tanstack/react-router";
-import { SearchFilter } from "../../components/search/Search";
+import Search, { SearchFilter } from "../../components/search/Search";
 import { useFetchSearchResultVehiclesQuery } from "../../api/vehicles/vehicles";
 import { Card, Col, Row } from "antd";
 import { Transmission, VehicleType } from "../../api/api";
 import { UserOutlined } from "@ant-design/icons";
 import { formatDate } from "../../helpers/FormatHelper";
+import { useCallback, useState } from "react";
+import { useFetchLocationByIdQuery } from "../../api/locations/locations";
 
 export const Route = createFileRoute("/_publicRoutes/SearchResults")({
     component: SearchResults,
 });
 
 function SearchResults() {
+    const [searchOpen, setSearchOpen] = useState<boolean>(false);
+
     const search: SearchFilter = Route.useSearch();
 
     const pickupDate = new Date(search.pickupDate as any);
@@ -24,19 +28,43 @@ function SearchResults() {
         dropOffDate
     );
 
+    const { data: location } = useFetchLocationByIdQuery(pickupLocationId);
+
+    // #region Callbacks
+
+    const handleOpenSearch = useCallback(() => {
+        setSearchOpen(true);
+    }, []);
+
+    // #endregion
+
     return (
         <>
             <div style={{ marginTop: 50 }}>
                 <Row justify="center">
                     <Col span={20}>
-                        <div
-                            style={{
-                                marginBottom: 20,
-                            }}
-                        >
-                            Zagreb <br />
-                            {formatDate(pickupDate)} - {formatDate(dropOffDate)}
-                        </div>
+                        {searchOpen ? (
+                            <Search
+                                resultSearch
+                                onClose={() => setSearchOpen(false)}
+                                searchFilter={{
+                                    pickupLocationId,
+                                    pickupDate,
+                                    dropOffDate,
+                                }}
+                            />
+                        ) : (
+                            <div
+                                style={{
+                                    marginBottom: 20,
+                                }}
+                                onClick={handleOpenSearch}
+                            >
+                                {location?.name} <br />
+                                {formatDate(pickupDate)} -{" "}
+                                {formatDate(dropOffDate)}
+                            </div>
+                        )}
                         <Row gutter={[24, 24]}>
                             {results?.map((vehicle, index) => (
                                 <Col key={index} span={8}>
@@ -49,6 +77,7 @@ function SearchResults() {
                                                 "0 8px 24px rgba(0, 0, 0, 0.08)",
                                             border: "none",
                                             background: "lightgrey",
+                                            padding: "10px",
                                         }}
                                         title={
                                             <div>
@@ -78,6 +107,7 @@ function SearchResults() {
                                                     height: "250px",
                                                     width: "100%",
                                                     objectFit: "cover",
+                                                    padding: 20,
                                                 }}
                                             />
                                         }

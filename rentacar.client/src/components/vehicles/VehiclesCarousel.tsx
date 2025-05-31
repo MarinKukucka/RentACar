@@ -29,14 +29,14 @@ function VehiclesCarousel() {
                                         md={6}
                                     >
                                         <Card
-                                            hoverable
                                             cover={
                                                 <img
                                                     src={`https://localhost:7159/${vehicle.image}`}
                                                     alt={vehicle.name}
                                                     style={{
-                                                        height: "210px",
+                                                        height: "250px",
                                                         objectFit: "cover",
+                                                        padding: 20,
                                                     }}
                                                 />
                                             }

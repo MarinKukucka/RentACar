@@ -17,7 +17,6 @@ function LocationsShow() {
                 {locations?.map((location) => (
                     <Col key={location.id} xs={24} sm={12} md={8} lg={6}>
                         <Card
-                            hoverable
                             cover={
                                 <img
                                     src={`${"https://localhost:7159"}/${location.image}`}

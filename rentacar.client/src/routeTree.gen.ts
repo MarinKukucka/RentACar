@@ -12,7 +12,7 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as AuthorizedRoutesImport } from './routes/_authorizedRoutes'
-import { Route as IndexImport } from './routes/index'
+import { Route as PublicRoutesIndexImport } from './routes/_publicRoutes/index'
 import { Route as PublicRoutesSearchResultsImport } from './routes/_publicRoutes/SearchResults'
 import { Route as AuthorizedRoutesProfileImport } from './routes/_authorizedRoutes/Profile'
 import { Route as AuthorizationLoginImport } from './routes/_authorization/Login'
@@ -26,8 +26,8 @@ const AuthorizedRoutesRoute = AuthorizedRoutesImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const IndexRoute = IndexImport.update({
-  id: '/',
+const PublicRoutesIndexRoute = PublicRoutesIndexImport.update({
+  id: '/_publicRoutes/',
   path: '/',
   getParentRoute: () => rootRoute,
 } as any)
@@ -68,13 +68,6 @@ const AuthorizedRoutesPeopleIndexRoute =
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexImport
-      parentRoute: typeof rootRoute
-    }
     '/_authorizedRoutes': {
       id: '/_authorizedRoutes'
       path: ''
@@ -101,6 +94,13 @@ declare module '@tanstack/react-router' {
       path: '/SearchResults'
       fullPath: '/SearchResults'
       preLoaderRoute: typeof PublicRoutesSearchResultsImport
+      parentRoute: typeof rootRoute
+    }
+    '/_publicRoutes/': {
+      id: '/_publicRoutes/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof PublicRoutesIndexImport
       parentRoute: typeof rootRoute
     }
     '/_authorizedRoutes/people/': {
@@ -138,32 +138,32 @@ const AuthorizedRoutesRouteWithChildren =
   AuthorizedRoutesRoute._addFileChildren(AuthorizedRoutesRouteChildren)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
   '': typeof AuthorizedRoutesRouteWithChildren
   '/Login': typeof AuthorizationLoginRoute
   '/Profile': typeof AuthorizedRoutesProfileRoute
   '/SearchResults': typeof PublicRoutesSearchResultsRoute
+  '/': typeof PublicRoutesIndexRoute
   '/people': typeof AuthorizedRoutesPeopleIndexRoute
   '/vehicles': typeof AuthorizedRoutesVehiclesIndexRoute
 }
 
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
   '': typeof AuthorizedRoutesRouteWithChildren
   '/Login': typeof AuthorizationLoginRoute
   '/Profile': typeof AuthorizedRoutesProfileRoute
   '/SearchResults': typeof PublicRoutesSearchResultsRoute
+  '/': typeof PublicRoutesIndexRoute
   '/people': typeof AuthorizedRoutesPeopleIndexRoute
   '/vehicles': typeof AuthorizedRoutesVehiclesIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
-  '/': typeof IndexRoute
   '/_authorizedRoutes': typeof AuthorizedRoutesRouteWithChildren
   '/_authorization/Login': typeof AuthorizationLoginRoute
   '/_authorizedRoutes/Profile': typeof AuthorizedRoutesProfileRoute
   '/_publicRoutes/SearchResults': typeof PublicRoutesSearchResultsRoute
+  '/_publicRoutes/': typeof PublicRoutesIndexRoute
   '/_authorizedRoutes/people/': typeof AuthorizedRoutesPeopleIndexRoute
   '/_authorizedRoutes/vehicles/': typeof AuthorizedRoutesVehiclesIndexRoute
 }
@@ -171,46 +171,46 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/'
     | ''
     | '/Login'
     | '/Profile'
     | '/SearchResults'
+    | '/'
     | '/people'
     | '/vehicles'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/'
     | ''
     | '/Login'
     | '/Profile'
     | '/SearchResults'
+    | '/'
     | '/people'
     | '/vehicles'
   id:
     | '__root__'
-    | '/'
     | '/_authorizedRoutes'
     | '/_authorization/Login'
     | '/_authorizedRoutes/Profile'
     | '/_publicRoutes/SearchResults'
+    | '/_publicRoutes/'
     | '/_authorizedRoutes/people/'
     | '/_authorizedRoutes/vehicles/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
   AuthorizedRoutesRoute: typeof AuthorizedRoutesRouteWithChildren
   AuthorizationLoginRoute: typeof AuthorizationLoginRoute
   PublicRoutesSearchResultsRoute: typeof PublicRoutesSearchResultsRoute
+  PublicRoutesIndexRoute: typeof PublicRoutesIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
   AuthorizedRoutesRoute: AuthorizedRoutesRouteWithChildren,
   AuthorizationLoginRoute: AuthorizationLoginRoute,
   PublicRoutesSearchResultsRoute: PublicRoutesSearchResultsRoute,
+  PublicRoutesIndexRoute: PublicRoutesIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -223,14 +223,11 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/",
         "/_authorizedRoutes",
         "/_authorization/Login",
-        "/_publicRoutes/SearchResults"
+        "/_publicRoutes/SearchResults",
+        "/_publicRoutes/"
       ]
-    },
-    "/": {
-      "filePath": "index.tsx"
     },
     "/_authorizedRoutes": {
       "filePath": "_authorizedRoutes.ts",
@@ -249,6 +246,9 @@ export const routeTree = rootRoute
     },
     "/_publicRoutes/SearchResults": {
       "filePath": "_publicRoutes/SearchResults.tsx"
+    },
+    "/_publicRoutes/": {
+      "filePath": "_publicRoutes/index.tsx"
     },
     "/_authorizedRoutes/people/": {
       "filePath": "_authorizedRoutes/people/index.tsx",
