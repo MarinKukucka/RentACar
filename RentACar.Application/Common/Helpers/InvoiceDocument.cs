@@ -57,9 +57,9 @@ namespace RentACar.Application.Common.Helpers
 
                 column.Item().Element(ComposeTable);
 
-                if(Model.Reservation != null && Model.Reservation.ExtraServices != null)
+                if(Model.Reservation != null)
                 {
-                    var totalPrice = Model.Reservation.ExtraServices.Sum(x => x.Price);
+                    var totalPrice = Model.Reservation.TotalPrice;
                     column.Item().PaddingRight(5).AlignRight().Text($"Grand total: {totalPrice:C}").SemiBold();
                 }
 
@@ -76,39 +76,58 @@ namespace RentACar.Application.Common.Helpers
             {
                 table.ColumnsDefinition(columns =>
                 {
-                    columns.ConstantColumn(25);
-                    columns.RelativeColumn(3);
-                    columns.RelativeColumn();
-                    columns.RelativeColumn();
-                    columns.RelativeColumn();
+                    columns.RelativeColumn(3);  // Service name
+                    columns.RelativeColumn();   // Unit price
+                    columns.RelativeColumn();   // Days
+                    columns.RelativeColumn();   // Total
                 });
 
+                // Table header
                 table.Header(header =>
                 {
-                    header.Cell().Text("#");
-                    header.Cell().Text("Product").Style(headerStyle);
-                    header.Cell().AlignRight().Text("Unit price").Style(headerStyle);
-                    header.Cell().AlignRight().Text("Quantity").Style(headerStyle);
+                    header.Cell().Text("Service").Style(headerStyle);
+                    header.Cell().AlignRight().Text("Unit Price").Style(headerStyle);
+                    header.Cell().AlignRight().Text("Days").Style(headerStyle);
                     header.Cell().AlignRight().Text("Total").Style(headerStyle);
 
-                    header.Cell().ColumnSpan(5).PaddingTop(5).BorderBottom(1).BorderColor(Colors.Black);
+                    header.Cell().ColumnSpan(4).PaddingTop(5).BorderBottom(1).BorderColor(Colors.Black);
                 });
 
-                if (Model.Reservation != null && Model.Reservation.ExtraServices != null)
+                if (Model.Reservation is not null)
                 {
-                    foreach (var item in Model.Reservation.ExtraServices)
+                    var reservation = Model.Reservation;
+                    var days = (reservation.EndDateTime - reservation.StartDateTime).Days;
+
+                    // 🚗 Vehicle row
+                    if (reservation.Vehicle != null && reservation.Vehicle.Model != null && reservation.Vehicle.Model.Brand != null)
                     {
-                        var index = Model.Reservation.ExtraServices.IndexOf(item) + 1;
+                        var vehicleName = $"{reservation.Vehicle.Model.Brand.Name} {reservation.Vehicle.Model.Name}";
+                        var vehiclePrice = reservation.Vehicle.Price;
 
-                        table.Cell().Element(CellStyle).Text($"{index}");
-                        table.Cell().Element(CellStyle).Text(item.Name);
-                        table.Cell().Element(CellStyle).AlignRight().Text($"{item.Price:C}");
+                        table.Cell().Element(CellStyle).Text(vehicleName);
+                        table.Cell().Element(CellStyle).AlignRight().Text($"{vehiclePrice:C}");
+                        table.Cell().Element(CellStyle).AlignRight().Text($"{days}");
+                        table.Cell().Element(CellStyle).AlignRight().Text($"{(vehiclePrice * days):C}");
+                    }
 
-                        static IContainer CellStyle(IContainer container) => container.BorderBottom(1).BorderColor(Colors.Grey.Lighten2).PaddingVertical(5);
+                    // 🛠️ Extra services
+                    if (reservation.ExtraServices != null)
+                    {
+                        foreach (var service in reservation.ExtraServices)
+                        {
+                            table.Cell().Element(CellStyle).Text(service.Name);
+                            table.Cell().Element(CellStyle).AlignRight().Text($"{service.Price:C}");
+                            table.Cell().Element(CellStyle).AlignRight().Text($"{days}");
+                            table.Cell().Element(CellStyle).AlignRight().Text($"{(service.Price * days):C}");
+                        }
                     }
                 }
+
+                static IContainer CellStyle(IContainer container) =>
+                    container.BorderBottom(1).BorderColor(Colors.Grey.Lighten2).PaddingVertical(5);
             });
         }
+
 
         void ComposeComments(IContainer container)
         {

@@ -1,5 +1,6 @@
 ﻿using Mediator;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using QuestPDF.Fluent;
 using QuestPDF.Infrastructure;
 using RentACar.Application.Common.Helpers;
@@ -44,9 +45,21 @@ namespace RentACar.Application.Payments.Commands.CreatePayment
 
             _context.Invoices.Add(invoice);
 
+            await _context.SaveChangesAsync(cancellationToken);
+
+            var invoiceModel = await _context.Invoices
+                .Include(i => i.Reservation)
+                    .ThenInclude(r => r!.ExtraServices)
+                .Include(i => i.Reservation)
+                    .ThenInclude(r => r!.Vehicle)
+                        .ThenInclude(v => v!.Model)
+                            .ThenInclude(m => m!.Brand)
+                .Where(i => i.Id == invoice.Id && i.Reservation != null && i.Reservation.Vehicle != null && i.Reservation.Vehicle.Model != null && i.Reservation.Vehicle.Model.Brand != null)
+                .FirstOrDefaultAsync(cancellationToken);
+
             QuestPDF.Settings.License = LicenseType.Community;
 
-            var document = new InvoiceDocument(invoice);
+            var document = new InvoiceDocument(invoiceModel!);
 
             var pdfBytes = document.GeneratePdf();
 
