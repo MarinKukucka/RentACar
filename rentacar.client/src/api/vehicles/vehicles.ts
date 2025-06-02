@@ -42,6 +42,16 @@ export const useFetchSearchResultVehiclesQuery = (pickupLocationId?: number, pic
     })
 }
 
+export const useFetchVehicleByIdQuery = (id?: number) => {
+    return useQuery({
+        queryKey: ['vehicle', id],
+        queryFn: async () => {
+            return await new VehicleClient().getVehicleById(id!);
+        },
+        enabled: !!id
+    })
+}
+
 export const useCreateVehicleMutation = () => {
     const queryClient = useQueryClient();
 

@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import Search, { SearchFilter } from "../../components/search/Search";
 import { useFetchSearchResultVehiclesQuery } from "../../api/vehicles/vehicles";
 import { Card, Col, Row } from "antd";
 import { Transmission, VehicleType } from "../../api/api";
 import { UserOutlined } from "@ant-design/icons";
 import { formatDate } from "../../helpers/FormatHelper";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useFetchLocationByIdQuery } from "../../api/locations/locations";
 
 export const Route = createFileRoute("/_publicRoutes/SearchResults")({
@@ -17,9 +17,14 @@ function SearchResults() {
     const [searchOpen, setSearchOpen] = useState<boolean>(false);
 
     const search: SearchFilter = Route.useSearch();
+    const navigate = useNavigate();
 
-    const pickupDate = new Date(search.pickupDate as any);
-    const dropOffDate = new Date(search.dropOffDate as any);
+    const pickupDate = useMemo(() => {
+        return new Date(search.pickupDate as any);
+    }, [search.pickupDate]);
+    const dropOffDate = useMemo(() => {
+        return new Date(search.dropOffDate as any);
+    }, [search.dropOffDate]);
     const pickupLocationId = search.pickupLocationId;
 
     const { data: results } = useFetchSearchResultVehiclesQuery(
@@ -35,6 +40,21 @@ function SearchResults() {
     const handleOpenSearch = useCallback(() => {
         setSearchOpen(true);
     }, []);
+
+    const handleChooseVehicle = useCallback(
+        (vehicleId: number) => {
+            navigate({
+                to: "/ExtraServices",
+                search: {
+                    pickupLocationId: pickupLocationId,
+                    pickupDate: pickupDate,
+                    dropOffDate: dropOffDate,
+                    vehicleId,
+                },
+            });
+        },
+        [dropOffDate, navigate, pickupDate, pickupLocationId]
+    );
 
     // #endregion
 
@@ -110,6 +130,9 @@ function SearchResults() {
                                                     padding: 20,
                                                 }}
                                             />
+                                        }
+                                        onClick={() =>
+                                            handleChooseVehicle(vehicle.id)
                                         }
                                     >
                                         <div

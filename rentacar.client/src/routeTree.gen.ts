@@ -14,6 +14,8 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as AuthorizedRoutesImport } from './routes/_authorizedRoutes'
 import { Route as PublicRoutesIndexImport } from './routes/_publicRoutes/index'
 import { Route as PublicRoutesSearchResultsImport } from './routes/_publicRoutes/SearchResults'
+import { Route as PublicRoutesPaymentImport } from './routes/_publicRoutes/Payment'
+import { Route as PublicRoutesExtraServicesImport } from './routes/_publicRoutes/ExtraServices'
 import { Route as AuthorizedRoutesProfileImport } from './routes/_authorizedRoutes/Profile'
 import { Route as AuthorizationLoginImport } from './routes/_authorization/Login'
 import { Route as AuthorizedRoutesVehiclesIndexImport } from './routes/_authorizedRoutes/vehicles/index'
@@ -35,6 +37,18 @@ const PublicRoutesIndexRoute = PublicRoutesIndexImport.update({
 const PublicRoutesSearchResultsRoute = PublicRoutesSearchResultsImport.update({
   id: '/_publicRoutes/SearchResults',
   path: '/SearchResults',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const PublicRoutesPaymentRoute = PublicRoutesPaymentImport.update({
+  id: '/_publicRoutes/Payment',
+  path: '/Payment',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const PublicRoutesExtraServicesRoute = PublicRoutesExtraServicesImport.update({
+  id: '/_publicRoutes/ExtraServices',
+  path: '/ExtraServices',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -89,6 +103,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthorizedRoutesProfileImport
       parentRoute: typeof AuthorizedRoutesImport
     }
+    '/_publicRoutes/ExtraServices': {
+      id: '/_publicRoutes/ExtraServices'
+      path: '/ExtraServices'
+      fullPath: '/ExtraServices'
+      preLoaderRoute: typeof PublicRoutesExtraServicesImport
+      parentRoute: typeof rootRoute
+    }
+    '/_publicRoutes/Payment': {
+      id: '/_publicRoutes/Payment'
+      path: '/Payment'
+      fullPath: '/Payment'
+      preLoaderRoute: typeof PublicRoutesPaymentImport
+      parentRoute: typeof rootRoute
+    }
     '/_publicRoutes/SearchResults': {
       id: '/_publicRoutes/SearchResults'
       path: '/SearchResults'
@@ -141,6 +169,8 @@ export interface FileRoutesByFullPath {
   '': typeof AuthorizedRoutesRouteWithChildren
   '/Login': typeof AuthorizationLoginRoute
   '/Profile': typeof AuthorizedRoutesProfileRoute
+  '/ExtraServices': typeof PublicRoutesExtraServicesRoute
+  '/Payment': typeof PublicRoutesPaymentRoute
   '/SearchResults': typeof PublicRoutesSearchResultsRoute
   '/': typeof PublicRoutesIndexRoute
   '/people': typeof AuthorizedRoutesPeopleIndexRoute
@@ -151,6 +181,8 @@ export interface FileRoutesByTo {
   '': typeof AuthorizedRoutesRouteWithChildren
   '/Login': typeof AuthorizationLoginRoute
   '/Profile': typeof AuthorizedRoutesProfileRoute
+  '/ExtraServices': typeof PublicRoutesExtraServicesRoute
+  '/Payment': typeof PublicRoutesPaymentRoute
   '/SearchResults': typeof PublicRoutesSearchResultsRoute
   '/': typeof PublicRoutesIndexRoute
   '/people': typeof AuthorizedRoutesPeopleIndexRoute
@@ -162,6 +194,8 @@ export interface FileRoutesById {
   '/_authorizedRoutes': typeof AuthorizedRoutesRouteWithChildren
   '/_authorization/Login': typeof AuthorizationLoginRoute
   '/_authorizedRoutes/Profile': typeof AuthorizedRoutesProfileRoute
+  '/_publicRoutes/ExtraServices': typeof PublicRoutesExtraServicesRoute
+  '/_publicRoutes/Payment': typeof PublicRoutesPaymentRoute
   '/_publicRoutes/SearchResults': typeof PublicRoutesSearchResultsRoute
   '/_publicRoutes/': typeof PublicRoutesIndexRoute
   '/_authorizedRoutes/people/': typeof AuthorizedRoutesPeopleIndexRoute
@@ -174,6 +208,8 @@ export interface FileRouteTypes {
     | ''
     | '/Login'
     | '/Profile'
+    | '/ExtraServices'
+    | '/Payment'
     | '/SearchResults'
     | '/'
     | '/people'
@@ -183,6 +219,8 @@ export interface FileRouteTypes {
     | ''
     | '/Login'
     | '/Profile'
+    | '/ExtraServices'
+    | '/Payment'
     | '/SearchResults'
     | '/'
     | '/people'
@@ -192,6 +230,8 @@ export interface FileRouteTypes {
     | '/_authorizedRoutes'
     | '/_authorization/Login'
     | '/_authorizedRoutes/Profile'
+    | '/_publicRoutes/ExtraServices'
+    | '/_publicRoutes/Payment'
     | '/_publicRoutes/SearchResults'
     | '/_publicRoutes/'
     | '/_authorizedRoutes/people/'
@@ -202,6 +242,8 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   AuthorizedRoutesRoute: typeof AuthorizedRoutesRouteWithChildren
   AuthorizationLoginRoute: typeof AuthorizationLoginRoute
+  PublicRoutesExtraServicesRoute: typeof PublicRoutesExtraServicesRoute
+  PublicRoutesPaymentRoute: typeof PublicRoutesPaymentRoute
   PublicRoutesSearchResultsRoute: typeof PublicRoutesSearchResultsRoute
   PublicRoutesIndexRoute: typeof PublicRoutesIndexRoute
 }
@@ -209,6 +251,8 @@ export interface RootRouteChildren {
 const rootRouteChildren: RootRouteChildren = {
   AuthorizedRoutesRoute: AuthorizedRoutesRouteWithChildren,
   AuthorizationLoginRoute: AuthorizationLoginRoute,
+  PublicRoutesExtraServicesRoute: PublicRoutesExtraServicesRoute,
+  PublicRoutesPaymentRoute: PublicRoutesPaymentRoute,
   PublicRoutesSearchResultsRoute: PublicRoutesSearchResultsRoute,
   PublicRoutesIndexRoute: PublicRoutesIndexRoute,
 }
@@ -225,6 +269,8 @@ export const routeTree = rootRoute
       "children": [
         "/_authorizedRoutes",
         "/_authorization/Login",
+        "/_publicRoutes/ExtraServices",
+        "/_publicRoutes/Payment",
         "/_publicRoutes/SearchResults",
         "/_publicRoutes/"
       ]
@@ -243,6 +289,12 @@ export const routeTree = rootRoute
     "/_authorizedRoutes/Profile": {
       "filePath": "_authorizedRoutes/Profile.tsx",
       "parent": "/_authorizedRoutes"
+    },
+    "/_publicRoutes/ExtraServices": {
+      "filePath": "_publicRoutes/ExtraServices.tsx"
+    },
+    "/_publicRoutes/Payment": {
+      "filePath": "_publicRoutes/Payment.tsx"
     },
     "/_publicRoutes/SearchResults": {
       "filePath": "_publicRoutes/SearchResults.tsx"

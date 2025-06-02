@@ -7,8 +7,6 @@ namespace RentACar.Domain.Entities
     {
         public required decimal Amount { get; set; }
 
-        public required PaymentType PaymentType { get; set; }
-
         public required DateTime CreatedAt { get; set; }
 
         public int StripePaymentIntentId { get; set; }

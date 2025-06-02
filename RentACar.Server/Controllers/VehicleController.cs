@@ -7,6 +7,8 @@ using RentACar.Application.Vehicles.Dtos;
 using RentACar.Application.Vehicles.Queries.GetPaginatedVehicles;
 using RentACar.Application.Vehicles.Queries.GetSearchResultVehicles;
 using RentACar.Application.Vehicles.Queries.GetSimpleVehicles;
+using RentACar.Application.Vehicles.Queries.GetVehicleById;
+using System.Diagnostics.Contracts;
 
 namespace RentACar.Server.Controllers
 {
@@ -32,6 +34,13 @@ namespace RentACar.Server.Controllers
         public async Task<List<VehicleDto>> GetSearchResultVehicles([FromQuery] GetSearchResultVehiclesQuery query)
         {
             return await mediator.Send(query);
+        }
+
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(VehicleDto), StatusCodes.Status200OK)]
+        public async Task<VehicleDto> GetVehicleById(int id)
+        {
+            return await mediator.Send(new GetVehicleByIdQuery(id));
         }
 
         [HttpPost]

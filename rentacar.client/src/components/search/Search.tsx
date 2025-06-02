@@ -15,6 +15,7 @@ const SearchFilter = v.object({
     pickupLocationId: v.optional(v.number()),
     pickupDate: v.optional(v.date()),
     dropOffDate: v.optional(v.date()),
+    vehicleId: v.optional(v.number()),
 });
 
 export type SearchFilter = v.InferOutput<typeof SearchFilter>;

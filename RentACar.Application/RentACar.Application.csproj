@@ -22,4 +22,8 @@
     <ProjectReference Include="..\RentACar.Domain\RentACar.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Payments\Commands\CreatePayment\" />
+  </ItemGroup>
+
 </Project>
