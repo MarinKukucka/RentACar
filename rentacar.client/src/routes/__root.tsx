@@ -1,4 +1,8 @@
-import { createRootRoute, Outlet } from "@tanstack/react-router";
+import {
+    createRootRoute,
+    Outlet,
+    useRouterState,
+} from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { isAuthenticated } from "../helpers/UserHelper";
 import AuthLayout from "../components/layout/auth/AuthLayout";
@@ -12,6 +16,10 @@ export const Route = createRootRoute({
 function RouteLayout() {
     const [isAuth, setIsAuth] = useState<boolean>(false);
 
+    const pathname = useRouterState({
+        select: (state) => state.location.pathname,
+    });
+
     useEffect(() => {
         isAuthenticated().then(setIsAuth);
         const onChange = () => isAuthenticated().then(setIsAuth);
@@ -20,6 +28,8 @@ function RouteLayout() {
     }, []);
 
     if (isAuth === undefined) return <Spin />;
+
+    if (pathname === "/Login") return <Outlet />;
 
     const Wrapper = isAuth ? AuthLayout : PublicLayout;
 
