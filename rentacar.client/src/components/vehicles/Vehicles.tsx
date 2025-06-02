@@ -17,7 +17,7 @@ import { DrawerSchema, SearchSortPaginationSchema } from "../../models/search";
 import { FuelType, Transmission, VehicleDto, VehicleType } from "../../api/api";
 import { TableParamsChange } from "../../helpers/SearchHelper";
 import { DrawerState } from "../../models/enums";
-import { getSearchFilter } from "../../helpers/FilterHelper";
+import { getCheckboxFilter, getSearchFilter } from "../../helpers/FilterHelper";
 import { defaultTablePagination, DRAWER_WIDTH } from "../../config/constants";
 import VehiclesForm from "./VehiclesForm";
 import {
@@ -27,6 +27,11 @@ import {
 import { Route } from "../../routes/_authorizedRoutes/vehicles/index";
 import { useTranslation } from "react-i18next";
 import translations from "../../config/localization/translations";
+import {
+    getFuelTypeOptions,
+    getTransmissionOptions,
+    getVehicleTypeOptions,
+} from "../../helpers/OptionsMappingHelper";
 
 const VehiclesFilter = v.intersect([
     SearchSortPaginationSchema,
@@ -59,6 +64,10 @@ function Vehicles() {
         useFetchPaginatedVehiclesQuery(search);
 
     const { mutateAsync: deleteVehicle } = useDeleteVehicleMutation();
+
+    const vehicleTypeOptions = getVehicleTypeOptions();
+    const transmissionOptions = getTransmissionOptions();
+    const fuelTypeOptions = getFuelTypeOptions();
 
     // #region Callbacks
 
@@ -170,7 +179,7 @@ function Vehicles() {
         {
             title: t(translations.vehicles.vehicleType),
             dataIndex: "vehicleType",
-            ...getSearchFilter(),
+            ...getCheckboxFilter(vehicleTypeOptions),
             filteredValue:
                 search.vehicleType !== undefined ? [search.vehicleType] : null,
             sorter: true,
@@ -179,7 +188,7 @@ function Vehicles() {
         {
             title: t(translations.vehicles.transmission),
             dataIndex: "transmission",
-            ...getSearchFilter(),
+            ...getCheckboxFilter(transmissionOptions),
             filteredValue:
                 search.transmission !== undefined
                     ? [search.transmission]
@@ -190,7 +199,7 @@ function Vehicles() {
         {
             title: t(translations.vehicles.fuelType),
             dataIndex: "fuelType",
-            ...getSearchFilter(),
+            ...getCheckboxFilter(fuelTypeOptions),
             filteredValue:
                 search.fuelType !== undefined ? [search.fuelType] : null,
             sorter: true,
