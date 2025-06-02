@@ -14,7 +14,12 @@ namespace RentACar.Domain.Entities
         [StringLength(50)]
         public string? PhoneNumber { get; set; }
 
+        [StringLength(100)]
+        public string? Email { get; set; }
+
         public bool IsActive { get; set; }
+
+        public bool IsCustomer { get; set; }
 
 
         public ApplicationUser? User { get; set; }

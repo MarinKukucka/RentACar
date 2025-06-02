@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useFetchExtraServicesQuery } from "../../api/extraServices/extraServices";
-import { Button, Card, Switch } from "antd";
+import { Button, Card, Form, Input, Switch } from "antd";
 import { SearchFilter } from "../../components/search/Search";
 import { useFetchVehicleByIdQuery } from "../../api/vehicles/vehicles";
 import { useCallback, useMemo, useState } from "react";
@@ -16,6 +16,8 @@ export const Route = createFileRoute("/_publicRoutes/ExtraServices")({
 function ExtraServices() {
     const [extraServicePrice, setExtraServicePrice] = useState<number>(0);
     const [selectedExtras, setSelectedExtras] = useState<number[]>([]);
+
+    const [form] = Form.useForm();
 
     const navigate = useNavigate();
     const search: SearchFilter = Route.useSearch();
@@ -62,38 +64,42 @@ function ExtraServices() {
     const handleBook = useCallback(async () => {
         if (!vehicle) return;
 
-        const price = (vehicle.price + extraServicePrice) * daysOfRent;
+        try {
+            const values = await form.validateFields();
 
-        const response = await createPaymentIntent({
-            amount: price,
-        } as PaymentRequest);
+            const price = (vehicle.price + extraServicePrice) * daysOfRent;
 
-        const command = {
-            startDateTime: pickupDate,
-            endDateTime: dropOffDate,
-            totalPrice: price,
-            vehicleId: search.vehicleId,
-            pickupLocationId: search.pickupLocationId,
-            reservationExtrasIds: selectedExtras,
-        } as CreateReservationCommand;
+            const response = await createPaymentIntent({
+                amount: price,
+            } as PaymentRequest);
 
-        console.log(command);
+            const reservationId = await createReservation({
+                startDateTime: pickupDate,
+                endDateTime: dropOffDate,
+                totalPrice: price,
+                vehicleId: search.vehicleId,
+                pickupLocationId: search.pickupLocationId,
+                reservationExtrasIds: selectedExtras,
+                ...values,
+            } as CreateReservationCommand);
 
-        const reservationId = await createReservation(command);
-
-        navigate({
-            to: "/Payment",
-            search: {
-                clientSecret: response.clientSecret,
-                reservationId,
-            },
-        });
+            navigate({
+                to: "/Payment",
+                search: {
+                    clientSecret: response.clientSecret,
+                    reservationId,
+                },
+            });
+        } catch (err) {
+            console.error("Form validation failed:", err);
+        }
     }, [
         createPaymentIntent,
         createReservation,
         daysOfRent,
         dropOffDate,
         extraServicePrice,
+        form,
         navigate,
         pickupDate,
         search.pickupLocationId,
@@ -116,6 +122,76 @@ function ExtraServices() {
             }}
         >
             <div>
+                <Card
+                    style={{
+                        marginBottom: 16,
+                        borderRadius: "12px",
+                        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.05)",
+                    }}
+                >
+                    <Form form={form} labelCol={{ span: 4 }}>
+                        <Form.Item
+                            label="First Name"
+                            name="firstName"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "Please enter your first name",
+                                },
+                            ]}
+                        >
+                            <Input />
+                        </Form.Item>
+
+                        <Form.Item
+                            label="Last Name"
+                            name="lastName"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "Please enter your last name",
+                                },
+                            ]}
+                        >
+                            <Input />
+                        </Form.Item>
+
+                        <Form.Item
+                            label="Phone Number"
+                            name="phoneNumber"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "Please enter your phone number",
+                                },
+                            ]}
+                        >
+                            <Input />
+                        </Form.Item>
+
+                        <Form.Item
+                            label="Email"
+                            name="email"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "Please enter your email",
+                                },
+                                {
+                                    type: "email",
+                                    message: "Invalid email format",
+                                },
+                            ]}
+                        >
+                            <Input />
+                        </Form.Item>
+
+                        <Form.Item label="Notes" name="notes">
+                            <Input.TextArea rows={5} />
+                        </Form.Item>
+                    </Form>
+                </Card>
+
                 <h2>Extra Services</h2>
                 {extraServices?.map((service) => (
                     <Card

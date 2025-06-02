@@ -22,6 +22,14 @@ namespace RentACar.Application.Reservations.Commands.CreateReservation
         public int PickupLocationId { get; set; }
 
         public List<int>? ReservationExtrasIds { get; set; }
+
+        public required string FirstName { get; set; }
+
+        public string? LastName { get; set; }
+
+        public string? PhoneNumber { get; set; }
+
+        public string? Email { get; set; }
     }
 
     public class CreateReservationCommandHandler(IApplicationDbContext _context) : IRequestHandler<CreateReservationCommand, int>
@@ -38,6 +46,30 @@ namespace RentACar.Application.Reservations.Commands.CreateReservation
                     .ToListAsync(cancellationToken);
 
                 reservation.ExtraServices = extraServices;
+            }
+
+            var person = await _context.People
+                .Where(p => p.FirstName == request.FirstName &&
+                            p.LastName == request.LastName &&
+                            p.Email == request.Email &&
+                            p.PhoneNumber == request.PhoneNumber &&
+                            p.IsCustomer == true)
+                .FirstOrDefaultAsync(cancellationToken);
+
+            if(person is not null)
+            {
+                reservation.Person = person;
+            }
+            else
+            {
+                reservation.Person = new Person
+                {
+                    FirstName = request.FirstName,
+                    LastName = request.LastName,
+                    Email = request.Email,
+                    PhoneNumber = request.PhoneNumber,
+                    IsCustomer = true
+                };
             }
 
             _context.Reservations.Add(reservation);

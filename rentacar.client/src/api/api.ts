@@ -1085,6 +1085,84 @@ export class ReservationClient extends ApiClientBase {
         this.baseUrl = this.getBaseUrl("", baseUrl);
     }
 
+    getPaginatedReservations(paginationFilter_Filter_StartDateTime: Date | undefined, paginationFilter_Filter_EndDateTime: Date | undefined, paginationFilter_Filter_Status: ReservationStatus | undefined, paginationFilter_CurrentPage: number | undefined, paginationFilter_PageSize: number | undefined, paginationFilter_SortBy: string | undefined, paginationFilter_SortOrder: string | undefined): Promise<PaginationResponseOfReservationDto> {
+        let url_ = this.baseUrl + "/api/Reservation?";
+        if (paginationFilter_Filter_StartDateTime === null)
+            throw new Error("The parameter 'paginationFilter_Filter_StartDateTime' cannot be null.");
+        else if (paginationFilter_Filter_StartDateTime !== undefined)
+            url_ += "PaginationFilter.Filter.StartDateTime=" + encodeURIComponent(paginationFilter_Filter_StartDateTime ? "" + paginationFilter_Filter_StartDateTime.toISOString() : "") + "&";
+        if (paginationFilter_Filter_EndDateTime === null)
+            throw new Error("The parameter 'paginationFilter_Filter_EndDateTime' cannot be null.");
+        else if (paginationFilter_Filter_EndDateTime !== undefined)
+            url_ += "PaginationFilter.Filter.EndDateTime=" + encodeURIComponent(paginationFilter_Filter_EndDateTime ? "" + paginationFilter_Filter_EndDateTime.toISOString() : "") + "&";
+        if (paginationFilter_Filter_Status === null)
+            throw new Error("The parameter 'paginationFilter_Filter_Status' cannot be null.");
+        else if (paginationFilter_Filter_Status !== undefined)
+            url_ += "PaginationFilter.Filter.Status=" + encodeURIComponent("" + paginationFilter_Filter_Status) + "&";
+        if (paginationFilter_CurrentPage === null)
+            throw new Error("The parameter 'paginationFilter_CurrentPage' cannot be null.");
+        else if (paginationFilter_CurrentPage !== undefined)
+            url_ += "PaginationFilter.CurrentPage=" + encodeURIComponent("" + paginationFilter_CurrentPage) + "&";
+        if (paginationFilter_PageSize === null)
+            throw new Error("The parameter 'paginationFilter_PageSize' cannot be null.");
+        else if (paginationFilter_PageSize !== undefined)
+            url_ += "PaginationFilter.PageSize=" + encodeURIComponent("" + paginationFilter_PageSize) + "&";
+        if (paginationFilter_SortBy === null)
+            throw new Error("The parameter 'paginationFilter_SortBy' cannot be null.");
+        else if (paginationFilter_SortBy !== undefined)
+            url_ += "PaginationFilter.SortBy=" + encodeURIComponent("" + paginationFilter_SortBy) + "&";
+        if (paginationFilter_SortOrder === null)
+            throw new Error("The parameter 'paginationFilter_SortOrder' cannot be null.");
+        else if (paginationFilter_SortOrder !== undefined)
+            url_ += "PaginationFilter.SortOrder=" + encodeURIComponent("" + paginationFilter_SortOrder) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetPaginatedReservations(_response));
+        });
+    }
+
+    protected processGetPaginatedReservations(response: Response): Promise<PaginationResponseOfReservationDto> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 401) {
+            return response.text().then((_responseText) => {
+            let result401: any = null;
+            let resultData401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result401 = ProblemDetails.fromJS(resultData401);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result401);
+            });
+        } else if (status === 403) {
+            return response.text().then((_responseText) => {
+            let result403: any = null;
+            let resultData403 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result403 = ProblemDetails.fromJS(resultData403);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result403);
+            });
+        } else if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PaginationResponseOfReservationDto.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<PaginationResponseOfReservationDto>(null as any);
+    }
+
     createReservation(command: CreateReservationCommand): Promise<number> {
         let url_ = this.baseUrl + "/api/Reservation";
         url_ = url_.replace(/[?&]$/, "");
@@ -2211,6 +2289,154 @@ export interface ICreateUserAndPersonCommand {
     role: string | undefined;
 }
 
+export class PaginationResponseOfReservationDto implements IPaginationResponseOfReservationDto {
+    items!: ReservationDto[];
+    currentPage!: number;
+    pageSize!: number;
+    totalPages!: number;
+    totalItems!: number;
+
+    constructor(data?: IPaginationResponseOfReservationDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(ReservationDto.fromJS(item));
+            }
+            this.currentPage = _data["currentPage"];
+            this.pageSize = _data["pageSize"];
+            this.totalPages = _data["totalPages"];
+            this.totalItems = _data["totalItems"];
+        }
+    }
+
+    static fromJS(data: any): PaginationResponseOfReservationDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PaginationResponseOfReservationDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : <any>undefined);
+        }
+        data["currentPage"] = this.currentPage;
+        data["pageSize"] = this.pageSize;
+        data["totalPages"] = this.totalPages;
+        data["totalItems"] = this.totalItems;
+        return data;
+    }
+}
+
+export interface IPaginationResponseOfReservationDto {
+    items: ReservationDto[];
+    currentPage: number;
+    pageSize: number;
+    totalPages: number;
+    totalItems: number;
+}
+
+export class ReservationDto implements IReservationDto {
+    id!: number;
+    startDateTime!: Date;
+    endDateTime!: Date;
+    status!: ReservationStatus;
+    confirmedAt!: Date | undefined;
+    cancelledAt!: Date | undefined;
+    totalPrice!: number;
+    notes!: string | undefined;
+    personName!: string;
+    extraServices!: string[] | undefined;
+
+    constructor(data?: IReservationDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.startDateTime = _data["startDateTime"] ? new Date(_data["startDateTime"].toString()) : <any>undefined;
+            this.endDateTime = _data["endDateTime"] ? new Date(_data["endDateTime"].toString()) : <any>undefined;
+            this.status = _data["status"];
+            this.confirmedAt = _data["confirmedAt"] ? new Date(_data["confirmedAt"].toString()) : <any>undefined;
+            this.cancelledAt = _data["cancelledAt"] ? new Date(_data["cancelledAt"].toString()) : <any>undefined;
+            this.totalPrice = _data["totalPrice"];
+            this.notes = _data["notes"];
+            this.personName = _data["personName"];
+            if (Array.isArray(_data["extraServices"])) {
+                this.extraServices = [] as any;
+                for (let item of _data["extraServices"])
+                    this.extraServices!.push(item);
+            }
+        }
+    }
+
+    static fromJS(data: any): ReservationDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ReservationDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["startDateTime"] = this.startDateTime ? this.startDateTime.toISOString() : <any>undefined;
+        data["endDateTime"] = this.endDateTime ? this.endDateTime.toISOString() : <any>undefined;
+        data["status"] = this.status;
+        data["confirmedAt"] = this.confirmedAt ? this.confirmedAt.toISOString() : <any>undefined;
+        data["cancelledAt"] = this.cancelledAt ? this.cancelledAt.toISOString() : <any>undefined;
+        data["totalPrice"] = this.totalPrice;
+        data["notes"] = this.notes;
+        data["personName"] = this.personName;
+        if (Array.isArray(this.extraServices)) {
+            data["extraServices"] = [];
+            for (let item of this.extraServices)
+                data["extraServices"].push(item);
+        }
+        return data;
+    }
+}
+
+export interface IReservationDto {
+    id: number;
+    startDateTime: Date;
+    endDateTime: Date;
+    status: ReservationStatus;
+    confirmedAt: Date | undefined;
+    cancelledAt: Date | undefined;
+    totalPrice: number;
+    notes: string | undefined;
+    personName: string;
+    extraServices: string[] | undefined;
+}
+
+export enum ReservationStatus {
+    Pending = 1,
+    Confirmed = 2,
+    Cancelled = 3,
+    Completed = 4,
+    NoShow = 5,
+}
+
 export class CreateReservationCommand implements ICreateReservationCommand {
     startDateTime!: Date;
     endDateTime!: Date;
@@ -2219,6 +2445,10 @@ export class CreateReservationCommand implements ICreateReservationCommand {
     vehicleId!: number;
     pickupLocationId!: number;
     reservationExtrasIds!: number[] | undefined;
+    firstName!: string;
+    lastName!: string | undefined;
+    phoneNumber!: string | undefined;
+    email!: string | undefined;
 
     constructor(data?: ICreateReservationCommand) {
         if (data) {
@@ -2242,6 +2472,10 @@ export class CreateReservationCommand implements ICreateReservationCommand {
                 for (let item of _data["reservationExtrasIds"])
                     this.reservationExtrasIds!.push(item);
             }
+            this.firstName = _data["firstName"];
+            this.lastName = _data["lastName"];
+            this.phoneNumber = _data["phoneNumber"];
+            this.email = _data["email"];
         }
     }
 
@@ -2265,6 +2499,10 @@ export class CreateReservationCommand implements ICreateReservationCommand {
             for (let item of this.reservationExtrasIds)
                 data["reservationExtrasIds"].push(item);
         }
+        data["firstName"] = this.firstName;
+        data["lastName"] = this.lastName;
+        data["phoneNumber"] = this.phoneNumber;
+        data["email"] = this.email;
         return data;
     }
 }
@@ -2277,6 +2515,10 @@ export interface ICreateReservationCommand {
     vehicleId: number;
     pickupLocationId: number;
     reservationExtrasIds: number[] | undefined;
+    firstName: string;
+    lastName: string | undefined;
+    phoneNumber: string | undefined;
+    email: string | undefined;
 }
 
 export class NoContent implements INoContent {
@@ -2361,14 +2603,6 @@ export interface IUpdateReservationCommand {
     status: ReservationStatus;
     confirmedAt: Date | undefined;
     cancelledAt: Date | undefined;
-}
-
-export enum ReservationStatus {
-    Pending = 1,
-    Confirmed = 2,
-    Cancelled = 3,
-    Completed = 4,
-    NoShow = 5,
 }
 
 export class PaginationResponseOfVehicleDto implements IPaginationResponseOfVehicleDto {

@@ -20,6 +20,7 @@ namespace RentACar.Application.People.Queries.GetPaginatedPeople
         {
             return await _context.People
                 .AsNoTrackingWithIdentityResolution()
+                .Where(p => !p.IsCustomer)
                 .Filter(request.PaginationFilter.Filter)
                 .Sort(request.PaginationFilter.SortBy, request.PaginationFilter.SortOrder)
                 .ProjectToType<PersonDto>()
