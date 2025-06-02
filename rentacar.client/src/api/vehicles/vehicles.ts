@@ -4,7 +4,7 @@ import { VehiclesFilter } from "../../components/vehicles/Vehicles";
 
 export const useFetchPaginatedVehiclesQuery = (request: VehiclesFilter) => {
     return useQuery({
-        queryKey: ['vehicles'],
+        queryKey: ['vehicles', JSON.stringify(request)],
         queryFn: async () => {
             return await new VehicleClient().getPaginatedVehicles(
                 request.vin,

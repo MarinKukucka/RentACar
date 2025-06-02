@@ -68,6 +68,18 @@ namespace RentACar.Application.Common.Extensions
                             source = source.Where(string.Format("({0}).Value == @0", propPredicate), propValueAsDateOnly);
                         }
                     }
+                    else if (propValue is DateTimeOffset propValueAsDateTimeOffset)
+                    {
+                        try
+                        {
+                            source = source.Where(string.Format("({0}).Date == @0", propPredicate), propValueAsDateTimeOffset.Date);
+                        }
+                        catch
+                        {
+                            source = source.Where(string.Format("({0}).Value.Date == @0", propPredicate), propValueAsDateTimeOffset.Date);
+                        }
+                    }
+
                 }
             }
 

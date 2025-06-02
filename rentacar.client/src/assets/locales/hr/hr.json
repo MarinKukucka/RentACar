@@ -76,6 +76,7 @@
         },
         "reservations": {
             "title": "Rezervacije",
+            "identificator": "Identifikator",
             "startDateTime": "Početak",
             "endDateTime": "Kraj",
             "status": "Status",

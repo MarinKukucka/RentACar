@@ -1,4 +1,4 @@
-import { FuelType, OptionsDto, Transmission, VehicleType } from "../api/api";
+import { FuelType, OptionsDto, ReservationStatus, Transmission, VehicleType } from "../api/api";
 import translations from "../config/localization/translations";
 
 export interface SelectOption {
@@ -37,6 +37,16 @@ export const getTransmissionOptions = () => {
 
 export const getFuelTypeOptions = () => {
     return Object.entries(FuelType)
+        .filter(([, value]) => typeof value === 'number')
+        .map(([key, value]) => ({
+            key: key,
+            label: key,
+            value: value,
+        }));
+};
+
+export const getReservationStatusOptions = () => {
+    return Object.entries(ReservationStatus)
         .filter(([, value]) => typeof value === 'number')
         .map(([key, value]) => ({
             key: key,

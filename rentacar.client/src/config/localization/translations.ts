@@ -75,6 +75,7 @@ const translations = {
     },
     reservations: {
         title: 'reservations.title',
+        identificator: 'reservations.identificator',
         startDateTime: 'reservations.startDateTime',
         endDateTime: 'reservations.endDateTime',
         status: 'reservations.status',

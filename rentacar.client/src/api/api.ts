@@ -1085,19 +1085,15 @@ export class ReservationClient extends ApiClientBase {
         this.baseUrl = this.getBaseUrl("", baseUrl);
     }
 
-    getPaginatedReservations(paginationFilter_Filter_StartDateTime: Date | undefined, paginationFilter_Filter_EndDateTime: Date | undefined, paginationFilter_Filter_Status: ReservationStatus | undefined, paginationFilter_CurrentPage: number | undefined, paginationFilter_PageSize: number | undefined, paginationFilter_SortBy: string | undefined, paginationFilter_SortOrder: string | undefined): Promise<PaginationResponseOfReservationDto> {
+    getPaginatedReservations(paginationFilter_Filter_Id: number | null | undefined, paginationFilter_Filter_StartDateTime: Date | null | undefined, paginationFilter_Filter_EndDateTime: Date | null | undefined, paginationFilter_Filter_Status: number | null | undefined, paginationFilter_CurrentPage: number | undefined, paginationFilter_PageSize: number | undefined, paginationFilter_SortBy: string | undefined, paginationFilter_SortOrder: string | undefined): Promise<PaginationResponseOfReservationDto> {
         let url_ = this.baseUrl + "/api/Reservation/paginated?";
-        if (paginationFilter_Filter_StartDateTime === null)
-            throw new Error("The parameter 'paginationFilter_Filter_StartDateTime' cannot be null.");
-        else if (paginationFilter_Filter_StartDateTime !== undefined)
+        if (paginationFilter_Filter_Id !== undefined && paginationFilter_Filter_Id !== null)
+            url_ += "PaginationFilter.Filter.Id=" + encodeURIComponent("" + paginationFilter_Filter_Id) + "&";
+        if (paginationFilter_Filter_StartDateTime !== undefined && paginationFilter_Filter_StartDateTime !== null)
             url_ += "PaginationFilter.Filter.StartDateTime=" + encodeURIComponent(paginationFilter_Filter_StartDateTime ? "" + paginationFilter_Filter_StartDateTime.toISOString() : "") + "&";
-        if (paginationFilter_Filter_EndDateTime === null)
-            throw new Error("The parameter 'paginationFilter_Filter_EndDateTime' cannot be null.");
-        else if (paginationFilter_Filter_EndDateTime !== undefined)
+        if (paginationFilter_Filter_EndDateTime !== undefined && paginationFilter_Filter_EndDateTime !== null)
             url_ += "PaginationFilter.Filter.EndDateTime=" + encodeURIComponent(paginationFilter_Filter_EndDateTime ? "" + paginationFilter_Filter_EndDateTime.toISOString() : "") + "&";
-        if (paginationFilter_Filter_Status === null)
-            throw new Error("The parameter 'paginationFilter_Filter_Status' cannot be null.");
-        else if (paginationFilter_Filter_Status !== undefined)
+        if (paginationFilter_Filter_Status !== undefined && paginationFilter_Filter_Status !== null)
             url_ += "PaginationFilter.Filter.Status=" + encodeURIComponent("" + paginationFilter_Filter_Status) + "&";
         if (paginationFilter_CurrentPage === null)
             throw new Error("The parameter 'paginationFilter_CurrentPage' cannot be null.");
@@ -1284,7 +1280,7 @@ export class VehicleClient extends ApiClientBase {
         this.baseUrl = this.getBaseUrl("", baseUrl);
     }
 
-    getPaginatedVehicles(paginationFilter_Filter_VIN: string | null | undefined, paginationFilter_Filter_LicensePlate: string | null | undefined, paginationFilter_Filter_Year: number | null | undefined, paginationFilter_Filter_Mileage: number | null | undefined, paginationFilter_Filter_VehicleType: VehicleType | null | undefined, paginationFilter_Filter_Transmission: Transmission | null | undefined, paginationFilter_Filter_FuelType: FuelType | null | undefined, paginationFilter_Filter_Price: number | undefined, paginationFilter_CurrentPage: number | undefined, paginationFilter_PageSize: number | undefined, paginationFilter_SortBy: string | undefined, paginationFilter_SortOrder: string | undefined): Promise<PaginationResponseOfVehicleDto> {
+    getPaginatedVehicles(paginationFilter_Filter_VIN: string | null | undefined, paginationFilter_Filter_LicensePlate: string | null | undefined, paginationFilter_Filter_Year: number | null | undefined, paginationFilter_Filter_Mileage: number | null | undefined, paginationFilter_Filter_VehicleType: number | null | undefined, paginationFilter_Filter_Transmission: number | null | undefined, paginationFilter_Filter_FuelType: number | null | undefined, paginationFilter_Filter_Price: number | null | undefined, paginationFilter_CurrentPage: number | undefined, paginationFilter_PageSize: number | undefined, paginationFilter_SortBy: string | undefined, paginationFilter_SortOrder: string | undefined): Promise<PaginationResponseOfVehicleDto> {
         let url_ = this.baseUrl + "/api/Vehicle/paginated?";
         if (paginationFilter_Filter_VIN !== undefined && paginationFilter_Filter_VIN !== null)
             url_ += "PaginationFilter.Filter.VIN=" + encodeURIComponent("" + paginationFilter_Filter_VIN) + "&";
@@ -1300,9 +1296,7 @@ export class VehicleClient extends ApiClientBase {
             url_ += "PaginationFilter.Filter.Transmission=" + encodeURIComponent("" + paginationFilter_Filter_Transmission) + "&";
         if (paginationFilter_Filter_FuelType !== undefined && paginationFilter_Filter_FuelType !== null)
             url_ += "PaginationFilter.Filter.FuelType=" + encodeURIComponent("" + paginationFilter_Filter_FuelType) + "&";
-        if (paginationFilter_Filter_Price === null)
-            throw new Error("The parameter 'paginationFilter_Filter_Price' cannot be null.");
-        else if (paginationFilter_Filter_Price !== undefined)
+        if (paginationFilter_Filter_Price !== undefined && paginationFilter_Filter_Price !== null)
             url_ += "PaginationFilter.Filter.Price=" + encodeURIComponent("" + paginationFilter_Filter_Price) + "&";
         if (paginationFilter_CurrentPage === null)
             throw new Error("The parameter 'paginationFilter_CurrentPage' cannot be null.");

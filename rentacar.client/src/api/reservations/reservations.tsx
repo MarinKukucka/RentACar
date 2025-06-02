@@ -10,9 +10,10 @@ export const useFetchPaginatedReservationsQuery = (
     request: ReservationsFilter
 ) => {
     return useQuery({
-        queryKey: ["reservations", request],
+        queryKey: ["reservations", JSON.stringify(request)],
         queryFn: async () => {
             return await new ReservationClient().getPaginatedReservations(
+                request.id,
                 request.startDateTime,
                 request.endDateTime,
                 request.status,
@@ -22,6 +23,7 @@ export const useFetchPaginatedReservationsQuery = (
                 request.sortOrder
             );
         },
+        staleTime: 5 * 60 * 1000,
     });
 };
 

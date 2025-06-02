@@ -76,6 +76,7 @@
         },
         "reservations": {
             "title": "Reservations",
+            "identificator": "Identificator",
             "startDateTime": "Start",
             "endDateTime": "End",
             "status": "Status",

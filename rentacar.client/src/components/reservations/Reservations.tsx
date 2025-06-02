@@ -11,14 +11,16 @@ import { FilterValue, SorterResult } from "antd/es/table/interface";
 import { ReservationDto, ReservationStatus } from "../../api/api";
 import { TableParamsChange } from "../../helpers/SearchHelper";
 import translations from "../../config/localization/translations";
-import { getSearchFilter } from "../../helpers/FilterHelper";
+import { getCheckboxFilter, getSearchFilter } from "../../helpers/FilterHelper";
 import { PageHeader } from "@ant-design/pro-layout";
 import { defaultTablePagination } from "../../config/constants";
 import { formatDate } from "../../helpers/FormatHelper";
+import { getReservationStatusOptions } from "../../helpers/OptionsMappingHelper";
 
 const ReservationsFilter = v.intersect([
     SearchSortPaginationSchema,
     v.object({
+        id: v.optional(v.number()),
         startDateTime: v.optional(v.date()),
         endDateTime: v.optional(v.date()),
         status: v.optional(v.number()),
@@ -35,10 +37,12 @@ function Reservations() {
     const { data: reservations, isLoading } =
         useFetchPaginatedReservationsQuery(search);
 
+    const reservationStatusOption = getReservationStatusOptions();
+
     // #region Callbacks
 
     const updateFilters = useCallback(
-        (name: keyof ReservationsFilter, value: unknown) => {
+        (name: keyof ReservationDto, value: unknown) => {
             navigate({ search: (prev: any) => ({ ...prev, [name]: value }) });
         },
         [navigate]
@@ -68,6 +72,12 @@ function Reservations() {
 
     const columns = [
         {
+            title: t(translations.reservations.identificator),
+            dataIndex: "id",
+            ...getSearchFilter(),
+            filteredValue: search.id !== undefined ? [search.id] : null,
+        },
+        {
             title: t(translations.reservations.startDateTime),
             dataIndex: "startDateTime",
             sorter: true,
@@ -82,7 +92,7 @@ function Reservations() {
         {
             title: t(translations.reservations.status),
             dataIndex: "status",
-            ...getSearchFilter(),
+            ...getCheckboxFilter(reservationStatusOption),
             filteredValue: search.status !== undefined ? [search.status] : null,
             sorter: true,
             render: (value: number) => ReservationStatus[value],

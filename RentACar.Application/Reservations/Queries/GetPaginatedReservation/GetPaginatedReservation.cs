@@ -4,11 +4,10 @@ using RentACar.Application.Common.Extensions;
 using RentACar.Application.Common.Interfaces;
 using RentACar.Application.Common.Models.Pagination;
 using RentACar.Application.Reservations.Dtos;
-using RentACar.Domain.Enums;
 
 namespace RentACar.Application.Reservations.Queries.GetPaginatedReservation
 {
-    public record ReservationsFilter(DateTime StartDateTime, DateTime EndDateTime, ReservationStatus Status);
+    public record ReservationsFilter(int? Id, DateTime? StartDateTime, DateTime? EndDateTime, int? Status);
 
     public record GetPaginatedReservationQuery : IRequest<PaginationResponse<ReservationDto>>
     {
@@ -38,7 +37,8 @@ namespace RentACar.Application.Reservations.Queries.GetPaginatedReservation
                     Notes = r.Notes,
                     PersonName = r.Person!.FirstName + " " + r.Person.LastName,
                     ExtraServices = r.ExtraServices != null ? r.ExtraServices.Select(es => es.Name).ToList() : null
-                })
+                }) 
+                .AsSplitQuery()
                 .PaginatedListAsync(request.PaginationFilter.CurrentPage, request.PaginationFilter.PageSize);
         }
     }
