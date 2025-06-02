@@ -11,6 +11,10 @@ function CheckoutForm() {
     const elements = useElements();
     const [loading, setLoading] = useState(false);
 
+    const reservationId = new URLSearchParams(window.location.search).get(
+        "reservationId"
+    );
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!stripe || !elements) return;
@@ -20,11 +24,11 @@ function CheckoutForm() {
         const { error } = await stripe.confirmPayment({
             elements,
             confirmParams: {
-                return_url: window.location.origin + "/success",
+                return_url: `${window.location.origin}/Success?reservationId=${reservationId}`,
             },
         });
 
-        if (error) {
+        if (error || !reservationId) {
             console.error("GREŠKAAAAAA");
             console.error(error.message);
         }

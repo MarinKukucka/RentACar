@@ -34,8 +34,8 @@ namespace RentACar.Application.Vehicles.Queries.GetSearchResultVehicles
                     v.LocationId == request.PickupLocationId
                     &&
                     !v.Reservations!.Any(r =>
-                        r.StartDateTime < DateOnly.FromDateTime(dropOffDate!.Value)
-                        && r.EndDateTime > DateOnly.FromDateTime(pickupDate!.Value)
+                        r.StartDateTime < dropOffDate!.Value
+                        && r.EndDateTime > pickupDate!.Value
                     )
                     &&
                     v.Location != null

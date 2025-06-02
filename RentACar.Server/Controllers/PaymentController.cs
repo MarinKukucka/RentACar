@@ -11,7 +11,7 @@ namespace RentACar.Server.Controllers
         {
             var options = new PaymentIntentCreateOptions
             {
-                Amount = request.Amount,
+                Amount = (long?)(request.Amount * 100),
                 Currency = "eur",
                 AutomaticPaymentMethods = new PaymentIntentAutomaticPaymentMethodsOptions
                 {
@@ -30,7 +30,7 @@ namespace RentACar.Server.Controllers
 
     public class PaymentRequest
     {
-        public long Amount { get; set; }
+        public decimal Amount { get; set; }
     }
 
     public class PaymentResponse

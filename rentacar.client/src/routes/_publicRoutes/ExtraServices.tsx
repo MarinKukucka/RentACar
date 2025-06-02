@@ -6,7 +6,8 @@ import { SearchFilter } from "../../components/search/Search";
 import { useFetchVehicleByIdQuery } from "../../api/vehicles/vehicles";
 import { useCallback, useMemo, useState } from "react";
 import { useCreatePaymentIntentMutation } from "../../api/payments/payments";
-import { PaymentRequest } from "../../api/api";
+import { CreateReservationCommand, PaymentRequest } from "../../api/api";
+import { useCreateReservationMutation } from "../../api/reservations/reservations";
 
 export const Route = createFileRoute("/_publicRoutes/ExtraServices")({
     component: ExtraServices,
@@ -14,6 +15,7 @@ export const Route = createFileRoute("/_publicRoutes/ExtraServices")({
 
 function ExtraServices() {
     const [extraServicePrice, setExtraServicePrice] = useState<number>(0);
+    const [selectedExtras, setSelectedExtras] = useState<number[]>([]);
 
     const navigate = useNavigate();
     const search: SearchFilter = Route.useSearch();
@@ -23,6 +25,7 @@ function ExtraServices() {
 
     const { mutateAsync: createPaymentIntent } =
         useCreatePaymentIntentMutation();
+    const { mutateAsync: createReservation } = useCreateReservationMutation();
 
     const pickupDate = useMemo(() => {
         return new Date(search.pickupDate as any);
@@ -34,17 +37,24 @@ function ExtraServices() {
     const daysOfRent = useMemo(() => {
         return (
             (dropOffDate.getTime() - pickupDate.getTime()) /
-            (1000 * 60 * 60 * 24)
+                (1000 * 60 * 60 * 24) +
+            1
         );
     }, [dropOffDate, pickupDate]);
 
     // #region Callbacks
 
     const handleToggleExtraService = useCallback(
-        (checked: boolean, price: number) => {
-            setExtraServicePrice((prev) => {
-                return checked ? prev + price : prev - price;
-            });
+        (checked: boolean, serviceId: number, price: number) => {
+            setExtraServicePrice((prev) =>
+                checked ? prev + price : prev - price
+            );
+
+            setSelectedExtras((prev) =>
+                checked
+                    ? [...prev, serviceId]
+                    : prev.filter((id) => id !== serviceId)
+            );
         },
         []
     );
@@ -52,17 +62,45 @@ function ExtraServices() {
     const handleBook = useCallback(async () => {
         if (!vehicle) return;
 
+        const price = (vehicle.price + extraServicePrice) * daysOfRent;
+
         const response = await createPaymentIntent({
-            amount: (vehicle.price + extraServicePrice) * daysOfRent,
+            amount: price,
         } as PaymentRequest);
+
+        const command = {
+            startDateTime: pickupDate,
+            endDateTime: dropOffDate,
+            totalPrice: price,
+            vehicleId: search.vehicleId,
+            pickupLocationId: search.pickupLocationId,
+            reservationExtrasIds: selectedExtras,
+        } as CreateReservationCommand;
+
+        console.log(command);
+
+        const reservationId = await createReservation(command);
 
         navigate({
             to: "/Payment",
             search: {
                 clientSecret: response.clientSecret,
+                reservationId,
             },
         });
-    }, [createPaymentIntent, daysOfRent, extraServicePrice, navigate, vehicle]);
+    }, [
+        createPaymentIntent,
+        createReservation,
+        daysOfRent,
+        dropOffDate,
+        extraServicePrice,
+        navigate,
+        pickupDate,
+        search.pickupLocationId,
+        search.vehicleId,
+        selectedExtras,
+        vehicle,
+    ]);
 
     // #endregion
 
@@ -79,9 +117,9 @@ function ExtraServices() {
         >
             <div>
                 <h2>Extra Services</h2>
-                {extraServices?.map((service, index) => (
+                {extraServices?.map((service) => (
                     <Card
-                        key={index}
+                        key={service.id}
                         title={
                             <b
                                 style={{
@@ -91,9 +129,11 @@ function ExtraServices() {
                             >
                                 {service.name}
                                 <Switch
+                                    key={service.id}
                                     onChange={(checked) =>
                                         handleToggleExtraService(
                                             checked,
+                                            service.id,
                                             service.price
                                         )
                                     }

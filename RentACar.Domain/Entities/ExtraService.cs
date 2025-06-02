@@ -12,5 +12,7 @@ namespace RentACar.Domain.Entities
         public required string Description { get; set; }
 
         public required decimal Price { get; set; }
+
+        public virtual List<Reservation>? Reservations { get; set; }
     }
 }

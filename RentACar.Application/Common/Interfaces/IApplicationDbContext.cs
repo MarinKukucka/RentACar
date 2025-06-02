@@ -25,8 +25,6 @@ namespace RentACar.Application.Common.Interfaces
 
         DbSet<ExtraService> ExtraServices { get; }
 
-        DbSet<ReservationExtras> ReservationExtras { get; }
-
         DbSet<ReservationPhoto> ReservationPhotos { get; }
 
         DbSet<Rental> Rentals { get; }

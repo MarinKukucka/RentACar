@@ -1074,6 +1074,127 @@ export class PersonClient extends ApiClientBase {
     }
 }
 
+export class ReservationClient extends ApiClientBase {
+    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        super();
+        this.http = http ? http : window as any;
+        this.baseUrl = this.getBaseUrl("", baseUrl);
+    }
+
+    createReservation(command: CreateReservationCommand): Promise<number> {
+        let url_ = this.baseUrl + "/api/Reservation";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processCreateReservation(_response));
+        });
+    }
+
+    protected processCreateReservation(response: Response): Promise<number> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 401) {
+            return response.text().then((_responseText) => {
+            let result401: any = null;
+            let resultData401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result401 = ProblemDetails.fromJS(resultData401);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result401);
+            });
+        } else if (status === 403) {
+            return response.text().then((_responseText) => {
+            let result403: any = null;
+            let resultData403 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result403 = ProblemDetails.fromJS(resultData403);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result403);
+            });
+        } else if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<number>(null as any);
+    }
+
+    updateReservation(command: UpdateReservationCommand): Promise<NoContent> {
+        let url_ = this.baseUrl + "/api/Reservation";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processUpdateReservation(_response));
+        });
+    }
+
+    protected processUpdateReservation(response: Response): Promise<NoContent> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 401) {
+            return response.text().then((_responseText) => {
+            let result401: any = null;
+            let resultData401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result401 = ProblemDetails.fromJS(resultData401);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result401);
+            });
+        } else if (status === 403) {
+            return response.text().then((_responseText) => {
+            let result403: any = null;
+            let resultData403 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result403 = ProblemDetails.fromJS(resultData403);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result403);
+            });
+        } else if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = NoContent.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<NoContent>(null as any);
+    }
+}
+
 export class VehicleClient extends ApiClientBase {
     private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
@@ -2088,6 +2209,166 @@ export interface ICreateUserAndPersonCommand {
     email: string | undefined;
     password: string | undefined;
     role: string | undefined;
+}
+
+export class CreateReservationCommand implements ICreateReservationCommand {
+    startDateTime!: Date;
+    endDateTime!: Date;
+    totalPrice!: number;
+    notes!: string | undefined;
+    vehicleId!: number;
+    pickupLocationId!: number;
+    reservationExtrasIds!: number[] | undefined;
+
+    constructor(data?: ICreateReservationCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.startDateTime = _data["startDateTime"] ? new Date(_data["startDateTime"].toString()) : <any>undefined;
+            this.endDateTime = _data["endDateTime"] ? new Date(_data["endDateTime"].toString()) : <any>undefined;
+            this.totalPrice = _data["totalPrice"];
+            this.notes = _data["notes"];
+            this.vehicleId = _data["vehicleId"];
+            this.pickupLocationId = _data["pickupLocationId"];
+            if (Array.isArray(_data["reservationExtrasIds"])) {
+                this.reservationExtrasIds = [] as any;
+                for (let item of _data["reservationExtrasIds"])
+                    this.reservationExtrasIds!.push(item);
+            }
+        }
+    }
+
+    static fromJS(data: any): CreateReservationCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateReservationCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["startDateTime"] = this.startDateTime ? this.startDateTime.toISOString() : <any>undefined;
+        data["endDateTime"] = this.endDateTime ? this.endDateTime.toISOString() : <any>undefined;
+        data["totalPrice"] = this.totalPrice;
+        data["notes"] = this.notes;
+        data["vehicleId"] = this.vehicleId;
+        data["pickupLocationId"] = this.pickupLocationId;
+        if (Array.isArray(this.reservationExtrasIds)) {
+            data["reservationExtrasIds"] = [];
+            for (let item of this.reservationExtrasIds)
+                data["reservationExtrasIds"].push(item);
+        }
+        return data;
+    }
+}
+
+export interface ICreateReservationCommand {
+    startDateTime: Date;
+    endDateTime: Date;
+    totalPrice: number;
+    notes: string | undefined;
+    vehicleId: number;
+    pickupLocationId: number;
+    reservationExtrasIds: number[] | undefined;
+}
+
+export class NoContent implements INoContent {
+    statusCode!: number;
+
+    constructor(data?: INoContent) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.statusCode = _data["statusCode"];
+        }
+    }
+
+    static fromJS(data: any): NoContent {
+        data = typeof data === 'object' ? data : {};
+        let result = new NoContent();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["statusCode"] = this.statusCode;
+        return data;
+    }
+}
+
+export interface INoContent {
+    statusCode: number;
+}
+
+export class UpdateReservationCommand implements IUpdateReservationCommand {
+    id!: number;
+    status!: ReservationStatus;
+    confirmedAt!: Date | undefined;
+    cancelledAt!: Date | undefined;
+
+    constructor(data?: IUpdateReservationCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.status = _data["status"];
+            this.confirmedAt = _data["confirmedAt"] ? new Date(_data["confirmedAt"].toString()) : <any>undefined;
+            this.cancelledAt = _data["cancelledAt"] ? new Date(_data["cancelledAt"].toString()) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): UpdateReservationCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdateReservationCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["status"] = this.status;
+        data["confirmedAt"] = this.confirmedAt ? this.confirmedAt.toISOString() : <any>undefined;
+        data["cancelledAt"] = this.cancelledAt ? this.cancelledAt.toISOString() : <any>undefined;
+        return data;
+    }
+}
+
+export interface IUpdateReservationCommand {
+    id: number;
+    status: ReservationStatus;
+    confirmedAt: Date | undefined;
+    cancelledAt: Date | undefined;
+}
+
+export enum ReservationStatus {
+    Pending = 1,
+    Confirmed = 2,
+    Cancelled = 3,
+    Completed = 4,
+    NoShow = 5,
 }
 
 export class PaginationResponseOfVehicleDto implements IPaginationResponseOfVehicleDto {

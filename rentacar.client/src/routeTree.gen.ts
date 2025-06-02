@@ -13,6 +13,7 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as AuthorizedRoutesImport } from './routes/_authorizedRoutes'
 import { Route as PublicRoutesIndexImport } from './routes/_publicRoutes/index'
+import { Route as PublicRoutesSuccessImport } from './routes/_publicRoutes/Success'
 import { Route as PublicRoutesSearchResultsImport } from './routes/_publicRoutes/SearchResults'
 import { Route as PublicRoutesPaymentImport } from './routes/_publicRoutes/Payment'
 import { Route as PublicRoutesExtraServicesImport } from './routes/_publicRoutes/ExtraServices'
@@ -31,6 +32,12 @@ const AuthorizedRoutesRoute = AuthorizedRoutesImport.update({
 const PublicRoutesIndexRoute = PublicRoutesIndexImport.update({
   id: '/_publicRoutes/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const PublicRoutesSuccessRoute = PublicRoutesSuccessImport.update({
+  id: '/_publicRoutes/Success',
+  path: '/Success',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -124,6 +131,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicRoutesSearchResultsImport
       parentRoute: typeof rootRoute
     }
+    '/_publicRoutes/Success': {
+      id: '/_publicRoutes/Success'
+      path: '/Success'
+      fullPath: '/Success'
+      preLoaderRoute: typeof PublicRoutesSuccessImport
+      parentRoute: typeof rootRoute
+    }
     '/_publicRoutes/': {
       id: '/_publicRoutes/'
       path: '/'
@@ -172,6 +186,7 @@ export interface FileRoutesByFullPath {
   '/ExtraServices': typeof PublicRoutesExtraServicesRoute
   '/Payment': typeof PublicRoutesPaymentRoute
   '/SearchResults': typeof PublicRoutesSearchResultsRoute
+  '/Success': typeof PublicRoutesSuccessRoute
   '/': typeof PublicRoutesIndexRoute
   '/people': typeof AuthorizedRoutesPeopleIndexRoute
   '/vehicles': typeof AuthorizedRoutesVehiclesIndexRoute
@@ -184,6 +199,7 @@ export interface FileRoutesByTo {
   '/ExtraServices': typeof PublicRoutesExtraServicesRoute
   '/Payment': typeof PublicRoutesPaymentRoute
   '/SearchResults': typeof PublicRoutesSearchResultsRoute
+  '/Success': typeof PublicRoutesSuccessRoute
   '/': typeof PublicRoutesIndexRoute
   '/people': typeof AuthorizedRoutesPeopleIndexRoute
   '/vehicles': typeof AuthorizedRoutesVehiclesIndexRoute
@@ -197,6 +213,7 @@ export interface FileRoutesById {
   '/_publicRoutes/ExtraServices': typeof PublicRoutesExtraServicesRoute
   '/_publicRoutes/Payment': typeof PublicRoutesPaymentRoute
   '/_publicRoutes/SearchResults': typeof PublicRoutesSearchResultsRoute
+  '/_publicRoutes/Success': typeof PublicRoutesSuccessRoute
   '/_publicRoutes/': typeof PublicRoutesIndexRoute
   '/_authorizedRoutes/people/': typeof AuthorizedRoutesPeopleIndexRoute
   '/_authorizedRoutes/vehicles/': typeof AuthorizedRoutesVehiclesIndexRoute
@@ -211,6 +228,7 @@ export interface FileRouteTypes {
     | '/ExtraServices'
     | '/Payment'
     | '/SearchResults'
+    | '/Success'
     | '/'
     | '/people'
     | '/vehicles'
@@ -222,6 +240,7 @@ export interface FileRouteTypes {
     | '/ExtraServices'
     | '/Payment'
     | '/SearchResults'
+    | '/Success'
     | '/'
     | '/people'
     | '/vehicles'
@@ -233,6 +252,7 @@ export interface FileRouteTypes {
     | '/_publicRoutes/ExtraServices'
     | '/_publicRoutes/Payment'
     | '/_publicRoutes/SearchResults'
+    | '/_publicRoutes/Success'
     | '/_publicRoutes/'
     | '/_authorizedRoutes/people/'
     | '/_authorizedRoutes/vehicles/'
@@ -245,6 +265,7 @@ export interface RootRouteChildren {
   PublicRoutesExtraServicesRoute: typeof PublicRoutesExtraServicesRoute
   PublicRoutesPaymentRoute: typeof PublicRoutesPaymentRoute
   PublicRoutesSearchResultsRoute: typeof PublicRoutesSearchResultsRoute
+  PublicRoutesSuccessRoute: typeof PublicRoutesSuccessRoute
   PublicRoutesIndexRoute: typeof PublicRoutesIndexRoute
 }
 
@@ -254,6 +275,7 @@ const rootRouteChildren: RootRouteChildren = {
   PublicRoutesExtraServicesRoute: PublicRoutesExtraServicesRoute,
   PublicRoutesPaymentRoute: PublicRoutesPaymentRoute,
   PublicRoutesSearchResultsRoute: PublicRoutesSearchResultsRoute,
+  PublicRoutesSuccessRoute: PublicRoutesSuccessRoute,
   PublicRoutesIndexRoute: PublicRoutesIndexRoute,
 }
 
@@ -272,6 +294,7 @@ export const routeTree = rootRoute
         "/_publicRoutes/ExtraServices",
         "/_publicRoutes/Payment",
         "/_publicRoutes/SearchResults",
+        "/_publicRoutes/Success",
         "/_publicRoutes/"
       ]
     },
@@ -298,6 +321,9 @@ export const routeTree = rootRoute
     },
     "/_publicRoutes/SearchResults": {
       "filePath": "_publicRoutes/SearchResults.tsx"
+    },
+    "/_publicRoutes/Success": {
+      "filePath": "_publicRoutes/Success.tsx"
     },
     "/_publicRoutes/": {
       "filePath": "_publicRoutes/index.tsx"

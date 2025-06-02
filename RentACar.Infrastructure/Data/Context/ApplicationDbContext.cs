@@ -36,8 +36,6 @@ namespace RentACar.Infrastructure.Data.Context
 
         public DbSet<ExtraService> ExtraServices => Set<ExtraService>();
 
-        public DbSet<ReservationExtras> ReservationExtras => Set<ReservationExtras>();
-
         public DbSet<ReservationPhoto> ReservationPhotos => Set<ReservationPhoto>();
 
         public DbSet<Rental> Rentals => Set<Rental>();

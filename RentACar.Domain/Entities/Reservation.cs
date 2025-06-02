@@ -6,9 +6,9 @@ namespace RentACar.Domain.Entities
 {
     public class Reservation : BaseEntity
     {
-        public required DateOnly StartDateTime { get; set; }
+        public required DateTime StartDateTime { get; set; }
 
-        public required DateOnly EndDateTime { get; set; }
+        public required DateTime EndDateTime { get; set; }
 
         public required ReservationStatus Status { get; set; }
 
@@ -37,5 +37,7 @@ namespace RentACar.Domain.Entities
         public int? ReturnLocationId { get; set; }
 
         public Location? ReturnLocation { get; set; }
+
+        public virtual List<ExtraService>? ExtraServices { get; set; }
     }
 }
