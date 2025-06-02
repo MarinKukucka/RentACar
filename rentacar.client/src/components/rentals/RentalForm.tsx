@@ -49,11 +49,7 @@ function RentalForm({ onClose, onSuccess, reservationId }: Props) {
                 <InputNumber addonAfter={"km"} />
             </Form.Item>
 
-            <Form.Item
-                name="notes"
-                label={t(translations.rentals.notes)}
-                rules={[{ required: true }]}
-            >
+            <Form.Item name="notes" label={t(translations.rentals.notes)}>
                 <Input.TextArea rows={5} />
             </Form.Item>
 
