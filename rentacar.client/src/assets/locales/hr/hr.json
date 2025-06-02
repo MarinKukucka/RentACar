@@ -82,7 +82,13 @@
             "status": "Status",
             "totalPrice": "Ukupna cijena",
             "personName": "Rezervirano za",
-            "extraServices": "Dodatne opcije"
+            "extraServices": "Dodatne opcije",
+            "createRental": "Napravi rental"
+        },
+        "rentals": {
+            "pickupDateTime": "Vrijeme podizanja vozila",
+            "odometerStart": "Trenutna kilomteraža",
+            "notes": "Bilješke"
         },
         "locations": {
             "ourLocations": "Naše lokacije"

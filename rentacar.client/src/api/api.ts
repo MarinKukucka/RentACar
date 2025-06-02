@@ -1074,6 +1074,72 @@ export class PersonClient extends ApiClientBase {
     }
 }
 
+export class RentalClient extends ApiClientBase {
+    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        super();
+        this.http = http ? http : window as any;
+        this.baseUrl = this.getBaseUrl("", baseUrl);
+    }
+
+    createRental(command: CreateRentalCommand): Promise<NoContent> {
+        let url_ = this.baseUrl + "/api/Rental";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processCreateRental(_response));
+        });
+    }
+
+    protected processCreateRental(response: Response): Promise<NoContent> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 401) {
+            return response.text().then((_responseText) => {
+            let result401: any = null;
+            let resultData401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result401 = ProblemDetails.fromJS(resultData401);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result401);
+            });
+        } else if (status === 403) {
+            return response.text().then((_responseText) => {
+            let result403: any = null;
+            let resultData403 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result403 = ProblemDetails.fromJS(resultData403);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result403);
+            });
+        } else if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = NoContent.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<NoContent>(null as any);
+    }
+}
+
 export class ReservationClient extends ApiClientBase {
     private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
@@ -2283,6 +2349,90 @@ export interface ICreateUserAndPersonCommand {
     role: string | undefined;
 }
 
+export class NoContent implements INoContent {
+    statusCode!: number;
+
+    constructor(data?: INoContent) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.statusCode = _data["statusCode"];
+        }
+    }
+
+    static fromJS(data: any): NoContent {
+        data = typeof data === 'object' ? data : {};
+        let result = new NoContent();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["statusCode"] = this.statusCode;
+        return data;
+    }
+}
+
+export interface INoContent {
+    statusCode: number;
+}
+
+export class CreateRentalCommand implements ICreateRentalCommand {
+    pickupDateTime!: Date;
+    odometerStart!: number;
+    notes!: string | undefined;
+    reservationId!: number;
+
+    constructor(data?: ICreateRentalCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.pickupDateTime = _data["pickupDateTime"] ? new Date(_data["pickupDateTime"].toString()) : <any>undefined;
+            this.odometerStart = _data["odometerStart"];
+            this.notes = _data["notes"];
+            this.reservationId = _data["reservationId"];
+        }
+    }
+
+    static fromJS(data: any): CreateRentalCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateRentalCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["pickupDateTime"] = this.pickupDateTime ? this.pickupDateTime.toISOString() : <any>undefined;
+        data["odometerStart"] = this.odometerStart;
+        data["notes"] = this.notes;
+        data["reservationId"] = this.reservationId;
+        return data;
+    }
+}
+
+export interface ICreateRentalCommand {
+    pickupDateTime: Date;
+    odometerStart: number;
+    notes: string | undefined;
+    reservationId: number;
+}
+
 export class PaginationResponseOfReservationDto implements IPaginationResponseOfReservationDto {
     items!: ReservationDto[];
     currentPage!: number;
@@ -2513,42 +2663,6 @@ export interface ICreateReservationCommand {
     lastName: string | undefined;
     phoneNumber: string | undefined;
     email: string | undefined;
-}
-
-export class NoContent implements INoContent {
-    statusCode!: number;
-
-    constructor(data?: INoContent) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.statusCode = _data["statusCode"];
-        }
-    }
-
-    static fromJS(data: any): NoContent {
-        data = typeof data === 'object' ? data : {};
-        let result = new NoContent();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["statusCode"] = this.statusCode;
-        return data;
-    }
-}
-
-export interface INoContent {
-    statusCode: number;
 }
 
 export class UpdateReservationCommand implements IUpdateReservationCommand {

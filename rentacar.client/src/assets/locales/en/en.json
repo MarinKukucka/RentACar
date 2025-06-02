@@ -82,7 +82,13 @@
             "status": "Status",
             "totalPrice": "Total price",
             "personName": "Reserved for",
-            "extraServices": "Extra services"
+            "extraServices": "Extra services",
+            "createRental": "Create rental"
+        },
+        "rentals": {
+            "pickupDateTime": "Pick up time",
+            "odometerStart": "Current odometer state",
+            "notes": "Notes"
         },
         "locations": {
             "ourLocations": "Our locations"

@@ -1,24 +1,27 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useTranslation } from "react-i18next";
-import { SearchSortPaginationSchema } from "../../models/search";
+import { DrawerSchema, SearchSortPaginationSchema } from "../../models/search";
 import * as v from "valibot";
 import { Route } from "../../routes/_authorizedRoutes/reservations/index";
 import { useNavigate } from "@tanstack/react-router";
 import { useFetchPaginatedReservationsQuery } from "../../api/reservations/reservations";
-import { useCallback } from "react";
-import { Table, TablePaginationConfig } from "antd";
+import { useCallback, useState } from "react";
+import { Button, Drawer, Table, TablePaginationConfig } from "antd";
 import { FilterValue, SorterResult } from "antd/es/table/interface";
 import { ReservationDto, ReservationStatus } from "../../api/api";
 import { TableParamsChange } from "../../helpers/SearchHelper";
 import translations from "../../config/localization/translations";
 import { getCheckboxFilter, getSearchFilter } from "../../helpers/FilterHelper";
 import { PageHeader } from "@ant-design/pro-layout";
-import { defaultTablePagination } from "../../config/constants";
+import { defaultTablePagination, DRAWER_WIDTH } from "../../config/constants";
 import { formatDate } from "../../helpers/FormatHelper";
 import { getReservationStatusOptions } from "../../helpers/OptionsMappingHelper";
+import { DrawerState } from "../../models/enums";
+import RentalForm from "../rentals/RentalForm";
 
 const ReservationsFilter = v.intersect([
     SearchSortPaginationSchema,
+    DrawerSchema,
     v.object({
         id: v.optional(v.number()),
         startDateTime: v.optional(v.date()),
@@ -30,6 +33,8 @@ const ReservationsFilter = v.intersect([
 export type ReservationsFilter = v.InferOutput<typeof ReservationsFilter>;
 
 function Reservations() {
+    const [selectedReservationId, setSelectedReservationId] =
+        useState<number>();
     const { t } = useTranslation();
     const search: ReservationsFilter = Route.useSearch();
     const navigate = useNavigate({ from: Route.fullPath });
@@ -42,7 +47,7 @@ function Reservations() {
     // #region Callbacks
 
     const updateFilters = useCallback(
-        (name: keyof ReservationDto, value: unknown) => {
+        (name: keyof ReservationsFilter, value: unknown) => {
             navigate({ search: (prev: any) => ({ ...prev, [name]: value }) });
         },
         [navigate]
@@ -64,6 +69,17 @@ function Reservations() {
                 action,
                 updateFilters
             );
+        },
+        [updateFilters]
+    );
+
+    const handleDrawerMode = useCallback(
+        (drawerState: DrawerState, reservationId?: number) => {
+            updateFilters(
+                "drawerState",
+                drawerState !== DrawerState.Closed ? drawerState : undefined
+            );
+            setSelectedReservationId(reservationId);
         },
         [updateFilters]
     );
@@ -115,6 +131,22 @@ function Reservations() {
                 return values.map((val) => <div>{val}</div>);
             },
         },
+        {
+            title: t(translations.general.actions),
+            key: "actions",
+            render: (record: ReservationDto) => {
+                return (
+                    <Button
+                        type="primary"
+                        onClick={() =>
+                            handleDrawerMode(DrawerState.Create, record.id)
+                        }
+                    >
+                        {t(translations.reservations.createRental)}
+                    </Button>
+                );
+            },
+        },
     ];
 
     return (
@@ -137,6 +169,20 @@ function Reservations() {
                 onChange={handleTableChange}
                 bordered
             />
+
+            <Drawer
+                title={t(translations.reservations.createRental)}
+                open={!!search.drawerState}
+                onClose={() => handleDrawerMode(DrawerState.Closed)}
+                destroyOnClose
+                width={DRAWER_WIDTH}
+            >
+                <RentalForm
+                    onClose={() => handleDrawerMode(DrawerState.Closed)}
+                    onSuccess={() => handleDrawerMode(DrawerState.Closed)}
+                    reservationId={selectedReservationId}
+                />
+            </Drawer>
         </>
     );
 }

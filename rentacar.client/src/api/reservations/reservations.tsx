@@ -23,7 +23,6 @@ export const useFetchPaginatedReservationsQuery = (
                 request.sortOrder
             );
         },
-        staleTime: 5 * 60 * 1000,
     });
 };
 

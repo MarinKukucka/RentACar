@@ -81,7 +81,12 @@ const translations = {
         status: 'reservations.status',
         totalPrice: 'reservations.totalPrice',
         personName: 'reservations.personName',
-        extraServices: 'reservations.extraServices'
+        extraServices: 'reservations.extraServices',
+        createRental: 'reservations.createRental'
+    },
+    rentals: {
+        odometerStart: 'rentals.odometerStart',
+        notes: 'rentals.notes'
     },
     locations: {
         ourLocations: 'locations.ourLocations'

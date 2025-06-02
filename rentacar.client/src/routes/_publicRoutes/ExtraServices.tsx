@@ -122,6 +122,7 @@ function ExtraServices() {
             }}
         >
             <div>
+                <h2>Your info</h2>
                 <Card
                     style={{
                         marginBottom: 16,
