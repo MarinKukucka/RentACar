@@ -3,7 +3,7 @@ import localizedFormat from "dayjs/plugin/localizedFormat";
 
 dayjs.extend(localizedFormat); // needed for use of localized formats, e.g. format('L')
 
-export const defaultDateFormat = (value: Dayjs) => value?.format("L");
+export const defaultDateFormat = (value: Dayjs) => value?.format("DD.MM.YYYY.");
 
 export const defaultDateTimeFormat = (value: Dayjs) => value?.format("L LT");
 

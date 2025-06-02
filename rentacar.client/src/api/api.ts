@@ -1086,7 +1086,7 @@ export class ReservationClient extends ApiClientBase {
     }
 
     getPaginatedReservations(paginationFilter_Filter_StartDateTime: Date | undefined, paginationFilter_Filter_EndDateTime: Date | undefined, paginationFilter_Filter_Status: ReservationStatus | undefined, paginationFilter_CurrentPage: number | undefined, paginationFilter_PageSize: number | undefined, paginationFilter_SortBy: string | undefined, paginationFilter_SortOrder: string | undefined): Promise<PaginationResponseOfReservationDto> {
-        let url_ = this.baseUrl + "/api/Reservation?";
+        let url_ = this.baseUrl + "/api/Reservation/paginated?";
         if (paginationFilter_Filter_StartDateTime === null)
             throw new Error("The parameter 'paginationFilter_Filter_StartDateTime' cannot be null.");
         else if (paginationFilter_Filter_StartDateTime !== undefined)

@@ -8,7 +8,6 @@ using RentACar.Application.Vehicles.Queries.GetPaginatedVehicles;
 using RentACar.Application.Vehicles.Queries.GetSearchResultVehicles;
 using RentACar.Application.Vehicles.Queries.GetSimpleVehicles;
 using RentACar.Application.Vehicles.Queries.GetVehicleById;
-using System.Diagnostics.Contracts;
 
 namespace RentACar.Server.Controllers
 {

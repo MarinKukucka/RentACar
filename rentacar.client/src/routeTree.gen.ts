@@ -20,6 +20,7 @@ import { Route as PublicRoutesExtraServicesImport } from './routes/_publicRoutes
 import { Route as AuthorizedRoutesProfileImport } from './routes/_authorizedRoutes/Profile'
 import { Route as AuthorizationLoginImport } from './routes/_authorization/Login'
 import { Route as AuthorizedRoutesVehiclesIndexImport } from './routes/_authorizedRoutes/vehicles/index'
+import { Route as AuthorizedRoutesReservationsIndexImport } from './routes/_authorizedRoutes/reservations/index'
 import { Route as AuthorizedRoutesPeopleIndexImport } from './routes/_authorizedRoutes/people/index'
 
 // Create/Update Routes
@@ -75,6 +76,13 @@ const AuthorizedRoutesVehiclesIndexRoute =
   AuthorizedRoutesVehiclesIndexImport.update({
     id: '/vehicles/',
     path: '/vehicles/',
+    getParentRoute: () => AuthorizedRoutesRoute,
+  } as any)
+
+const AuthorizedRoutesReservationsIndexRoute =
+  AuthorizedRoutesReservationsIndexImport.update({
+    id: '/reservations/',
+    path: '/reservations/',
     getParentRoute: () => AuthorizedRoutesRoute,
   } as any)
 
@@ -152,6 +160,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthorizedRoutesPeopleIndexImport
       parentRoute: typeof AuthorizedRoutesImport
     }
+    '/_authorizedRoutes/reservations/': {
+      id: '/_authorizedRoutes/reservations/'
+      path: '/reservations'
+      fullPath: '/reservations'
+      preLoaderRoute: typeof AuthorizedRoutesReservationsIndexImport
+      parentRoute: typeof AuthorizedRoutesImport
+    }
     '/_authorizedRoutes/vehicles/': {
       id: '/_authorizedRoutes/vehicles/'
       path: '/vehicles'
@@ -167,12 +182,15 @@ declare module '@tanstack/react-router' {
 interface AuthorizedRoutesRouteChildren {
   AuthorizedRoutesProfileRoute: typeof AuthorizedRoutesProfileRoute
   AuthorizedRoutesPeopleIndexRoute: typeof AuthorizedRoutesPeopleIndexRoute
+  AuthorizedRoutesReservationsIndexRoute: typeof AuthorizedRoutesReservationsIndexRoute
   AuthorizedRoutesVehiclesIndexRoute: typeof AuthorizedRoutesVehiclesIndexRoute
 }
 
 const AuthorizedRoutesRouteChildren: AuthorizedRoutesRouteChildren = {
   AuthorizedRoutesProfileRoute: AuthorizedRoutesProfileRoute,
   AuthorizedRoutesPeopleIndexRoute: AuthorizedRoutesPeopleIndexRoute,
+  AuthorizedRoutesReservationsIndexRoute:
+    AuthorizedRoutesReservationsIndexRoute,
   AuthorizedRoutesVehiclesIndexRoute: AuthorizedRoutesVehiclesIndexRoute,
 }
 
@@ -189,6 +207,7 @@ export interface FileRoutesByFullPath {
   '/Success': typeof PublicRoutesSuccessRoute
   '/': typeof PublicRoutesIndexRoute
   '/people': typeof AuthorizedRoutesPeopleIndexRoute
+  '/reservations': typeof AuthorizedRoutesReservationsIndexRoute
   '/vehicles': typeof AuthorizedRoutesVehiclesIndexRoute
 }
 
@@ -202,6 +221,7 @@ export interface FileRoutesByTo {
   '/Success': typeof PublicRoutesSuccessRoute
   '/': typeof PublicRoutesIndexRoute
   '/people': typeof AuthorizedRoutesPeopleIndexRoute
+  '/reservations': typeof AuthorizedRoutesReservationsIndexRoute
   '/vehicles': typeof AuthorizedRoutesVehiclesIndexRoute
 }
 
@@ -216,6 +236,7 @@ export interface FileRoutesById {
   '/_publicRoutes/Success': typeof PublicRoutesSuccessRoute
   '/_publicRoutes/': typeof PublicRoutesIndexRoute
   '/_authorizedRoutes/people/': typeof AuthorizedRoutesPeopleIndexRoute
+  '/_authorizedRoutes/reservations/': typeof AuthorizedRoutesReservationsIndexRoute
   '/_authorizedRoutes/vehicles/': typeof AuthorizedRoutesVehiclesIndexRoute
 }
 
@@ -231,6 +252,7 @@ export interface FileRouteTypes {
     | '/Success'
     | '/'
     | '/people'
+    | '/reservations'
     | '/vehicles'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -243,6 +265,7 @@ export interface FileRouteTypes {
     | '/Success'
     | '/'
     | '/people'
+    | '/reservations'
     | '/vehicles'
   id:
     | '__root__'
@@ -255,6 +278,7 @@ export interface FileRouteTypes {
     | '/_publicRoutes/Success'
     | '/_publicRoutes/'
     | '/_authorizedRoutes/people/'
+    | '/_authorizedRoutes/reservations/'
     | '/_authorizedRoutes/vehicles/'
   fileRoutesById: FileRoutesById
 }
@@ -303,6 +327,7 @@ export const routeTree = rootRoute
       "children": [
         "/_authorizedRoutes/Profile",
         "/_authorizedRoutes/people/",
+        "/_authorizedRoutes/reservations/",
         "/_authorizedRoutes/vehicles/"
       ]
     },
@@ -330,6 +355,10 @@ export const routeTree = rootRoute
     },
     "/_authorizedRoutes/people/": {
       "filePath": "_authorizedRoutes/people/index.tsx",
+      "parent": "/_authorizedRoutes"
+    },
+    "/_authorizedRoutes/reservations/": {
+      "filePath": "_authorizedRoutes/reservations/index.tsx",
       "parent": "/_authorizedRoutes"
     },
     "/_authorizedRoutes/vehicles/": {

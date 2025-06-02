@@ -73,6 +73,15 @@ const translations = {
         chooseLocationPlaceholder: 'vehicles.chooseLocationPlaceholder',
         ourVehicles: 'vehicles.ourVehicles'
     },
+    reservations: {
+        title: 'reservations.title',
+        startDateTime: 'reservations.startDateTime',
+        endDateTime: 'reservations.endDateTime',
+        status: 'reservations.status',
+        totalPrice: 'reservations.totalPrice',
+        personName: 'reservations.personName',
+        extraServices: 'reservations.extraServices'
+    },
     locations: {
         ourLocations: 'locations.ourLocations'
     },

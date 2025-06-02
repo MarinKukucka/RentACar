@@ -74,6 +74,15 @@
             "chooseLocationPlaceholder": "Molimo odaberite lokaciju",
             "ourVehicles": "Naša vozila"
         },
+        "reservations": {
+            "title": "Rezervacije",
+            "startDateTime": "Početak",
+            "endDateTime": "Kraj",
+            "status": "Status",
+            "totalPrice": "Ukupna cijena",
+            "personName": "Rezervirano za",
+            "extraServices": "Dodatne opcije"
+        },
         "locations": {
             "ourLocations": "Naše lokacije"
         },

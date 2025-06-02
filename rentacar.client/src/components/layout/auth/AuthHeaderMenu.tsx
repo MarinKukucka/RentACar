@@ -3,6 +3,7 @@ import {
     GlobalOutlined,
     LoginOutlined,
     LogoutOutlined,
+    OrderedListOutlined,
     UserOutlined,
 } from "@ant-design/icons";
 import { Link, useNavigate } from "@tanstack/react-router";
@@ -58,6 +59,15 @@ function AuthHeaderMenu() {
                 icon: <CarOutlined />,
                 label: (
                     <Link to="/vehicles">{t(translations.vehicles.title)}</Link>
+                ),
+            },
+            {
+                key: "reservations",
+                icon: <OrderedListOutlined />,
+                label: (
+                    <Link to="/reservations">
+                        {t(translations.reservations.title)}
+                    </Link>
                 ),
             },
             {

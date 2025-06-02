@@ -10,11 +10,12 @@ namespace RentACar.Server.Controllers
 {
     public class ReservationController(IMediator mediator) : ApiController
     {
-        [HttpGet]
+        [HttpGet("paginated")]
         [ProducesResponseType(typeof(PaginationResponse<ReservationDto>), StatusCodes.Status200OK)]
-        public async Task<PaginationResponse<ReservationDto>> GetPaginatedReservations([FromQuery] GetPaginatedReservationQuery query)
+        public async Task<Results<Ok<PaginationResponse<ReservationDto>>, ValidationProblem>> GetPaginatedReservations([FromQuery] GetPaginatedReservationQuery query)
         {
-            return await mediator.Send(query);
+            var result = await mediator.Send(query);
+            return TypedResults.Ok(result);
         }
 
         [HttpPost]

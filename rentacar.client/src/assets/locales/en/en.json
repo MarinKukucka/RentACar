@@ -74,6 +74,15 @@
             "chooseLocationPlaceholder": "Please choose a location",
             "ourVehicles": "Our vehicles"
         },
+        "reservations": {
+            "title": "Reservations",
+            "startDateTime": "Start",
+            "endDateTime": "End",
+            "status": "Status",
+            "totalPrice": "Total price",
+            "personName": "Reserved for",
+            "extraServices": "Extra services"
+        },
         "locations": {
             "ourLocations": "Our locations"
         },
