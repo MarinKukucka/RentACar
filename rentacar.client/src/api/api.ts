@@ -815,7 +815,7 @@ export class PaymentClient extends ApiClientBase {
         this.baseUrl = this.getBaseUrl("", baseUrl);
     }
 
-    createPaymentIntent(request: PaymentRequest): Promise<PaymentResponse> {
+    createPaymentIntent(request: PaymentIntentRequest): Promise<PaymentIntentResponse> {
         let url_ = this.baseUrl + "/api/Payment/create-payment-intent";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -837,7 +837,7 @@ export class PaymentClient extends ApiClientBase {
         });
     }
 
-    protected processCreatePaymentIntent(response: Response): Promise<PaymentResponse> {
+    protected processCreatePaymentIntent(response: Response): Promise<PaymentIntentResponse> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 401) {
@@ -858,7 +858,7 @@ export class PaymentClient extends ApiClientBase {
             return response.text().then((_responseText) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PaymentResponse.fromJS(resultData200);
+            result200 = PaymentIntentResponse.fromJS(resultData200);
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -866,7 +866,61 @@ export class PaymentClient extends ApiClientBase {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<PaymentResponse>(null as any);
+        return Promise.resolve<PaymentIntentResponse>(null as any);
+    }
+
+    createPayment(command: CreatePaymentCommand): Promise<NewPaymentResponse> {
+        let url_ = this.baseUrl + "/api/Payment/create-payment";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processCreatePayment(_response));
+        });
+    }
+
+    protected processCreatePayment(response: Response): Promise<NewPaymentResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 401) {
+            return response.text().then((_responseText) => {
+            let result401: any = null;
+            let resultData401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result401 = ProblemDetails.fromJS(resultData401);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result401);
+            });
+        } else if (status === 403) {
+            return response.text().then((_responseText) => {
+            let result403: any = null;
+            let resultData403 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result403 = ProblemDetails.fromJS(resultData403);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result403);
+            });
+        } else if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = NewPaymentResponse.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<NewPaymentResponse>(null as any);
     }
 }
 
@@ -2105,10 +2159,11 @@ export interface ILocationDto {
     image: string;
 }
 
-export class PaymentResponse implements IPaymentResponse {
+export class PaymentIntentResponse implements IPaymentIntentResponse {
     clientSecret!: string | undefined;
+    paymentIntentId!: string | undefined;
 
-    constructor(data?: IPaymentResponse) {
+    constructor(data?: IPaymentIntentResponse) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -2120,12 +2175,13 @@ export class PaymentResponse implements IPaymentResponse {
     init(_data?: any) {
         if (_data) {
             this.clientSecret = _data["clientSecret"];
+            this.paymentIntentId = _data["paymentIntentId"];
         }
     }
 
-    static fromJS(data: any): PaymentResponse {
+    static fromJS(data: any): PaymentIntentResponse {
         data = typeof data === 'object' ? data : {};
-        let result = new PaymentResponse();
+        let result = new PaymentIntentResponse();
         result.init(data);
         return result;
     }
@@ -2133,18 +2189,20 @@ export class PaymentResponse implements IPaymentResponse {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["clientSecret"] = this.clientSecret;
+        data["paymentIntentId"] = this.paymentIntentId;
         return data;
     }
 }
 
-export interface IPaymentResponse {
+export interface IPaymentIntentResponse {
     clientSecret: string | undefined;
+    paymentIntentId: string | undefined;
 }
 
-export class PaymentRequest implements IPaymentRequest {
+export class PaymentIntentRequest implements IPaymentIntentRequest {
     amount!: number;
 
-    constructor(data?: IPaymentRequest) {
+    constructor(data?: IPaymentIntentRequest) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -2159,9 +2217,9 @@ export class PaymentRequest implements IPaymentRequest {
         }
     }
 
-    static fromJS(data: any): PaymentRequest {
+    static fromJS(data: any): PaymentIntentRequest {
         data = typeof data === 'object' ? data : {};
-        let result = new PaymentRequest();
+        let result = new PaymentIntentRequest();
         result.init(data);
         return result;
     }
@@ -2173,8 +2231,88 @@ export class PaymentRequest implements IPaymentRequest {
     }
 }
 
-export interface IPaymentRequest {
+export interface IPaymentIntentRequest {
     amount: number;
+}
+
+export class NewPaymentResponse implements INewPaymentResponse {
+    invoicePath!: string | undefined;
+
+    constructor(data?: INewPaymentResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.invoicePath = _data["invoicePath"];
+        }
+    }
+
+    static fromJS(data: any): NewPaymentResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new NewPaymentResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["invoicePath"] = this.invoicePath;
+        return data;
+    }
+}
+
+export interface INewPaymentResponse {
+    invoicePath: string | undefined;
+}
+
+export class CreatePaymentCommand implements ICreatePaymentCommand {
+    amount!: number;
+    stripePaymentIntentId!: string;
+    reservationId!: number | undefined;
+
+    constructor(data?: ICreatePaymentCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.amount = _data["amount"];
+            this.stripePaymentIntentId = _data["stripePaymentIntentId"];
+            this.reservationId = _data["reservationId"];
+        }
+    }
+
+    static fromJS(data: any): CreatePaymentCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreatePaymentCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["amount"] = this.amount;
+        data["stripePaymentIntentId"] = this.stripePaymentIntentId;
+        data["reservationId"] = this.reservationId;
+        return data;
+    }
+}
+
+export interface ICreatePaymentCommand {
+    amount: number;
+    stripePaymentIntentId: string;
+    reservationId: number | undefined;
 }
 
 export class PaginationResponseOfPersonDto implements IPaginationResponseOfPersonDto {

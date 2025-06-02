@@ -1,8 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useUpdateReservationMutation } from "../../api/reservations/reservations";
-import { useEffect } from "react";
-import { ReservationStatus, UpdateReservationCommand } from "../../api/api";
+import { useEffect, useState } from "react";
+import {
+    CreatePaymentCommand,
+    ReservationStatus,
+    UpdateReservationCommand,
+} from "../../api/api";
 import { loadStripe } from "@stripe/stripe-js";
+import { useCreatePaymentMutation } from "../../api/payments/payments";
+import FileLink from "../../components/files/FileLink";
 
 export const Route = createFileRoute("/_publicRoutes/Success")({
     component: Success,
@@ -13,7 +19,10 @@ const stripePromise = loadStripe(
 );
 
 function Success() {
+    const [filePath, setFilePath] = useState<string | undefined>();
+
     const { mutateAsync: updateReservation } = useUpdateReservationMutation();
+    const { mutateAsync: createPayment } = useCreatePaymentMutation();
 
     useEffect(() => {
         const checkPayment = async () => {
@@ -23,6 +32,10 @@ function Success() {
             const reservationId = new URLSearchParams(
                 window.location.search
             ).get("reservationId");
+            const paymentIntentId = new URLSearchParams(
+                window.location.search
+            ).get("paymentIntentId");
+
             const stripe = await stripePromise;
 
             if (stripe && clientSecret && reservationId) {
@@ -35,14 +48,31 @@ function Success() {
                         confirmedAt: new Date(),
                         cancelledAt: undefined,
                     } as UpdateReservationCommand);
+
+                    const response = await createPayment({
+                        amount: 120,
+                        stripePaymentIntentId: paymentIntentId,
+                        reservationId: +reservationId,
+                    } as CreatePaymentCommand);
+
+                    setFilePath(response.invoicePath);
                 }
             }
         };
 
         checkPayment();
-    }, [updateReservation]);
+    }, [createPayment, updateReservation]);
 
-    return <div>Thank you! Your payment was successful.</div>;
+    return (
+        <>
+            {filePath && (
+                <div>
+                    <FileLink filePath={filePath} fileName="Invoice" />
+                    Thank you! Your payment was successful.
+                </div>
+            )}
+        </>
+    );
 }
 
 export default Success;

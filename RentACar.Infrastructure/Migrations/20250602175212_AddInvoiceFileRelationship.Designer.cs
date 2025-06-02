@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RentACar.Infrastructure.Data.Context;
 
@@ -11,9 +12,11 @@ using RentACar.Infrastructure.Data.Context;
 namespace RentACar.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250602175212_AddInvoiceFileRelationship")]
+    partial class AddInvoiceFileRelationship
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -365,6 +368,12 @@ namespace RentACar.Infrastructure.Migrations
                     b.Property<DateTime>("IssuedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("PersonId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("RentalId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("ReservationId")
                         .HasColumnType("int");
 
@@ -374,6 +383,10 @@ namespace RentACar.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("FileId");
+
+                    b.HasIndex("PersonId");
+
+                    b.HasIndex("RentalId");
 
                     b.HasIndex("ReservationId");
 
@@ -824,11 +837,23 @@ namespace RentACar.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("FileId");
 
+                    b.HasOne("RentACar.Domain.Entities.Person", "Person")
+                        .WithMany()
+                        .HasForeignKey("PersonId");
+
+                    b.HasOne("RentACar.Domain.Entities.Rental", "Rental")
+                        .WithMany()
+                        .HasForeignKey("RentalId");
+
                     b.HasOne("RentACar.Domain.Entities.Reservation", "Reservation")
                         .WithMany()
                         .HasForeignKey("ReservationId");
 
                     b.Navigation("File");
+
+                    b.Navigation("Person");
+
+                    b.Navigation("Rental");
 
                     b.Navigation("Reservation");
                 });

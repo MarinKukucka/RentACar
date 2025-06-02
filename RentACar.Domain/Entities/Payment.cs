@@ -1,5 +1,4 @@
 ﻿using RentACar.Domain.Common;
-using RentACar.Domain.Enums;
 
 namespace RentACar.Domain.Entities
 {
@@ -9,7 +8,7 @@ namespace RentACar.Domain.Entities
 
         public required DateTime CreatedAt { get; set; }
 
-        public int StripePaymentIntentId { get; set; }
+        public string StripePaymentIntentId { get; set; } = null!;
 
         
         public int? PersonId { get; set; }

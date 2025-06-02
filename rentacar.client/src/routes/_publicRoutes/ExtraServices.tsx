@@ -6,7 +6,7 @@ import { SearchFilter } from "../../components/search/Search";
 import { useFetchVehicleByIdQuery } from "../../api/vehicles/vehicles";
 import { useCallback, useMemo, useState } from "react";
 import { useCreatePaymentIntentMutation } from "../../api/payments/payments";
-import { CreateReservationCommand, PaymentRequest } from "../../api/api";
+import { CreateReservationCommand, PaymentIntentRequest } from "../../api/api";
 import { useCreateReservationMutation } from "../../api/reservations/reservations";
 
 export const Route = createFileRoute("/_publicRoutes/ExtraServices")({
@@ -71,7 +71,7 @@ function ExtraServices() {
 
             const response = await createPaymentIntent({
                 amount: price,
-            } as PaymentRequest);
+            } as PaymentIntentRequest);
 
             const reservationId = await createReservation({
                 startDateTime: pickupDate,
@@ -87,6 +87,7 @@ function ExtraServices() {
                 to: "/Payment",
                 search: {
                     clientSecret: response.clientSecret,
+                    paymentIntentId: response.paymentIntentId,
                     reservationId,
                 },
             });

@@ -14,6 +14,9 @@ function CheckoutForm() {
     const reservationId = new URLSearchParams(window.location.search).get(
         "reservationId"
     );
+    const paymentIntentId = new URLSearchParams(window.location.search).get(
+        "paymentIntentId"
+    );
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -24,7 +27,7 @@ function CheckoutForm() {
         const { error } = await stripe.confirmPayment({
             elements,
             confirmParams: {
-                return_url: `${window.location.origin}/Success?reservationId=${reservationId}`,
+                return_url: `${window.location.origin}/Success?reservationId=${reservationId}&paymentIntentId=${paymentIntentId}`,
             },
         });
 

@@ -13,17 +13,13 @@ namespace RentACar.Domain.Entities
         public decimal TotalAmount { get; set; }
 
         
-        public int? PersonId { get; set; }
-
-        public Person? Person { get; set; }
-
         public int? ReservationId { get; set; }
 
         public Reservation? Reservation { get; set; }
 
-        public int? RentalId { get; set; }
+        public int? FileId { get; set; }
 
-        public Rental? Rental { get; set; }
+        public File? File { get; set; }
 
         public List<Payment>? Payments { get; set; }
     }

@@ -1,13 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using RentACar.Application.Payments.Commands.CreatePayment;
 using Stripe;
 
 namespace RentACar.Server.Controllers
 {
-    public class PaymentController : ApiController
+    public class PaymentController(IMediator mediator) : ApiController
     {
         [HttpPost("create-payment-intent")]
-        [ProducesResponseType(typeof(PaymentResponse), StatusCodes.Status200OK)]
-        public ActionResult<PaymentResponse> CreatePaymentIntent([FromBody] PaymentRequest request)
+        [ProducesResponseType(typeof(PaymentIntentResponse), StatusCodes.Status200OK)]
+        public ActionResult<PaymentIntentResponse> CreatePaymentIntent([FromBody] PaymentIntentRequest request)
         {
             var options = new PaymentIntentCreateOptions
             {
@@ -22,19 +23,30 @@ namespace RentACar.Server.Controllers
             var service = new PaymentIntentService();
             var paymentIntent = service.Create(options);
 
-            return Ok(new PaymentResponse { 
-                ClientSecret = paymentIntent.ClientSecret 
+            return Ok(new PaymentIntentResponse
+            { 
+                ClientSecret = paymentIntent.ClientSecret,
+                PaymentIntentId = paymentIntent.Id
             });
+        }
+
+        [HttpPost("create-payment")]
+        [ProducesResponseType(typeof(NewPaymentResponse), StatusCodes.Status200OK)]
+        public async Task<NewPaymentResponse> CreatePayment([FromBody] CreatePaymentCommand command)
+        {
+            return await mediator.Send(command);
         }
     }
 
-    public class PaymentRequest
+    public class PaymentIntentRequest
     {
         public decimal Amount { get; set; }
     }
 
-    public class PaymentResponse
+    public class PaymentIntentResponse
     {
         public string? ClientSecret { get; set; }
+
+        public string? PaymentIntentId { get; set; }
     }
 }

@@ -14,16 +14,15 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.4" />
+    <PackageReference Include="QuestPDF" Version="2025.5.0" />
+    <PackageReference Include="Stripe.net" Version="48.2.0" />
     <PackageReference Include="System.Linq.Dynamic.Core" Version="1.6.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\RentACar.Domain\RentACar.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Payments\Commands\CreatePayment\" />
   </ItemGroup>
 
 </Project>
