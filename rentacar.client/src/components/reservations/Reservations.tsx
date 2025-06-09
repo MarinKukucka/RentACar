@@ -125,6 +125,14 @@ function Reservations() {
             sorter: true,
         },
         {
+            title: t(translations.reservations.pickupLocation),
+            dataIndex: "pickupLocationName",
+        },
+        {
+            title: t(translations.reservations.returnLocation),
+            dataIndex: "returnLocationName",
+        },
+        {
             title: t(translations.reservations.extraServices),
             dataIndex: "extraServices",
             sorter: true,

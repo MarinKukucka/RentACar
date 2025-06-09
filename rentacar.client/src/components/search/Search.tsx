@@ -13,6 +13,7 @@ import { CloseOutlined } from "@ant-design/icons";
 
 const SearchFilter = v.object({
     pickupLocationId: v.optional(v.number()),
+    returnLocationId: v.optional(v.number()),
     pickupDate: v.optional(v.date()),
     dropOffDate: v.optional(v.date()),
     vehicleId: v.optional(v.number()),
@@ -37,15 +38,22 @@ function Search({ resultSearch, onClose, searchFilter }: Props) {
     const handleSubmitSearch = useCallback(
         (values: {
             pickupLocationId: number;
+            returnLocationId: number;
             pickupDate: Date;
             dropOffDate: Date;
         }) => {
-            const { pickupLocationId, pickupDate, dropOffDate } = values;
+            const {
+                pickupLocationId,
+                returnLocationId,
+                pickupDate,
+                dropOffDate,
+            } = values;
 
             navigate({
                 to: "/SearchResults",
                 search: {
                     pickupLocationId: pickupLocationId,
+                    returnLocationId: returnLocationId,
                     pickupDate: pickupDate,
                     dropOffDate: dropOffDate,
                 },
@@ -87,6 +95,23 @@ function Search({ resultSearch, onClose, searchFilter }: Props) {
                         options={locationOptions}
                     />
                 </Form.Item>
+
+                <Form.Item
+                    name="returnLocationId"
+                    rules={[
+                        {
+                            required: true,
+                        },
+                    ]}
+                >
+                    <Select<number>
+                        placeholder={t(
+                            translations.vehicles.chooseLocationPlaceholder
+                        )}
+                        options={locationOptions}
+                    />
+                </Form.Item>
+
                 <Form.Item
                     name="pickupDate"
                     rules={[
@@ -98,6 +123,7 @@ function Search({ resultSearch, onClose, searchFilter }: Props) {
                 >
                     <DatePicker format={defaultDateFormat} />
                 </Form.Item>
+
                 <Form.Item
                     name="dropOffDate"
                     rules={[
@@ -109,6 +135,7 @@ function Search({ resultSearch, onClose, searchFilter }: Props) {
                 >
                     <DatePicker format={defaultDateFormat} />
                 </Form.Item>
+
                 <Form.Item>
                     <Button type="primary" htmlType="submit">
                         {t(translations.general.search)}

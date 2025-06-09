@@ -26,6 +26,7 @@ function SearchResults() {
         return new Date(search.dropOffDate as any);
     }, [search.dropOffDate]);
     const pickupLocationId = search.pickupLocationId;
+    const returnLocationId = search.returnLocationId;
 
     const { data: results } = useFetchSearchResultVehiclesQuery(
         pickupLocationId,
@@ -33,7 +34,10 @@ function SearchResults() {
         dropOffDate
     );
 
-    const { data: location } = useFetchLocationByIdQuery(pickupLocationId);
+    const { data: pickupLocation } =
+        useFetchLocationByIdQuery(pickupLocationId);
+    const { data: returnLocation } =
+        useFetchLocationByIdQuery(returnLocationId);
 
     // #region Callbacks
 
@@ -47,13 +51,14 @@ function SearchResults() {
                 to: "/ExtraServices",
                 search: {
                     pickupLocationId: pickupLocationId,
+                    returnLocationId: returnLocationId,
                     pickupDate: pickupDate,
                     dropOffDate: dropOffDate,
                     vehicleId,
                 },
             });
         },
-        [dropOffDate, navigate, pickupDate, pickupLocationId]
+        [dropOffDate, navigate, pickupDate, pickupLocationId, returnLocationId]
     );
 
     // #endregion
@@ -69,6 +74,7 @@ function SearchResults() {
                                 onClose={() => setSearchOpen(false)}
                                 searchFilter={{
                                     pickupLocationId,
+                                    returnLocationId,
                                     pickupDate,
                                     dropOffDate,
                                 }}
@@ -80,7 +86,8 @@ function SearchResults() {
                                 }}
                                 onClick={handleOpenSearch}
                             >
-                                {location?.name} <br />
+                                {pickupLocation?.name} {"->"}{" "}
+                                {returnLocation?.name} <br />
                                 {formatDate(pickupDate)} -{" "}
                                 {formatDate(dropOffDate)}
                             </div>

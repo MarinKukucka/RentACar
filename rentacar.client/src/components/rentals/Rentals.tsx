@@ -149,14 +149,16 @@ function Rentals() {
             key: "actions",
             render: (record: RentalDto) => {
                 return (
-                    <Button
-                        type="primary"
-                        onClick={() =>
-                            handleDrawerMode(DrawerState.Edit, record.id)
-                        }
-                    >
-                        {t(translations.rentals.finishRental)}
-                    </Button>
+                    record.status !== RentalStatus.Returned && (
+                        <Button
+                            type="primary"
+                            onClick={() =>
+                                handleDrawerMode(DrawerState.Edit, record.id)
+                            }
+                        >
+                            {t(translations.rentals.finishRental)}
+                        </Button>
+                    )
                 );
             },
         },

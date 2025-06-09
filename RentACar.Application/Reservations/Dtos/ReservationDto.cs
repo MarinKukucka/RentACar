@@ -22,6 +22,10 @@ namespace RentACar.Application.Reservations.Dtos
 
         public required string PersonName { get; set; }
 
+        public string? PickupLocationName { get; set; }
+
+        public string? ReturnLocationName { get; set; }
+
         public List<string>? ExtraServices { get; set; }
     }
 }

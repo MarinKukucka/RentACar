@@ -83,7 +83,9 @@
             "status": "Status",
             "totalPrice": "Ukupna cijena",
             "personName": "Rezervirano za",
-            "extraServices": "Dodatne opcije"
+            "extraServices": "Dodatne opcije",
+            "pickupLocation": "Lokacija preuzimanja",
+            "returnLocation": "Lokacija vraćanja"
         },
         "rentals": {
             "title": "Najmovi",

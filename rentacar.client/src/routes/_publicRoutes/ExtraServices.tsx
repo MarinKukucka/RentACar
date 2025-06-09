@@ -76,6 +76,7 @@ function ExtraServices() {
                 totalPrice: price,
                 vehicleId: search.vehicleId,
                 pickupLocationId: search.pickupLocationId,
+                returnLocationId: search.returnLocationId,
                 reservationExtrasIds: selectedExtras,
                 ...values,
             } as CreateReservationCommand);
@@ -91,20 +92,7 @@ function ExtraServices() {
         } catch (err) {
             console.error("Form validation failed:", err);
         }
-    }, [
-        createPaymentIntent,
-        createReservation,
-        daysOfRent,
-        dropOffDate,
-        extraServicePrice,
-        form,
-        navigate,
-        pickupDate,
-        search.pickupLocationId,
-        search.vehicleId,
-        selectedExtras,
-        vehicle,
-    ]);
+    }, [createPaymentIntent, createReservation, daysOfRent, dropOffDate, extraServicePrice, form, navigate, pickupDate, search.pickupLocationId, search.returnLocationId, search.vehicleId, selectedExtras, vehicle]);
 
     if (!vehicle) return;
 

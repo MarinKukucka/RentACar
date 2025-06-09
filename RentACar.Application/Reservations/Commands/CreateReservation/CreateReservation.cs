@@ -6,7 +6,6 @@ using RentACar.Domain.Enums;
 
 namespace RentACar.Application.Reservations.Commands.CreateReservation
 {
-
     public record CreateReservationCommand : IRequest<int>
     {
         public required DateTime StartDateTime { get; set; }
@@ -20,6 +19,8 @@ namespace RentACar.Application.Reservations.Commands.CreateReservation
         public int VehicleId { get; set; }
 
         public int PickupLocationId { get; set; }
+
+        public int ReturnLocationId { get; set; }
 
         public List<int>? ReservationExtrasIds { get; set; }
 

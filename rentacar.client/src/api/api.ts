@@ -2965,6 +2965,8 @@ export class ReservationDto implements IReservationDto {
     totalPrice!: number;
     notes!: string | undefined;
     personName!: string;
+    pickupLocationName!: string | undefined;
+    returnLocationName!: string | undefined;
     extraServices!: string[] | undefined;
 
     constructor(data?: IReservationDto) {
@@ -2987,6 +2989,8 @@ export class ReservationDto implements IReservationDto {
             this.totalPrice = _data["totalPrice"];
             this.notes = _data["notes"];
             this.personName = _data["personName"];
+            this.pickupLocationName = _data["pickupLocationName"];
+            this.returnLocationName = _data["returnLocationName"];
             if (Array.isArray(_data["extraServices"])) {
                 this.extraServices = [] as any;
                 for (let item of _data["extraServices"])
@@ -3013,6 +3017,8 @@ export class ReservationDto implements IReservationDto {
         data["totalPrice"] = this.totalPrice;
         data["notes"] = this.notes;
         data["personName"] = this.personName;
+        data["pickupLocationName"] = this.pickupLocationName;
+        data["returnLocationName"] = this.returnLocationName;
         if (Array.isArray(this.extraServices)) {
             data["extraServices"] = [];
             for (let item of this.extraServices)
@@ -3032,6 +3038,8 @@ export interface IReservationDto {
     totalPrice: number;
     notes: string | undefined;
     personName: string;
+    pickupLocationName: string | undefined;
+    returnLocationName: string | undefined;
     extraServices: string[] | undefined;
 }
 
@@ -3050,6 +3058,7 @@ export class CreateReservationCommand implements ICreateReservationCommand {
     notes!: string | undefined;
     vehicleId!: number;
     pickupLocationId!: number;
+    returnLocationId!: number;
     reservationExtrasIds!: number[] | undefined;
     firstName!: string;
     lastName!: string | undefined;
@@ -3073,6 +3082,7 @@ export class CreateReservationCommand implements ICreateReservationCommand {
             this.notes = _data["notes"];
             this.vehicleId = _data["vehicleId"];
             this.pickupLocationId = _data["pickupLocationId"];
+            this.returnLocationId = _data["returnLocationId"];
             if (Array.isArray(_data["reservationExtrasIds"])) {
                 this.reservationExtrasIds = [] as any;
                 for (let item of _data["reservationExtrasIds"])
@@ -3100,6 +3110,7 @@ export class CreateReservationCommand implements ICreateReservationCommand {
         data["notes"] = this.notes;
         data["vehicleId"] = this.vehicleId;
         data["pickupLocationId"] = this.pickupLocationId;
+        data["returnLocationId"] = this.returnLocationId;
         if (Array.isArray(this.reservationExtrasIds)) {
             data["reservationExtrasIds"] = [];
             for (let item of this.reservationExtrasIds)
@@ -3120,6 +3131,7 @@ export interface ICreateReservationCommand {
     notes: string | undefined;
     vehicleId: number;
     pickupLocationId: number;
+    returnLocationId: number;
     reservationExtrasIds: number[] | undefined;
     firstName: string;
     lastName: string | undefined;

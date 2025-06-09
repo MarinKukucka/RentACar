@@ -83,7 +83,9 @@
             "status": "Status",
             "totalPrice": "Total price",
             "personName": "Reserved for",
-            "extraServices": "Extra services"
+            "extraServices": "Extra services",
+            "pickupLocation": "Pickup location",
+            "returnLocation": "Return location"
         },
         "rentals": {
             "title": "Rentals",

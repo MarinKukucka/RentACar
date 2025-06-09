@@ -82,6 +82,8 @@ const translations = {
         status: 'reservations.status',
         totalPrice: 'reservations.totalPrice',
         personName: 'reservations.personName',
+        pickupLocation: 'reservations.pickupLocation',
+        returnLocation: 'reservations.returnLocation',
         extraServices: 'reservations.extraServices',
     },
     rentals: {

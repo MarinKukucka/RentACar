@@ -21,6 +21,8 @@ namespace RentACar.Application.Reservations.Queries.GetPaginatedReservation
             return await _context.Reservations
                 .AsNoTrackingWithIdentityResolution()
                 .Include(r => r.Person)
+                .Include(r => r.PickupLocation)
+                .Include(r => r.ReturnLocation)
                 .Include(r => r.ExtraServices)
                 .Where(r => r.Person != null)
                 .Filter(request.PaginationFilter.Filter)
@@ -36,6 +38,8 @@ namespace RentACar.Application.Reservations.Queries.GetPaginatedReservation
                     TotalPrice = r.TotalPrice,
                     Notes = r.Notes,
                     PersonName = r.Person!.FirstName + " " + r.Person.LastName,
+                    PickupLocationName = r.PickupLocation!.Name,
+                    ReturnLocationName = r.ReturnLocation!.Name,
                     ExtraServices = r.ExtraServices != null ? r.ExtraServices.Select(es => es.Name).ToList() : null
                 }) 
                 .AsSplitQuery()

@@ -26,6 +26,9 @@ namespace RentACar.Application.Rentals.Commands.FinishRental
         public async ValueTask<Unit> Handle(FinishRentalCommand request, CancellationToken cancellationToken)
         {
             var entity = await _context.Rentals
+                .Include(r => r.Reservation)
+                    .ThenInclude(r => r!.Vehicle)
+                .Where(r => r.Reservation != null && r.Reservation.Vehicle != null)
                 .FirstOrDefaultAsync(r => r.Id == request.Id, cancellationToken) ?? throw new ArgumentException("Ne valja");
             
             var photoFiles = new List<File>();
@@ -49,6 +52,9 @@ namespace RentACar.Application.Rentals.Commands.FinishRental
 
             entity.Files = photoFiles;
             entity.Status = RentalStatus.Returned;
+
+            entity.Reservation.Status = ReservationStatus.Completed;
+            entity.Reservation!.Vehicle!.LocationId = entity.Reservation.ReturnLocationId;
 
             await _context.SaveChangesAsync(cancellationToken);
 
