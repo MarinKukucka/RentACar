@@ -1,6 +1,6 @@
 ﻿namespace RentACar.Domain.Enums
 {
-    public enum ReservationRentalPhotoType
+    public enum RentalPhotoType
     {
         Front = 1,
         Back,

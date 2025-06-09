@@ -1,4 +1,4 @@
-import { FuelType, OptionsDto, ReservationStatus, Transmission, VehicleType } from "../api/api";
+import { FuelType, OptionsDto, RentalStatus, ReservationStatus, Transmission, VehicleType } from "../api/api";
 import translations from "../config/localization/translations";
 
 export interface SelectOption {
@@ -54,6 +54,16 @@ export const getReservationStatusOptions = () => {
             value: value,
         }));
 };
+
+export const getRentalStatusOptions = () => {
+    return Object.entries(RentalStatus)
+        .filter(([, value]) => typeof value === 'number')
+        .map(([key, value]) => ({
+            key: key,
+            label: key,
+            value: value
+        }));
+}
 
 export const getEnumTranslation = (
     enumName: keyof typeof translations.enums,

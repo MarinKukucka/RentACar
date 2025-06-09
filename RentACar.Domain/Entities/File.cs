@@ -10,5 +10,8 @@ namespace RentACar.Domain.Entities
 
         [StringLength(500)]
         public required string Name { get; set; }
+
+
+        public virtual List<Rental>? Rentals { get; set; }
     }
 }

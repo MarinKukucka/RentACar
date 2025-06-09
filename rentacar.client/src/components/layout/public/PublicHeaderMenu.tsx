@@ -33,10 +33,7 @@ function PublicHeaderMenu() {
             </div>
             <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["home"]}>
                 <Menu.Item key="about">
-                    {t(translations.general.aboutUs)}
-                </Menu.Item>
-                <Menu.Item key="contact">
-                    {t(translations.general.contact)}
+                    <Link to="/AboutUs">{t(translations.general.aboutUs)}</Link>
                 </Menu.Item>
                 <Menu.Item key="languages">
                     <GlobalOutlined />

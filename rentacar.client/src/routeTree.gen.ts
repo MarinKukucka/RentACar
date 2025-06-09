@@ -17,10 +17,12 @@ import { Route as PublicRoutesSuccessImport } from './routes/_publicRoutes/Succe
 import { Route as PublicRoutesSearchResultsImport } from './routes/_publicRoutes/SearchResults'
 import { Route as PublicRoutesPaymentImport } from './routes/_publicRoutes/Payment'
 import { Route as PublicRoutesExtraServicesImport } from './routes/_publicRoutes/ExtraServices'
+import { Route as PublicRoutesAboutUsImport } from './routes/_publicRoutes/AboutUs'
 import { Route as AuthorizedRoutesProfileImport } from './routes/_authorizedRoutes/Profile'
 import { Route as AuthorizationLoginImport } from './routes/_authorization/Login'
 import { Route as AuthorizedRoutesVehiclesIndexImport } from './routes/_authorizedRoutes/vehicles/index'
 import { Route as AuthorizedRoutesReservationsIndexImport } from './routes/_authorizedRoutes/reservations/index'
+import { Route as AuthorizedRoutesRentalsIndexImport } from './routes/_authorizedRoutes/rentals/index'
 import { Route as AuthorizedRoutesPeopleIndexImport } from './routes/_authorizedRoutes/people/index'
 
 // Create/Update Routes
@@ -60,6 +62,12 @@ const PublicRoutesExtraServicesRoute = PublicRoutesExtraServicesImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const PublicRoutesAboutUsRoute = PublicRoutesAboutUsImport.update({
+  id: '/_publicRoutes/AboutUs',
+  path: '/AboutUs',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const AuthorizedRoutesProfileRoute = AuthorizedRoutesProfileImport.update({
   id: '/Profile',
   path: '/Profile',
@@ -83,6 +91,13 @@ const AuthorizedRoutesReservationsIndexRoute =
   AuthorizedRoutesReservationsIndexImport.update({
     id: '/reservations/',
     path: '/reservations/',
+    getParentRoute: () => AuthorizedRoutesRoute,
+  } as any)
+
+const AuthorizedRoutesRentalsIndexRoute =
+  AuthorizedRoutesRentalsIndexImport.update({
+    id: '/rentals/',
+    path: '/rentals/',
     getParentRoute: () => AuthorizedRoutesRoute,
   } as any)
 
@@ -117,6 +132,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/Profile'
       preLoaderRoute: typeof AuthorizedRoutesProfileImport
       parentRoute: typeof AuthorizedRoutesImport
+    }
+    '/_publicRoutes/AboutUs': {
+      id: '/_publicRoutes/AboutUs'
+      path: '/AboutUs'
+      fullPath: '/AboutUs'
+      preLoaderRoute: typeof PublicRoutesAboutUsImport
+      parentRoute: typeof rootRoute
     }
     '/_publicRoutes/ExtraServices': {
       id: '/_publicRoutes/ExtraServices'
@@ -160,6 +182,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthorizedRoutesPeopleIndexImport
       parentRoute: typeof AuthorizedRoutesImport
     }
+    '/_authorizedRoutes/rentals/': {
+      id: '/_authorizedRoutes/rentals/'
+      path: '/rentals'
+      fullPath: '/rentals'
+      preLoaderRoute: typeof AuthorizedRoutesRentalsIndexImport
+      parentRoute: typeof AuthorizedRoutesImport
+    }
     '/_authorizedRoutes/reservations/': {
       id: '/_authorizedRoutes/reservations/'
       path: '/reservations'
@@ -182,6 +211,7 @@ declare module '@tanstack/react-router' {
 interface AuthorizedRoutesRouteChildren {
   AuthorizedRoutesProfileRoute: typeof AuthorizedRoutesProfileRoute
   AuthorizedRoutesPeopleIndexRoute: typeof AuthorizedRoutesPeopleIndexRoute
+  AuthorizedRoutesRentalsIndexRoute: typeof AuthorizedRoutesRentalsIndexRoute
   AuthorizedRoutesReservationsIndexRoute: typeof AuthorizedRoutesReservationsIndexRoute
   AuthorizedRoutesVehiclesIndexRoute: typeof AuthorizedRoutesVehiclesIndexRoute
 }
@@ -189,6 +219,7 @@ interface AuthorizedRoutesRouteChildren {
 const AuthorizedRoutesRouteChildren: AuthorizedRoutesRouteChildren = {
   AuthorizedRoutesProfileRoute: AuthorizedRoutesProfileRoute,
   AuthorizedRoutesPeopleIndexRoute: AuthorizedRoutesPeopleIndexRoute,
+  AuthorizedRoutesRentalsIndexRoute: AuthorizedRoutesRentalsIndexRoute,
   AuthorizedRoutesReservationsIndexRoute:
     AuthorizedRoutesReservationsIndexRoute,
   AuthorizedRoutesVehiclesIndexRoute: AuthorizedRoutesVehiclesIndexRoute,
@@ -201,12 +232,14 @@ export interface FileRoutesByFullPath {
   '': typeof AuthorizedRoutesRouteWithChildren
   '/Login': typeof AuthorizationLoginRoute
   '/Profile': typeof AuthorizedRoutesProfileRoute
+  '/AboutUs': typeof PublicRoutesAboutUsRoute
   '/ExtraServices': typeof PublicRoutesExtraServicesRoute
   '/Payment': typeof PublicRoutesPaymentRoute
   '/SearchResults': typeof PublicRoutesSearchResultsRoute
   '/Success': typeof PublicRoutesSuccessRoute
   '/': typeof PublicRoutesIndexRoute
   '/people': typeof AuthorizedRoutesPeopleIndexRoute
+  '/rentals': typeof AuthorizedRoutesRentalsIndexRoute
   '/reservations': typeof AuthorizedRoutesReservationsIndexRoute
   '/vehicles': typeof AuthorizedRoutesVehiclesIndexRoute
 }
@@ -215,12 +248,14 @@ export interface FileRoutesByTo {
   '': typeof AuthorizedRoutesRouteWithChildren
   '/Login': typeof AuthorizationLoginRoute
   '/Profile': typeof AuthorizedRoutesProfileRoute
+  '/AboutUs': typeof PublicRoutesAboutUsRoute
   '/ExtraServices': typeof PublicRoutesExtraServicesRoute
   '/Payment': typeof PublicRoutesPaymentRoute
   '/SearchResults': typeof PublicRoutesSearchResultsRoute
   '/Success': typeof PublicRoutesSuccessRoute
   '/': typeof PublicRoutesIndexRoute
   '/people': typeof AuthorizedRoutesPeopleIndexRoute
+  '/rentals': typeof AuthorizedRoutesRentalsIndexRoute
   '/reservations': typeof AuthorizedRoutesReservationsIndexRoute
   '/vehicles': typeof AuthorizedRoutesVehiclesIndexRoute
 }
@@ -230,12 +265,14 @@ export interface FileRoutesById {
   '/_authorizedRoutes': typeof AuthorizedRoutesRouteWithChildren
   '/_authorization/Login': typeof AuthorizationLoginRoute
   '/_authorizedRoutes/Profile': typeof AuthorizedRoutesProfileRoute
+  '/_publicRoutes/AboutUs': typeof PublicRoutesAboutUsRoute
   '/_publicRoutes/ExtraServices': typeof PublicRoutesExtraServicesRoute
   '/_publicRoutes/Payment': typeof PublicRoutesPaymentRoute
   '/_publicRoutes/SearchResults': typeof PublicRoutesSearchResultsRoute
   '/_publicRoutes/Success': typeof PublicRoutesSuccessRoute
   '/_publicRoutes/': typeof PublicRoutesIndexRoute
   '/_authorizedRoutes/people/': typeof AuthorizedRoutesPeopleIndexRoute
+  '/_authorizedRoutes/rentals/': typeof AuthorizedRoutesRentalsIndexRoute
   '/_authorizedRoutes/reservations/': typeof AuthorizedRoutesReservationsIndexRoute
   '/_authorizedRoutes/vehicles/': typeof AuthorizedRoutesVehiclesIndexRoute
 }
@@ -246,12 +283,14 @@ export interface FileRouteTypes {
     | ''
     | '/Login'
     | '/Profile'
+    | '/AboutUs'
     | '/ExtraServices'
     | '/Payment'
     | '/SearchResults'
     | '/Success'
     | '/'
     | '/people'
+    | '/rentals'
     | '/reservations'
     | '/vehicles'
   fileRoutesByTo: FileRoutesByTo
@@ -259,12 +298,14 @@ export interface FileRouteTypes {
     | ''
     | '/Login'
     | '/Profile'
+    | '/AboutUs'
     | '/ExtraServices'
     | '/Payment'
     | '/SearchResults'
     | '/Success'
     | '/'
     | '/people'
+    | '/rentals'
     | '/reservations'
     | '/vehicles'
   id:
@@ -272,12 +313,14 @@ export interface FileRouteTypes {
     | '/_authorizedRoutes'
     | '/_authorization/Login'
     | '/_authorizedRoutes/Profile'
+    | '/_publicRoutes/AboutUs'
     | '/_publicRoutes/ExtraServices'
     | '/_publicRoutes/Payment'
     | '/_publicRoutes/SearchResults'
     | '/_publicRoutes/Success'
     | '/_publicRoutes/'
     | '/_authorizedRoutes/people/'
+    | '/_authorizedRoutes/rentals/'
     | '/_authorizedRoutes/reservations/'
     | '/_authorizedRoutes/vehicles/'
   fileRoutesById: FileRoutesById
@@ -286,6 +329,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   AuthorizedRoutesRoute: typeof AuthorizedRoutesRouteWithChildren
   AuthorizationLoginRoute: typeof AuthorizationLoginRoute
+  PublicRoutesAboutUsRoute: typeof PublicRoutesAboutUsRoute
   PublicRoutesExtraServicesRoute: typeof PublicRoutesExtraServicesRoute
   PublicRoutesPaymentRoute: typeof PublicRoutesPaymentRoute
   PublicRoutesSearchResultsRoute: typeof PublicRoutesSearchResultsRoute
@@ -296,6 +340,7 @@ export interface RootRouteChildren {
 const rootRouteChildren: RootRouteChildren = {
   AuthorizedRoutesRoute: AuthorizedRoutesRouteWithChildren,
   AuthorizationLoginRoute: AuthorizationLoginRoute,
+  PublicRoutesAboutUsRoute: PublicRoutesAboutUsRoute,
   PublicRoutesExtraServicesRoute: PublicRoutesExtraServicesRoute,
   PublicRoutesPaymentRoute: PublicRoutesPaymentRoute,
   PublicRoutesSearchResultsRoute: PublicRoutesSearchResultsRoute,
@@ -315,6 +360,7 @@ export const routeTree = rootRoute
       "children": [
         "/_authorizedRoutes",
         "/_authorization/Login",
+        "/_publicRoutes/AboutUs",
         "/_publicRoutes/ExtraServices",
         "/_publicRoutes/Payment",
         "/_publicRoutes/SearchResults",
@@ -327,6 +373,7 @@ export const routeTree = rootRoute
       "children": [
         "/_authorizedRoutes/Profile",
         "/_authorizedRoutes/people/",
+        "/_authorizedRoutes/rentals/",
         "/_authorizedRoutes/reservations/",
         "/_authorizedRoutes/vehicles/"
       ]
@@ -337,6 +384,9 @@ export const routeTree = rootRoute
     "/_authorizedRoutes/Profile": {
       "filePath": "_authorizedRoutes/Profile.tsx",
       "parent": "/_authorizedRoutes"
+    },
+    "/_publicRoutes/AboutUs": {
+      "filePath": "_publicRoutes/AboutUs.tsx"
     },
     "/_publicRoutes/ExtraServices": {
       "filePath": "_publicRoutes/ExtraServices.tsx"
@@ -355,6 +405,10 @@ export const routeTree = rootRoute
     },
     "/_authorizedRoutes/people/": {
       "filePath": "_authorizedRoutes/people/index.tsx",
+      "parent": "/_authorizedRoutes"
+    },
+    "/_authorizedRoutes/rentals/": {
+      "filePath": "_authorizedRoutes/rentals/index.tsx",
       "parent": "/_authorizedRoutes"
     },
     "/_authorizedRoutes/reservations/": {

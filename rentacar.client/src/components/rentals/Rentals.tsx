@@ -2,53 +2,49 @@
 import { useTranslation } from "react-i18next";
 import { DrawerSchema, SearchSortPaginationSchema } from "../../models/search";
 import * as v from "valibot";
-import { Route } from "../../routes/_authorizedRoutes/reservations/index";
+import { Route } from "../../routes/_authorizedRoutes/rentals";
 import { useNavigate } from "@tanstack/react-router";
-import { useFetchPaginatedReservationsQuery } from "../../api/reservations/reservations";
+import { useFetchPaginatedRentalsQuery } from "../../api/rentals/rentals";
 import { useCallback, useState } from "react";
 import { Button, Drawer, Table, TablePaginationConfig } from "antd";
 import { FilterValue, SorterResult } from "antd/es/table/interface";
-import { ReservationDto, ReservationStatus } from "../../api/api";
+import { RentalDto, RentalStatus } from "../../api/api";
 import { TableParamsChange } from "../../helpers/SearchHelper";
 import translations from "../../config/localization/translations";
 import { getCheckboxFilter, getSearchFilter } from "../../helpers/FilterHelper";
 import { PageHeader } from "@ant-design/pro-layout";
 import { defaultTablePagination, DRAWER_WIDTH } from "../../config/constants";
+import { getRentalStatusOptions } from "../../helpers/OptionsMappingHelper";
 import { formatDate } from "../../helpers/FormatHelper";
-import { getReservationStatusOptions } from "../../helpers/OptionsMappingHelper";
 import { DrawerState } from "../../models/enums";
-import RentalForm from "../rentals/RentalForm";
+import RentalForm from "./RentalForm";
 
-const ReservationsFilter = v.intersect([
+const RentalsFilters = v.intersect([
     SearchSortPaginationSchema,
     DrawerSchema,
     v.object({
         id: v.optional(v.number()),
-        startDateTime: v.optional(v.date()),
-        endDateTime: v.optional(v.date()),
         status: v.optional(v.number()),
     }),
 ]);
 
-export type ReservationsFilter = v.InferOutput<typeof ReservationsFilter>;
+export type RentalsFilters = v.InferOutput<typeof RentalsFilters>;
 
-function Reservations() {
-    const [selectedReservationId, setSelectedReservationId] =
-        useState<number>();
+function Rentals() {
+    const [selectedRentalId, setSelectedRentalId] = useState<number>();
 
     const { t } = useTranslation();
-    const search: ReservationsFilter = Route.useSearch();
+    const search: RentalsFilters = Route.useSearch();
     const navigate = useNavigate({ from: Route.fullPath });
 
-    const { data: reservations, isLoading } =
-        useFetchPaginatedReservationsQuery(search);
+    const { data: rentals, isLoading } = useFetchPaginatedRentalsQuery(search);
 
-    const reservationStatusOption = getReservationStatusOptions();
+    const rentalStatusOptions = getRentalStatusOptions();
 
     // #region Callbacks
 
     const updateFilters = useCallback(
-        (name: keyof ReservationsFilter, value: unknown) => {
+        (name: keyof RentalsFilters, value: unknown) => {
             navigate({ search: (prev: any) => ({ ...prev, [name]: value }) });
         },
         [navigate]
@@ -58,12 +54,10 @@ function Reservations() {
         (
             pagination: TablePaginationConfig,
             filters: Record<string, FilterValue | null>,
-            sorter:
-                | SorterResult<ReservationDto>
-                | SorterResult<ReservationDto>[],
+            sorter: SorterResult<RentalDto> | SorterResult<RentalDto>[],
             { action }: { action: "paginate" | "sort" | "filter" }
         ) => {
-            TableParamsChange<ReservationDto>(
+            TableParamsChange<RentalDto>(
                 pagination,
                 filters,
                 sorter,
@@ -75,12 +69,12 @@ function Reservations() {
     );
 
     const handleDrawerMode = useCallback(
-        (drawerState: DrawerState, reservationId?: number) => {
+        (drawerState: DrawerState, rentalId?: number) => {
             updateFilters(
                 "drawerState",
                 drawerState !== DrawerState.Closed ? drawerState : undefined
             );
-            setSelectedReservationId(reservationId);
+            setSelectedRentalId(rentalId);
         },
         [updateFilters]
     );
@@ -89,61 +83,65 @@ function Reservations() {
 
     const columns = [
         {
-            title: t(translations.reservations.identificator),
+            title: t(translations.rentals.identificator),
             dataIndex: "id",
             ...getSearchFilter(),
             filteredValue: search.id !== undefined ? [search.id] : null,
         },
         {
-            title: t(translations.reservations.startDateTime),
-            dataIndex: "startDateTime",
-            sorter: true,
-            render: (value: Date) => formatDate(value),
-        },
-        {
-            title: t(translations.reservations.endDateTime),
-            dataIndex: "endDateTime",
-            sorter: true,
-            render: (value: Date) => formatDate(value),
-        },
-        {
-            title: t(translations.reservations.status),
+            title: t(translations.rentals.status),
             dataIndex: "status",
-            ...getCheckboxFilter(reservationStatusOption),
+            ...getCheckboxFilter(rentalStatusOptions),
             filteredValue: search.status !== undefined ? [search.status] : null,
             sorter: true,
-            render: (value: number) => ReservationStatus[value],
+            render: (value: number) => RentalStatus[value],
         },
         {
-            title: t(translations.reservations.totalPrice),
+            title: t(translations.rentals.pickupDateTime),
+            dataIndex: "pickupDateTime",
+            sorter: true,
+            render: (value: Date) => formatDate(value),
+        },
+        {
+            title: t(translations.rentals.returnDateTime),
+            dataIndex: "returnDateTime",
+            sorter: true,
+            render: (value: Date) => formatDate(value),
+        },
+        {
+            title: t(translations.rentals.odometerStart),
+            dataIndex: "odometerStart",
+            sorter: true,
+            render: (value: number) => <div>{value} km</div>,
+        },
+        {
+            title: t(translations.rentals.odometerEnd),
+            dataIndex: "odometerEnd",
+            sorter: true,
+            render: (value: number) => value && <div>{value} km</div>,
+        },
+        {
+            title: t(translations.rentals.totalPrice),
             dataIndex: "totalPrice",
             sorter: true,
         },
         {
-            title: t(translations.reservations.personName),
-            dataIndex: "personName",
+            title: t(translations.rentals.notes),
+            dataIndex: "notes",
             sorter: true,
-        },
-        {
-            title: t(translations.reservations.extraServices),
-            dataIndex: "extraServices",
-            sorter: true,
-            render: (values: string[]) => {
-                return values.map((val) => <div>{val}</div>);
-            },
         },
         {
             title: t(translations.general.actions),
             key: "actions",
-            render: (record: ReservationDto) => {
+            render: (record: RentalDto) => {
                 return (
                     <Button
                         type="primary"
                         onClick={() =>
-                            handleDrawerMode(DrawerState.Create, record.id)
+                            handleDrawerMode(DrawerState.Edit, record.id)
                         }
                     >
-                        {t(translations.rentals.createRental)}
+                        {t(translations.rentals.finishRental)}
                     </Button>
                 );
             },
@@ -152,27 +150,25 @@ function Reservations() {
 
     return (
         <>
-            <PageHeader title={t(translations.reservations.title)} />
+            <PageHeader title={t(translations.rentals.title)} />
 
             <Table
                 columns={columns}
-                dataSource={reservations?.items}
-                rowKey={(reservation: ReservationDto): string =>
-                    reservation.id?.toString()
-                }
+                dataSource={rentals?.items}
+                rowKey={(rental: RentalDto): string => rental.id?.toString()}
                 loading={isLoading}
                 pagination={{
                     ...defaultTablePagination,
                     current: search.currentPage,
                     pageSize: search.pageSize,
-                    total: reservations?.totalItems,
+                    total: rentals?.totalItems,
                 }}
                 onChange={handleTableChange}
                 bordered
             />
 
             <Drawer
-                title={t(translations.rentals.createRental)}
+                title={t(translations.rentals.finishRental)}
                 open={!!search.drawerState}
                 onClose={() => handleDrawerMode(DrawerState.Closed)}
                 destroyOnClose
@@ -181,11 +177,11 @@ function Reservations() {
                 <RentalForm
                     onClose={() => handleDrawerMode(DrawerState.Closed)}
                     onSuccess={() => handleDrawerMode(DrawerState.Closed)}
-                    reservationId={selectedReservationId}
+                    rentalId={selectedRentalId}
                 />
             </Drawer>
         </>
     );
 }
 
-export default Reservations;
+export default Rentals;

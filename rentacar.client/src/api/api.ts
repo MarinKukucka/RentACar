@@ -1139,8 +1139,78 @@ export class RentalClient extends ApiClientBase {
         this.baseUrl = this.getBaseUrl("", baseUrl);
     }
 
+    getPaginatedVehicles(paginationFilter_Filter_Id: number | null | undefined, paginationFilter_Filter_Status: number | null | undefined, paginationFilter_CurrentPage: number | undefined, paginationFilter_PageSize: number | undefined, paginationFilter_SortBy: string | undefined, paginationFilter_SortOrder: string | undefined): Promise<PaginationResponseOfRentalDto> {
+        let url_ = this.baseUrl + "/api/Rental?";
+        if (paginationFilter_Filter_Id !== undefined && paginationFilter_Filter_Id !== null)
+            url_ += "PaginationFilter.Filter.Id=" + encodeURIComponent("" + paginationFilter_Filter_Id) + "&";
+        if (paginationFilter_Filter_Status !== undefined && paginationFilter_Filter_Status !== null)
+            url_ += "PaginationFilter.Filter.Status=" + encodeURIComponent("" + paginationFilter_Filter_Status) + "&";
+        if (paginationFilter_CurrentPage === null)
+            throw new Error("The parameter 'paginationFilter_CurrentPage' cannot be null.");
+        else if (paginationFilter_CurrentPage !== undefined)
+            url_ += "PaginationFilter.CurrentPage=" + encodeURIComponent("" + paginationFilter_CurrentPage) + "&";
+        if (paginationFilter_PageSize === null)
+            throw new Error("The parameter 'paginationFilter_PageSize' cannot be null.");
+        else if (paginationFilter_PageSize !== undefined)
+            url_ += "PaginationFilter.PageSize=" + encodeURIComponent("" + paginationFilter_PageSize) + "&";
+        if (paginationFilter_SortBy === null)
+            throw new Error("The parameter 'paginationFilter_SortBy' cannot be null.");
+        else if (paginationFilter_SortBy !== undefined)
+            url_ += "PaginationFilter.SortBy=" + encodeURIComponent("" + paginationFilter_SortBy) + "&";
+        if (paginationFilter_SortOrder === null)
+            throw new Error("The parameter 'paginationFilter_SortOrder' cannot be null.");
+        else if (paginationFilter_SortOrder !== undefined)
+            url_ += "PaginationFilter.SortOrder=" + encodeURIComponent("" + paginationFilter_SortOrder) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetPaginatedVehicles(_response));
+        });
+    }
+
+    protected processGetPaginatedVehicles(response: Response): Promise<PaginationResponseOfRentalDto> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 401) {
+            return response.text().then((_responseText) => {
+            let result401: any = null;
+            let resultData401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result401 = ProblemDetails.fromJS(resultData401);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result401);
+            });
+        } else if (status === 403) {
+            return response.text().then((_responseText) => {
+            let result403: any = null;
+            let resultData403 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result403 = ProblemDetails.fromJS(resultData403);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result403);
+            });
+        } else if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PaginationResponseOfRentalDto.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<PaginationResponseOfRentalDto>(null as any);
+    }
+
     createRental(command: CreateRentalCommand): Promise<NoContent> {
-        let url_ = this.baseUrl + "/api/Rental";
+        let url_ = this.baseUrl + "/api/Rental/create-rental";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(command);
@@ -1162,6 +1232,71 @@ export class RentalClient extends ApiClientBase {
     }
 
     protected processCreateRental(response: Response): Promise<NoContent> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 401) {
+            return response.text().then((_responseText) => {
+            let result401: any = null;
+            let resultData401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result401 = ProblemDetails.fromJS(resultData401);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result401);
+            });
+        } else if (status === 403) {
+            return response.text().then((_responseText) => {
+            let result403: any = null;
+            let resultData403 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result403 = ProblemDetails.fromJS(resultData403);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result403);
+            });
+        } else if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = NoContent.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<NoContent>(null as any);
+    }
+
+    finishRental(returnDateTime: Date | undefined, odometerEnd: number | undefined, notes: string | null | undefined, files: FileParameter[] | null | undefined): Promise<NoContent> {
+        let url_ = this.baseUrl + "/api/Rental/finish-rental";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = new FormData();
+        if (returnDateTime === null || returnDateTime === undefined)
+            throw new Error("The parameter 'returnDateTime' cannot be null.");
+        else
+            content_.append("ReturnDateTime", returnDateTime.toJSON());
+        if (odometerEnd === null || odometerEnd === undefined)
+            throw new Error("The parameter 'odometerEnd' cannot be null.");
+        else
+            content_.append("OdometerEnd", odometerEnd.toString());
+        if (notes !== null && notes !== undefined)
+            content_.append("Notes", notes.toString());
+        if (files !== null && files !== undefined)
+            files.forEach(item_ => content_.append("Files", item_.data, item_.fileName ? item_.fileName : "Files") );
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processFinishRental(_response));
+        });
+    }
+
+    protected processFinishRental(response: Response): Promise<NoContent> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 401) {
@@ -2487,6 +2622,135 @@ export interface ICreateUserAndPersonCommand {
     role: string | undefined;
 }
 
+export class PaginationResponseOfRentalDto implements IPaginationResponseOfRentalDto {
+    items!: RentalDto[];
+    currentPage!: number;
+    pageSize!: number;
+    totalPages!: number;
+    totalItems!: number;
+
+    constructor(data?: IPaginationResponseOfRentalDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(RentalDto.fromJS(item));
+            }
+            this.currentPage = _data["currentPage"];
+            this.pageSize = _data["pageSize"];
+            this.totalPages = _data["totalPages"];
+            this.totalItems = _data["totalItems"];
+        }
+    }
+
+    static fromJS(data: any): PaginationResponseOfRentalDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PaginationResponseOfRentalDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : <any>undefined);
+        }
+        data["currentPage"] = this.currentPage;
+        data["pageSize"] = this.pageSize;
+        data["totalPages"] = this.totalPages;
+        data["totalItems"] = this.totalItems;
+        return data;
+    }
+}
+
+export interface IPaginationResponseOfRentalDto {
+    items: RentalDto[];
+    currentPage: number;
+    pageSize: number;
+    totalPages: number;
+    totalItems: number;
+}
+
+export class RentalDto implements IRentalDto {
+    id!: number;
+    status!: RentalStatus;
+    pickupDateTime!: Date;
+    returnDateTime!: Date | undefined;
+    odometerStart!: number;
+    odometerEnd!: number | undefined;
+    totalPrice!: number | undefined;
+    notes!: string | undefined;
+
+    constructor(data?: IRentalDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.status = _data["status"];
+            this.pickupDateTime = _data["pickupDateTime"] ? new Date(_data["pickupDateTime"].toString()) : <any>undefined;
+            this.returnDateTime = _data["returnDateTime"] ? new Date(_data["returnDateTime"].toString()) : <any>undefined;
+            this.odometerStart = _data["odometerStart"];
+            this.odometerEnd = _data["odometerEnd"];
+            this.totalPrice = _data["totalPrice"];
+            this.notes = _data["notes"];
+        }
+    }
+
+    static fromJS(data: any): RentalDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new RentalDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["status"] = this.status;
+        data["pickupDateTime"] = this.pickupDateTime ? this.pickupDateTime.toISOString() : <any>undefined;
+        data["returnDateTime"] = this.returnDateTime ? this.returnDateTime.toISOString() : <any>undefined;
+        data["odometerStart"] = this.odometerStart;
+        data["odometerEnd"] = this.odometerEnd;
+        data["totalPrice"] = this.totalPrice;
+        data["notes"] = this.notes;
+        return data;
+    }
+}
+
+export interface IRentalDto {
+    id: number;
+    status: RentalStatus;
+    pickupDateTime: Date;
+    returnDateTime: Date | undefined;
+    odometerStart: number;
+    odometerEnd: number | undefined;
+    totalPrice: number | undefined;
+    notes: string | undefined;
+}
+
+export enum RentalStatus {
+    PickedUp = 1,
+    Returned = 2,
+}
+
 export class NoContent implements INoContent {
     statusCode!: number;
 
@@ -3194,6 +3458,11 @@ export interface ICreateVehicleCommand {
     price: number;
     modelId: number;
     locationId: number;
+}
+
+export interface FileParameter {
+    data: any;
+    fileName: string;
 }
 
 export class ApiException extends Error {

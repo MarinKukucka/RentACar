@@ -15,7 +15,8 @@
             "no": "No",
             "actions": "Actions",
             "aboutUs": "About us",
-            "contact": "Contact"
+            "contact": "Contact",
+            "upload": "Upload"
         },
         "authorization": {
             "email": "Email",
@@ -82,13 +83,21 @@
             "status": "Status",
             "totalPrice": "Total price",
             "personName": "Reserved for",
-            "extraServices": "Extra services",
-            "createRental": "Create rental"
+            "extraServices": "Extra services"
         },
         "rentals": {
+            "title": "Rentals",
+            "identificator": "Identificator",
+            "status": "Status",
             "pickupDateTime": "Pick up time",
+            "returnDateTime": "Return time",
             "odometerStart": "Current odometer state",
-            "notes": "Notes"
+            "odometerEnd": "End odometer state",
+            "totalPrice": "Total price",
+            "photos": "Photos",
+            "notes": "Notes",
+            "createRental": "Create rental",
+            "finishRental": "Finish rental"
         },
         "locations": {
             "ourLocations": "Our locations"

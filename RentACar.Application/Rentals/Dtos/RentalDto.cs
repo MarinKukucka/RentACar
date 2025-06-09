@@ -1,11 +1,12 @@
-﻿using RentACar.Domain.Common;
-using RentACar.Domain.Enums;
+﻿using RentACar.Domain.Enums;
 using System.ComponentModel.DataAnnotations;
 
-namespace RentACar.Domain.Entities
+namespace RentACar.Application.Rentals.Dtos
 {
-    public class Rental : BaseEntity
+    public class RentalDto
     {
+        public int Id { get; set; }
+
         public required RentalStatus Status { get; set; }
 
         public required DateTime PickupDateTime { get; set; }
@@ -20,12 +21,5 @@ namespace RentACar.Domain.Entities
 
         [StringLength(500)]
         public string? Notes { get; set; }
-
-
-        public int? ReservationId { get; set; }
-
-        public Reservation? Reservation { get; set; }
-
-        public virtual List<File>? Files { get; set; }
     }
 }

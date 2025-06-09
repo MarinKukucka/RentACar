@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RentACar.Infrastructure.Data.Context;
 
@@ -11,9 +12,11 @@ using RentACar.Infrastructure.Data.Context;
 namespace RentACar.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250607104740_RemoveReservationPhotos")]
+    partial class RemoveReservationPhotos
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,21 +38,6 @@ namespace RentACar.Infrastructure.Migrations
                     b.HasIndex("ReservationsId");
 
                     b.ToTable("ExtraServiceReservation");
-                });
-
-            modelBuilder.Entity("FileRental", b =>
-                {
-                    b.Property<int>("FilesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RentalsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("FilesId", "RentalsId");
-
-                    b.HasIndex("RentalsId");
-
-                    b.ToTable("FileRental");
                 });
 
             modelBuilder.Entity("InvoicePayment", b =>
@@ -574,6 +562,32 @@ namespace RentACar.Infrastructure.Migrations
                     b.ToTable("Rentals");
                 });
 
+            modelBuilder.Entity("RentACar.Domain.Entities.RentalPhoto", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("FileId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("RentalId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RentalPhotoType")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FileId");
+
+                    b.HasIndex("RentalId");
+
+                    b.ToTable("RentalPhotos");
+                });
+
             modelBuilder.Entity("RentACar.Domain.Entities.Reservation", b =>
                 {
                     b.Property<int>("Id")
@@ -700,21 +714,6 @@ namespace RentACar.Infrastructure.Migrations
                     b.HasOne("RentACar.Domain.Entities.Reservation", null)
                         .WithMany()
                         .HasForeignKey("ReservationsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("FileRental", b =>
-                {
-                    b.HasOne("RentACar.Domain.Entities.File", null)
-                        .WithMany()
-                        .HasForeignKey("FilesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("RentACar.Domain.Entities.Rental", null)
-                        .WithMany()
-                        .HasForeignKey("RentalsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -869,6 +868,21 @@ namespace RentACar.Infrastructure.Migrations
                         .HasForeignKey("ReservationId");
 
                     b.Navigation("Reservation");
+                });
+
+            modelBuilder.Entity("RentACar.Domain.Entities.RentalPhoto", b =>
+                {
+                    b.HasOne("RentACar.Domain.Entities.File", "File")
+                        .WithMany()
+                        .HasForeignKey("FileId");
+
+                    b.HasOne("RentACar.Domain.Entities.Rental", "Rental")
+                        .WithMany()
+                        .HasForeignKey("RentalId");
+
+                    b.Navigation("File");
+
+                    b.Navigation("Rental");
                 });
 
             modelBuilder.Entity("RentACar.Domain.Entities.Reservation", b =>

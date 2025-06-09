@@ -15,7 +15,8 @@
             "no": "Ne",
             "actions": "Akcije",
             "aboutUs": "O nama",
-            "contact": "Kontakt"
+            "contact": "Kontakt",
+            "upload": "Prenesi"
         },
         "authorization": {
             "email": "Email",
@@ -82,13 +83,21 @@
             "status": "Status",
             "totalPrice": "Ukupna cijena",
             "personName": "Rezervirano za",
-            "extraServices": "Dodatne opcije",
-            "createRental": "Napravi rental"
+            "extraServices": "Dodatne opcije"
         },
         "rentals": {
+            "title": "Najmovi",
+            "identificator": "Identifikator",
+            "status": "Status",
             "pickupDateTime": "Vrijeme podizanja vozila",
+            "returnDateTime": "Vrijeme vraćanja vozila",
             "odometerStart": "Trenutna kilomteraža",
-            "notes": "Bilješke"
+            "odometerEnd": "Krajnja kilometraža",
+            "totalPrice": "Ukupna cijena",
+            "photos": "Slike",
+            "notes": "Bilješke",
+            "createRental": "Pokreni najam",
+            "finishRental": "Završi najam"
         },
         "locations": {
             "ourLocations": "Naše lokacije"

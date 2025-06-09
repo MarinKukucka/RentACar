@@ -4,6 +4,7 @@ import {
     LoginOutlined,
     LogoutOutlined,
     OrderedListOutlined,
+    UnorderedListOutlined,
     UserOutlined,
 } from "@ant-design/icons";
 import { Link, useNavigate } from "@tanstack/react-router";
@@ -68,6 +69,13 @@ function AuthHeaderMenu() {
                     <Link to="/reservations">
                         {t(translations.reservations.title)}
                     </Link>
+                ),
+            },
+            {
+                key: "rentals",
+                icon: <UnorderedListOutlined />,
+                label: (
+                    <Link to="/rentals">{t(translations.rentals.title)}</Link>
                 ),
             },
             {

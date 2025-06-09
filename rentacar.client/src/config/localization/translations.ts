@@ -14,7 +14,8 @@ const translations = {
         no: 'general.no',
         actions: 'general.actions',
         aboutUs: 'general.aboutUs',
-        contact: 'general.contact'
+        contact: 'general.contact',
+        upload: 'general.upload'
     },
     authorization: {
         email: 'authorization.email',
@@ -82,11 +83,20 @@ const translations = {
         totalPrice: 'reservations.totalPrice',
         personName: 'reservations.personName',
         extraServices: 'reservations.extraServices',
-        createRental: 'reservations.createRental'
     },
     rentals: {
+        title: 'rentals.title',
+        identificator: 'rentals.identificator',
+        status: 'rentals.status',
+        pickupDateTime: 'rentals.pickupDateTime',
+        returnDateTime: 'rentals.returnDateTime',
         odometerStart: 'rentals.odometerStart',
-        notes: 'rentals.notes'
+        odometerEnd: 'rentals.odometerEnd',
+        totalPrice: 'rentals.totalPrice',
+        photos: 'rentals.photos',
+        notes: 'rentals.notes',
+        createRental: 'rentals.createRental',
+        finishRental: 'rentals.finishRental',
     },
     locations: {
         ourLocations: 'locations.ourLocations'
