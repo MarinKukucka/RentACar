@@ -4,11 +4,25 @@ import { DrawerSchema, SearchSortPaginationSchema } from "../../models/search";
 import * as v from "valibot";
 import { Route } from "../../routes/_authorizedRoutes/reservations/index";
 import { useNavigate } from "@tanstack/react-router";
-import { useFetchPaginatedReservationsQuery } from "../../api/reservations/reservations";
+import {
+    useFetchPaginatedReservationsQuery,
+    useUpdateReservationMutation,
+} from "../../api/reservations/reservations";
 import { useCallback, useState } from "react";
-import { Button, Drawer, Table, TablePaginationConfig } from "antd";
+import {
+    Button,
+    Drawer,
+    Dropdown,
+    Modal,
+    Table,
+    TablePaginationConfig,
+} from "antd";
 import { FilterValue, SorterResult } from "antd/es/table/interface";
-import { ReservationDto, ReservationStatus } from "../../api/api";
+import {
+    ReservationDto,
+    ReservationStatus,
+    UpdateReservationCommand,
+} from "../../api/api";
 import { TableParamsChange } from "../../helpers/SearchHelper";
 import translations from "../../config/localization/translations";
 import { getCheckboxFilter, getSearchFilter } from "../../helpers/FilterHelper";
@@ -18,6 +32,7 @@ import { formatDate } from "../../helpers/FormatHelper";
 import { getReservationStatusOptions } from "../../helpers/OptionsMappingHelper";
 import { DrawerState } from "../../models/enums";
 import RentalForm from "../rentals/RentalForm";
+import { EllipsisOutlined } from "@ant-design/icons";
 
 const ReservationsFilter = v.intersect([
     SearchSortPaginationSchema,
@@ -35,6 +50,9 @@ export type ReservationsFilter = v.InferOutput<typeof ReservationsFilter>;
 function Reservations() {
     const [selectedReservationId, setSelectedReservationId] =
         useState<number>();
+    const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
+    const [reservationToCancel, setReservationToCancel] =
+        useState<ReservationDto>();
 
     const { t } = useTranslation();
     const search: ReservationsFilter = Route.useSearch();
@@ -42,6 +60,8 @@ function Reservations() {
 
     const { data: reservations, isLoading } =
         useFetchPaginatedReservationsQuery(search);
+
+    const { mutateAsync: updateReservation } = useUpdateReservationMutation();
 
     const reservationStatusOption = getReservationStatusOptions();
 
@@ -84,6 +104,29 @@ function Reservations() {
         },
         [updateFilters]
     );
+
+    const showCancelModal = useCallback((reservation: ReservationDto) => {
+        setIsCancelModalOpen(true);
+        setReservationToCancel(reservation);
+    }, []);
+
+    const handleCancelConfirm = useCallback(async () => {
+        if (reservationToCancel) {
+            await updateReservation({
+                id: reservationToCancel.id,
+                status: ReservationStatus.Cancelled,
+                cancelledAt: new Date(),
+            } as UpdateReservationCommand);
+
+            setIsCancelModalOpen(false);
+            setReservationToCancel(undefined);
+        }
+    }, [reservationToCancel, updateReservation]);
+
+    const handleCancelCancel = useCallback(() => {
+        setIsCancelModalOpen(false);
+        setReservationToCancel(undefined);
+    }, []);
 
     // #endregion
 
@@ -144,15 +187,46 @@ function Reservations() {
             title: t(translations.general.actions),
             key: "actions",
             render: (record: ReservationDto) => {
+                const menutItems = [
+                    {
+                        key: "create",
+                        label: (
+                            <Button
+                                type="text"
+                                onClick={() =>
+                                    handleDrawerMode(
+                                        DrawerState.Create,
+                                        record.id
+                                    )
+                                }
+                            >
+                                {t(translations.rentals.createRental)}
+                            </Button>
+                        ),
+                    },
+                    {
+                        key: "cancel",
+                        label: (
+                            <Button
+                                type="text"
+                                danger
+                                onClick={() => showCancelModal(record)}
+                            >
+                                {t(translations.rentals.cancelRental)}
+                            </Button>
+                        ),
+                    },
+                ];
+
                 return (
-                    <Button
-                        type="primary"
-                        onClick={() =>
-                            handleDrawerMode(DrawerState.Create, record.id)
-                        }
-                    >
-                        {t(translations.rentals.createRental)}
-                    </Button>
+                    <div onClick={(event) => event.stopPropagation()}>
+                        <Dropdown
+                            menu={{ items: menutItems }}
+                            trigger={["hover"]}
+                        >
+                            <Button icon={<EllipsisOutlined />} />
+                        </Dropdown>
+                    </div>
                 );
             },
         },
@@ -192,6 +266,15 @@ function Reservations() {
                     reservationId={selectedReservationId}
                 />
             </Drawer>
+
+            <Modal
+                title={t(translations.reservations.confirmCancelReservation)}
+                open={isCancelModalOpen}
+                onOk={handleCancelConfirm}
+                onCancel={handleCancelCancel}
+                okText={t(translations.general.yes)}
+                cancelText={t(translations.general.no)}
+            />
         </>
     );
 }

@@ -56,6 +56,13 @@ function Success() {
                     } as CreatePaymentCommand);
 
                     setFilePath(response.invoicePath);
+                } else {
+                    await updateReservation({
+                        id: +reservationId,
+                        status: ReservationStatus.Cancelled,
+                        confirmedAt: new Date(),
+                        cancelledAt: new Date(),
+                    } as UpdateReservationCommand);
                 }
             }
         };

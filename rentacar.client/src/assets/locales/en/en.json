@@ -85,7 +85,8 @@
             "personName": "Reserved for",
             "extraServices": "Extra services",
             "pickupLocation": "Pickup location",
-            "returnLocation": "Return location"
+            "returnLocation": "Return location",
+            "confirmCancelReservation": "Are you sure that you want to cancel this reservation"
         },
         "rentals": {
             "title": "Rentals",
@@ -99,6 +100,7 @@
             "photos": "Photos",
             "notes": "Notes",
             "createRental": "Create rental",
+            "cancelRental": "Cancel rental",
             "finishRental": "Finish rental"
         },
         "locations": {

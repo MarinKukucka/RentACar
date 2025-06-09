@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
     CreateReservationCommand,
     ReservationClient,
@@ -27,17 +27,27 @@ export const useFetchPaginatedReservationsQuery = (
 };
 
 export const useCreateReservationMutation = () => {
+    const queryClient = useQueryClient();
+
     return useMutation({
         mutationFn: async (command: CreateReservationCommand) => {
             return await new ReservationClient().createReservation(command);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["reservations"] });
         },
     });
 };
 
 export const useUpdateReservationMutation = () => {
+    const queryClient = useQueryClient();
+
     return useMutation({
         mutationFn: async (command: UpdateReservationCommand) => {
             return await new ReservationClient().updateReservation(command);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["reservations"] });
         },
     });
 };

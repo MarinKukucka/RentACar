@@ -85,7 +85,8 @@
             "personName": "Rezervirano za",
             "extraServices": "Dodatne opcije",
             "pickupLocation": "Lokacija preuzimanja",
-            "returnLocation": "Lokacija vraćanja"
+            "returnLocation": "Lokacija vraćanja",
+            "confirmCancelReservation": "Jeste li sigurni da želite otkazati ovu rezervaciju"
         },
         "rentals": {
             "title": "Najmovi",
@@ -99,6 +100,7 @@
             "photos": "Slike",
             "notes": "Bilješke",
             "createRental": "Pokreni najam",
+            "cancelRental": "Otkaži najam",
             "finishRental": "Završi najam"
         },
         "locations": {

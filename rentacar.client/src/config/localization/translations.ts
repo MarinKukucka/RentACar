@@ -85,6 +85,7 @@ const translations = {
         pickupLocation: 'reservations.pickupLocation',
         returnLocation: 'reservations.returnLocation',
         extraServices: 'reservations.extraServices',
+        confirmCancelReservation: 'reservations.confirmCancelReservation'
     },
     rentals: {
         title: 'rentals.title',
@@ -98,6 +99,7 @@ const translations = {
         photos: 'rentals.photos',
         notes: 'rentals.notes',
         createRental: 'rentals.createRental',
+        cancelRental: 'rentals.cancelRental',
         finishRental: 'rentals.finishRental',
     },
     locations: {
