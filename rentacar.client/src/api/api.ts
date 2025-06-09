@@ -1263,11 +1263,15 @@ export class RentalClient extends ApiClientBase {
         return Promise.resolve<NoContent>(null as any);
     }
 
-    finishRental(returnDateTime: Date | undefined, odometerEnd: number | undefined, notes: string | null | undefined, files: FileParameter[] | null | undefined): Promise<NoContent> {
+    finishRental(id: number | undefined, returnDateTime: Date | undefined, odometerEnd: number | undefined, notes: string | null | undefined, files: FileParameter[] | null | undefined): Promise<NoContent> {
         let url_ = this.baseUrl + "/api/Rental/finish-rental";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = new FormData();
+        if (id === null || id === undefined)
+            throw new Error("The parameter 'id' cannot be null.");
+        else
+            content_.append("Id", id.toString());
         if (returnDateTime === null || returnDateTime === undefined)
             throw new Error("The parameter 'returnDateTime' cannot be null.");
         else
@@ -2690,6 +2694,7 @@ export class RentalDto implements IRentalDto {
     odometerStart!: number;
     odometerEnd!: number | undefined;
     totalPrice!: number | undefined;
+    files!: FileDto[] | undefined;
     notes!: string | undefined;
 
     constructor(data?: IRentalDto) {
@@ -2710,6 +2715,11 @@ export class RentalDto implements IRentalDto {
             this.odometerStart = _data["odometerStart"];
             this.odometerEnd = _data["odometerEnd"];
             this.totalPrice = _data["totalPrice"];
+            if (Array.isArray(_data["files"])) {
+                this.files = [] as any;
+                for (let item of _data["files"])
+                    this.files!.push(FileDto.fromJS(item));
+            }
             this.notes = _data["notes"];
         }
     }
@@ -2730,6 +2740,11 @@ export class RentalDto implements IRentalDto {
         data["odometerStart"] = this.odometerStart;
         data["odometerEnd"] = this.odometerEnd;
         data["totalPrice"] = this.totalPrice;
+        if (Array.isArray(this.files)) {
+            data["files"] = [];
+            for (let item of this.files)
+                data["files"].push(item ? item.toJSON() : <any>undefined);
+        }
         data["notes"] = this.notes;
         return data;
     }
@@ -2743,12 +2758,57 @@ export interface IRentalDto {
     odometerStart: number;
     odometerEnd: number | undefined;
     totalPrice: number | undefined;
+    files: FileDto[] | undefined;
     notes: string | undefined;
 }
 
 export enum RentalStatus {
     PickedUp = 1,
     Returned = 2,
+}
+
+export class FileDto implements IFileDto {
+    id!: number;
+    name!: string;
+    path!: string;
+
+    constructor(data?: IFileDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.name = _data["name"];
+            this.path = _data["path"];
+        }
+    }
+
+    static fromJS(data: any): FileDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new FileDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["path"] = this.path;
+        return data;
+    }
+}
+
+export interface IFileDto {
+    id: number;
+    name: string;
+    path: string;
 }
 
 export class NoContent implements INoContent {

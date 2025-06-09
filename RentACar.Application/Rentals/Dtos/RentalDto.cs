@@ -1,4 +1,5 @@
-﻿using RentACar.Domain.Enums;
+﻿using RentACar.Application.Files.Dtos;
+using RentACar.Domain.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace RentACar.Application.Rentals.Dtos
@@ -18,6 +19,8 @@ namespace RentACar.Application.Rentals.Dtos
         public int? OdometerEnd { get; set; }
 
         public decimal? TotalPrice { get; set; }
+
+        public List<FileDto>? Files { get; set; }
 
         [StringLength(500)]
         public string? Notes { get; set; }

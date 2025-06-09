@@ -31,6 +31,7 @@ export const useFinishRentalMutation = () => {
     return useMutation({
         mutationFn: async (command: FinishRentalCommand) => {
             return await new RentalClient().finishRental(
+                command.id,
                 command.returnDateTime,
                 command.odometerEnd,
                 command.notes,

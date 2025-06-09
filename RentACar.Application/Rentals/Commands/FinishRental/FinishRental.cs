@@ -1,15 +1,17 @@
 ﻿using Mediator;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using RentACar.Application.Common.Interfaces;
 using RentACar.Domain.Entities;
 using RentACar.Domain.Enums;
-using Stripe;
 using File = RentACar.Domain.Entities.File;
 
 namespace RentACar.Application.Rentals.Commands.FinishRental
 {
     public record FinishRentalCommand : IRequest
     {
+        public required int Id { get; set; }
+
         public required DateTime ReturnDateTime { get; set; }
 
         public required int OdometerEnd { get; set; }
@@ -23,6 +25,9 @@ namespace RentACar.Application.Rentals.Commands.FinishRental
     {
         public async ValueTask<Unit> Handle(FinishRentalCommand request, CancellationToken cancellationToken)
         {
+            var entity = await _context.Rentals
+                .FirstOrDefaultAsync(r => r.Id == request.Id, cancellationToken) ?? throw new ArgumentException("Ne valja");
+            
             var photoFiles = new List<File>();
             if (request.Files is not null)
             {
@@ -40,12 +45,10 @@ namespace RentACar.Application.Rentals.Commands.FinishRental
                 }
             }
 
-            var entity = request.Adapt<Rental>();
+            request.Adapt(entity);
 
             entity.Files = photoFiles;
             entity.Status = RentalStatus.Returned;
-
-            _context.Rentals.Add(entity);
 
             await _context.SaveChangesAsync(cancellationToken);
 

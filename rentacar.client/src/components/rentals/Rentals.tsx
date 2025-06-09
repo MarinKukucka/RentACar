@@ -8,7 +8,7 @@ import { useFetchPaginatedRentalsQuery } from "../../api/rentals/rentals";
 import { useCallback, useState } from "react";
 import { Button, Drawer, Table, TablePaginationConfig } from "antd";
 import { FilterValue, SorterResult } from "antd/es/table/interface";
-import { RentalDto, RentalStatus } from "../../api/api";
+import { FileDto, RentalDto, RentalStatus } from "../../api/api";
 import { TableParamsChange } from "../../helpers/SearchHelper";
 import translations from "../../config/localization/translations";
 import { getCheckboxFilter, getSearchFilter } from "../../helpers/FilterHelper";
@@ -18,6 +18,7 @@ import { getRentalStatusOptions } from "../../helpers/OptionsMappingHelper";
 import { formatDate } from "../../helpers/FormatHelper";
 import { DrawerState } from "../../models/enums";
 import RentalForm from "./RentalForm";
+import FileLink from "../files/FileLink";
 
 const RentalsFilters = v.intersect([
     SearchSortPaginationSchema,
@@ -124,6 +125,19 @@ function Rentals() {
             title: t(translations.rentals.totalPrice),
             dataIndex: "totalPrice",
             sorter: true,
+        },
+        {
+            title: t(translations.rentals.photos),
+            dataIndex: "files",
+            render: (records: FileDto[]) =>
+                records.map((record) => (
+                    <div>
+                        <FileLink
+                            fileName={record.name}
+                            filePath={record.path}
+                        />
+                    </div>
+                )),
         },
         {
             title: t(translations.rentals.notes),

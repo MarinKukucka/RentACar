@@ -38,6 +38,7 @@ function RentalForm({ onClose, onSuccess, reservationId, rentalId }: Props) {
                     await createRental(command);
                 } else if (rentalId) {
                     const command = values as FinishRentalCommand;
+                    command.id = rentalId;
                     command.returnDateTime = new Date();
 
                     if (fileList && fileList.length > 0)
@@ -77,7 +78,6 @@ function RentalForm({ onClose, onSuccess, reservationId, rentalId }: Props) {
         return false;
     }, []);
 
-    // Remove a file based on its unique identifier
     const handleRemove = useCallback((file: UploadFile) => {
         setFileList((prevList) =>
             prevList.filter((item) => item.uid !== file.uid)
