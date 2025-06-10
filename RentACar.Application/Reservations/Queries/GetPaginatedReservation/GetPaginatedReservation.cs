@@ -3,7 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using RentACar.Application.Common.Extensions;
 using RentACar.Application.Common.Interfaces;
 using RentACar.Application.Common.Models.Pagination;
+using RentACar.Application.Files.Dtos;
 using RentACar.Application.Reservations.Dtos;
+using RentACar.Domain.Entities;
 
 namespace RentACar.Application.Reservations.Queries.GetPaginatedReservation
 {
@@ -24,6 +26,7 @@ namespace RentACar.Application.Reservations.Queries.GetPaginatedReservation
                 .Include(r => r.PickupLocation)
                 .Include(r => r.ReturnLocation)
                 .Include(r => r.ExtraServices)
+                .Include(r => r.Invoices)
                 .Where(r => r.Person != null)
                 .Filter(request.PaginationFilter.Filter)
                 .Sort(request.PaginationFilter.SortBy, request.PaginationFilter.SortOrder)
@@ -40,7 +43,13 @@ namespace RentACar.Application.Reservations.Queries.GetPaginatedReservation
                     PersonName = r.Person!.FirstName + " " + r.Person.LastName,
                     PickupLocationName = r.PickupLocation!.Name,
                     ReturnLocationName = r.ReturnLocation!.Name,
-                    ExtraServices = r.ExtraServices != null ? r.ExtraServices.Select(es => es.Name).ToList() : null
+                    ExtraServices = r.ExtraServices != null ? r.ExtraServices.Select(es => es.Name).ToList() : null,
+                    Invoice = r.Invoices != null ? r.Invoices.Where(i => i.File != null).Select(i => i.File).Select(f => new FileDto
+                    {
+                        Id = f!.Id,
+                        Name = f.Name,
+                        Path = f.Path
+                    }).FirstOrDefault() : null
                 }) 
                 .AsSplitQuery()
                 .PaginatedListAsync(request.PaginationFilter.CurrentPage, request.PaginationFilter.PageSize);

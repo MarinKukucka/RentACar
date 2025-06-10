@@ -84,6 +84,7 @@
             "totalPrice": "Ukupna cijena",
             "personName": "Rezervirano za",
             "extraServices": "Dodatne opcije",
+            "invoice": "Račun",
             "pickupLocation": "Lokacija preuzimanja",
             "returnLocation": "Lokacija vraćanja",
             "confirmCancelReservation": "Jeste li sigurni da želite otkazati ovu rezervaciju"

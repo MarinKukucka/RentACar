@@ -19,6 +19,7 @@ import {
 } from "antd";
 import { FilterValue, SorterResult } from "antd/es/table/interface";
 import {
+    FileDto,
     ReservationDto,
     ReservationStatus,
     UpdateReservationCommand,
@@ -33,6 +34,7 @@ import { getReservationStatusOptions } from "../../helpers/OptionsMappingHelper"
 import { DrawerState } from "../../models/enums";
 import RentalForm from "../rentals/RentalForm";
 import { EllipsisOutlined } from "@ant-design/icons";
+import FileLink from "../files/FileLink";
 
 const ReservationsFilter = v.intersect([
     SearchSortPaginationSchema,
@@ -161,6 +163,7 @@ function Reservations() {
             title: t(translations.reservations.totalPrice),
             dataIndex: "totalPrice",
             sorter: true,
+            render: (value: number) => <p>{value} €</p>,
         },
         {
             title: t(translations.reservations.personName),
@@ -182,6 +185,19 @@ function Reservations() {
             render: (values: string[]) => {
                 return values.map((val) => <div>{val}</div>);
             },
+        },
+        {
+            title: t(translations.reservations.invoice),
+            dataIndex: "invoice",
+            render: (record?: FileDto) =>
+                record && (
+                    <div>
+                        <FileLink
+                            fileName={record.name}
+                            filePath={record.path}
+                        />
+                    </div>
+                ),
         },
         {
             title: t(translations.general.actions),

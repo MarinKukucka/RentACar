@@ -54,7 +54,7 @@
             "vin": "VIN",
             "licensePlate": "License plate",
             "year": "Year",
-            "mileage": "Mileage (km)",
+            "mileage": "Mileage",
             "vehicleType": "Vehicle type",
             "chooseVehicleTypePlaceholder": "Please choose a vehicle type",
             "transmission": "Transmission",
@@ -84,6 +84,7 @@
             "totalPrice": "Total price",
             "personName": "Reserved for",
             "extraServices": "Extra services",
+            "invoice": "Invoice",
             "pickupLocation": "Pickup location",
             "returnLocation": "Return location",
             "confirmCancelReservation": "Are you sure that you want to cancel this reservation"

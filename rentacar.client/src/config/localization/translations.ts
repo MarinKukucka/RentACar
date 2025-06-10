@@ -85,6 +85,7 @@ const translations = {
         pickupLocation: 'reservations.pickupLocation',
         returnLocation: 'reservations.returnLocation',
         extraServices: 'reservations.extraServices',
+        invoice: 'reservations.invoice',
         confirmCancelReservation: 'reservations.confirmCancelReservation'
     },
     rentals: {

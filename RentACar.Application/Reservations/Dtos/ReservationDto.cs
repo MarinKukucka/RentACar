@@ -1,4 +1,6 @@
-﻿using RentACar.Domain.Enums;
+﻿using RentACar.Application.Files.Dtos;
+using RentACar.Domain.Entities;
+using RentACar.Domain.Enums;
 
 namespace RentACar.Application.Reservations.Dtos
 {
@@ -27,5 +29,7 @@ namespace RentACar.Application.Reservations.Dtos
         public string? ReturnLocationName { get; set; }
 
         public List<string>? ExtraServices { get; set; }
+
+        public FileDto? Invoice { get; set; }
     }
 }

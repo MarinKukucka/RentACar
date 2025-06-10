@@ -2,11 +2,17 @@
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 using RentACar.Domain.Entities;
+using System.Globalization;
 
 namespace RentACar.Application.Common.Helpers
 {
     public class InvoiceDocument(Invoice model) : IDocument
     {
+        private static readonly CultureInfo EuroCulture = new("hr-HR")
+        {
+            NumberFormat = { CurrencySymbol = "€" }
+        };
+
         public Invoice Model { get; } = model;
 
         public DocumentMetadata GetMetadata() => DocumentMetadata.Default;
@@ -60,7 +66,7 @@ namespace RentACar.Application.Common.Helpers
                 if(Model.Reservation != null)
                 {
                     var totalPrice = Model.Reservation.TotalPrice;
-                    column.Item().PaddingRight(5).AlignRight().Text($"Grand total: {totalPrice:C}").SemiBold();
+                    column.Item().PaddingRight(5).AlignRight().Text($"Grand total: {totalPrice.ToString("C", EuroCulture)}").SemiBold();
                 }
 
                 if (Model.Reservation != null && !string.IsNullOrWhiteSpace(Model.Reservation.Notes))
@@ -105,9 +111,10 @@ namespace RentACar.Application.Common.Helpers
                         var vehiclePrice = reservation.Vehicle.Price;
 
                         table.Cell().Element(CellStyle).Text(vehicleName);
-                        table.Cell().Element(CellStyle).AlignRight().Text($"{vehiclePrice:C}");
+                        table.Cell().Element(CellStyle).AlignRight().Text(vehiclePrice.ToString("C", EuroCulture));
                         table.Cell().Element(CellStyle).AlignRight().Text($"{days}");
-                        table.Cell().Element(CellStyle).AlignRight().Text($"{(vehiclePrice * days):C}");
+                        table.Cell().Element(CellStyle).AlignRight().Text((vehiclePrice * days).ToString("C", EuroCulture))
+;
                     }
 
                     // 🛠️ Extra services
@@ -116,9 +123,9 @@ namespace RentACar.Application.Common.Helpers
                         foreach (var service in reservation.ExtraServices)
                         {
                             table.Cell().Element(CellStyle).Text(service.Name);
-                            table.Cell().Element(CellStyle).AlignRight().Text($"{service.Price:C}");
+                            table.Cell().Element(CellStyle).AlignRight().Text(service.Price.ToString("C", EuroCulture));
                             table.Cell().Element(CellStyle).AlignRight().Text($"{days}");
-                            table.Cell().Element(CellStyle).AlignRight().Text($"{(service.Price * days):C}");
+                            table.Cell().Element(CellStyle).AlignRight().Text((service.Price * days).ToString("C", EuroCulture));
                         }
                     }
                 }

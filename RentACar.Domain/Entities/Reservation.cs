@@ -38,6 +38,8 @@ namespace RentACar.Domain.Entities
 
         public Location? ReturnLocation { get; set; }
 
+        public List<Invoice>? Invoices { get; set; }
+
         public virtual List<ExtraService>? ExtraServices { get; set; }
     }
 }

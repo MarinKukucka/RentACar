@@ -2968,6 +2968,7 @@ export class ReservationDto implements IReservationDto {
     pickupLocationName!: string | undefined;
     returnLocationName!: string | undefined;
     extraServices!: string[] | undefined;
+    invoice!: FileDto | undefined;
 
     constructor(data?: IReservationDto) {
         if (data) {
@@ -2996,6 +2997,7 @@ export class ReservationDto implements IReservationDto {
                 for (let item of _data["extraServices"])
                     this.extraServices!.push(item);
             }
+            this.invoice = _data["invoice"] ? FileDto.fromJS(_data["invoice"]) : <any>undefined;
         }
     }
 
@@ -3024,6 +3026,7 @@ export class ReservationDto implements IReservationDto {
             for (let item of this.extraServices)
                 data["extraServices"].push(item);
         }
+        data["invoice"] = this.invoice ? this.invoice.toJSON() : <any>undefined;
         return data;
     }
 }
@@ -3041,6 +3044,7 @@ export interface IReservationDto {
     pickupLocationName: string | undefined;
     returnLocationName: string | undefined;
     extraServices: string[] | undefined;
+    invoice: FileDto | undefined;
 }
 
 export enum ReservationStatus {

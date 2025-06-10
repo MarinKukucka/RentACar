@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RentACar.Infrastructure.Data.Context;
 
@@ -11,9 +12,11 @@ using RentACar.Infrastructure.Data.Context;
 namespace RentACar.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250610154511_InvoiceReservationRelationship")]
+    partial class InvoiceReservationRelationship
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -380,7 +383,9 @@ namespace RentACar.Infrastructure.Migrations
 
                     b.HasIndex("PaymentId");
 
-                    b.HasIndex("ReservationId");
+                    b.HasIndex("ReservationId")
+                        .IsUnique()
+                        .HasFilter("[ReservationId] IS NOT NULL");
 
                     b.ToTable("Invoices");
                 });
@@ -782,8 +787,8 @@ namespace RentACar.Infrastructure.Migrations
                         .HasForeignKey("PaymentId");
 
                     b.HasOne("RentACar.Domain.Entities.Reservation", "Reservation")
-                        .WithMany("Invoices")
-                        .HasForeignKey("ReservationId");
+                        .WithOne("Invoice")
+                        .HasForeignKey("RentACar.Domain.Entities.Invoice", "ReservationId");
 
                     b.Navigation("File");
 
@@ -911,7 +916,7 @@ namespace RentACar.Infrastructure.Migrations
 
             modelBuilder.Entity("RentACar.Domain.Entities.Reservation", b =>
                 {
-                    b.Navigation("Invoices");
+                    b.Navigation("Invoice");
                 });
 
             modelBuilder.Entity("RentACar.Domain.Entities.Vehicle", b =>

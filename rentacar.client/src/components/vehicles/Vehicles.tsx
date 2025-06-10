@@ -175,6 +175,7 @@ function Vehicles() {
             filteredValue:
                 search.mileage !== undefined ? [search.mileage] : null,
             sorter: true,
+            render: (value: number) => <p>{value} km</p>,
         },
         {
             title: t(translations.vehicles.vehicleType),
@@ -211,7 +212,7 @@ function Vehicles() {
             ...getSearchFilter(),
             filteredValue: search.price !== undefined ? [search.price] : null,
             sorter: true,
-            render: (value: number) => <p>€{value}/day</p>,
+            render: (value: number) => <p>€ {value}/day</p>,
         },
         {
             title: t(translations.general.actions),

@@ -53,7 +53,7 @@ namespace RentACar.Application.Rentals.Commands.FinishRental
             entity.Files = photoFiles;
             entity.Status = RentalStatus.Returned;
 
-            entity.Reservation.Status = ReservationStatus.Completed;
+            entity.Reservation!.Status = ReservationStatus.Completed;
             entity.Reservation!.Vehicle!.LocationId = entity.Reservation.ReturnLocationId;
 
             await _context.SaveChangesAsync(cancellationToken);
