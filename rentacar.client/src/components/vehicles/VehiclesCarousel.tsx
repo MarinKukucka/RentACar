@@ -1,14 +1,13 @@
 import { useTranslation } from "react-i18next";
 import translations from "../../config/localization/translations";
-import { Card, Carousel, Col, Row } from "antd";
-import { chunk } from "lodash";
+import { Card, Carousel } from "antd";
 import { SimpleVehicleDto } from "../../api/api";
 import { useFetchSimpleVehiclesQuery } from "../../api/vehicles/vehicles";
+import "./Vehicles.css";
 
 function VehiclesCarousel() {
     const { t } = useTranslation();
-
-    const { data: simpleVehicles } = useFetchSimpleVehiclesQuery();
+    const { data: simpleVehicles = [] } = useFetchSimpleVehiclesQuery();
 
     return (
         <>
@@ -16,38 +15,30 @@ function VehiclesCarousel() {
                 {t(translations.vehicles.ourVehicles)}
             </h2>
 
-            <Carousel autoplay style={{ marginBottom: "50px" }}>
-                {chunk(simpleVehicles || [], 4).map(
-                    (vehicleGroup: SimpleVehicleDto[], index: number) => (
-                        <div key={index}>
-                            <Row gutter={16} justify="center">
-                                {vehicleGroup.map((vehicle) => (
-                                    <Col
-                                        key={vehicle.id}
-                                        xs={24}
-                                        sm={12}
-                                        md={6}
-                                    >
-                                        <Card
-                                            cover={
-                                                <img
-                                                    src={`https://localhost:7159/${vehicle.image}`}
-                                                    alt={vehicle.name}
-                                                    style={{
-                                                        height: "250px",
-                                                        objectFit: "cover",
-                                                        padding: 20,
-                                                    }}
-                                                />
-                                            }
-                                            title={vehicle.name}
-                                        />
-                                    </Col>
-                                ))}
-                            </Row>
-                        </div>
-                    )
-                )}
+            <Carousel
+                autoplay
+                infinite
+                slidesToShow={4}
+                slidesToScroll={1}
+                className="vehicles-carousel"
+                style={{ marginBottom: "50px" }}
+            >
+                {simpleVehicles.map((vehicle: SimpleVehicleDto) => (
+                    <div key={vehicle.id} className="slide-item">
+                        <Card
+                            hoverable
+                            cover={
+                                <img
+                                    src={`https://localhost:7159/${vehicle.image}`}
+                                    alt={vehicle.name}
+                                    className="slide-image"
+                                />
+                            }
+                            title={vehicle.name}
+                            className="slide-card"
+                        />
+                    </div>
+                ))}
             </Carousel>
         </>
     );

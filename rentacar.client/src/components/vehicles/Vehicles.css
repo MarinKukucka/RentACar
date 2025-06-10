@@ -1,0 +1,19 @@
+.vehicles-carousel .slick-track {
+  display: flex !important;
+}
+.vehicles-carousel .slick-slide {
+  padding: 0 8px;
+  box-sizing: border-box;
+}
+.vehicles-carousel .slick-slide > .slide-item {
+  flex: 0 0 25%;
+  max-width: 25%;
+}
+.slide-card {
+  width: 100%;
+}
+.slide-image {
+  height: 250px;
+  object-fit: cover;
+  padding: 20px;
+}
