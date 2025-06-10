@@ -73,7 +73,12 @@
             "chooseBrandFirstPlaceholder": "Please choose a brand first",
             "location": "Location",
             "chooseLocationPlaceholder": "Please choose a location",
-            "ourVehicles": "Our vehicles"
+            "ourVehicles": "Our vehicles",
+            "pickupLocation": "Pick up",
+            "differentReturnLocation": "Different return location",
+            "returnLocation": "Return",
+            "pickupDate": "Pick-up date",
+            "dropOffDate": "Drop off date"
         },
         "reservations": {
             "title": "Reservations",

@@ -72,7 +72,12 @@ const translations = {
         chooseBrandFirstPlaceholder: 'vehicles.chooseBrandFirstPlaceholder',
         location: 'vehicles.location',
         chooseLocationPlaceholder: 'vehicles.chooseLocationPlaceholder',
-        ourVehicles: 'vehicles.ourVehicles'
+        ourVehicles: 'vehicles.ourVehicles',
+        pickupLocation: 'vehicles.pickupLocation',
+        differentReturnLocation: 'vehicles.differentReturnLocation',
+        returnLocation: 'vehicles.returnLocation',
+        pickupDate: 'vehicles.pickupDate',
+        dropOffDate: 'vehicles.dropOffDate'
     },
     reservations: {
         title: 'reservations.title',

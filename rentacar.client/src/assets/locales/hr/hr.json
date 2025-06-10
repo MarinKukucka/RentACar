@@ -73,7 +73,12 @@
             "chooseBrandFirstPlaceholder": "Molimo prvo odaberite brend",
             "location": "Lokacija",
             "chooseLocationPlaceholder": "Molimo odaberite lokaciju",
-            "ourVehicles": "Naša vozila"
+            "ourVehicles": "Naša vozila",
+            "pickupLocation": "Preuzimanje",
+            "differentReturnLocation": "Različita lokacija vraćanja",
+            "returnLocation": "Vraćanje",
+            "pickupDate": "Datum preuzimanja",
+            "dropOffDate": "Datum vraćanja"
         },
         "reservations": {
             "title": "Rezervacije",
