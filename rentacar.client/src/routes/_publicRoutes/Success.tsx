@@ -72,11 +72,13 @@ function Success() {
 
     return (
         <>
-            {filePath && (
+            {filePath ? (
                 <div>
                     <FileLink filePath={filePath} fileName="Invoice" />
                     Thank you! Your payment was successful.
                 </div>
+            ) : (
+                <div>Please wait</div>
             )}
         </>
     );

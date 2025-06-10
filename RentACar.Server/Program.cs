@@ -6,6 +6,7 @@ using RentACar.Infrastructure.Services;
 using RentACar.Application.Common.Interfaces;
 using RentACar.Application;
 using RentACar.Infrastructure.Identity;
+using RentACar.Application.Common.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +28,8 @@ builder.Services.AddScoped<RentACar.Infrastructure.Services.IEmailSender<Applica
 builder.Services.AddScoped<IFileService, FileService>();
 
 builder.Services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
+
+builder.Services.AddHostedService<ReservationCleanupService>();
 
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
