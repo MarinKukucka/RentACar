@@ -21,6 +21,8 @@ namespace RentACar.Domain.Entities
 
         public File? File { get; set; }
 
-        public List<Payment>? Payments { get; set; }
+        public int? PaymentId { get; set; }
+
+        public Payment? Payment { get; set; }
     }
 }

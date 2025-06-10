@@ -40,7 +40,7 @@ namespace RentACar.Application.Payments.Commands.CreatePayment
                 IssuedAt = DateTime.UtcNow,
                 TotalAmount = request.Amount,
                 ReservationId = request.ReservationId,
-                Payments = [payment],
+                Payment = payment,
             };
 
             _context.Invoices.Add(invoice);
