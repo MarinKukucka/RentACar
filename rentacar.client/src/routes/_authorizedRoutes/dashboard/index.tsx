@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useFetchTodaysReservationsQuery } from "../../../api/reservations/reservations";
 import { useFetchTodaysRentalsQuery } from "../../../api/rentals/rentals";
-import { Card, Divider, List, Spin } from "antd";
+import { Card, List, Spin } from "antd";
 import { formatDate } from "../../../helpers/FormatHelper";
 import { useTranslation } from "react-i18next";
 import translations from "../../../config/localization/translations";
@@ -19,8 +19,8 @@ function Dashboard() {
         useFetchTodaysRentalsQuery();
 
     return (
-        <>
-            <Card>
+        <div style={{ display: "flex", flexDirection: "column", gap: 50 }}>
+            <Card title={t(translations.reservations.title)}>
                 {reservationsLoading ? (
                     <Spin size="large" />
                 ) : (
@@ -30,17 +30,12 @@ function Dashboard() {
                         renderItem={(reservation) => (
                             <List.Item>
                                 <Card
+                                    title={reservation.id}
                                     extra={formatDate(
                                         reservation.startDateTime
                                     )}
-                                    title={t(translations.reservations.title)}
                                 >
-                                    <p>
-                                        {reservation.id}
-                                        {formatDate(reservation.startDateTime)}
-                                        <Divider />
-                                        <p>{reservation.notes}</p>
-                                    </p>
+                                    <p>{reservation.notes}</p>
                                 </Card>
                             </List.Item>
                         )}
@@ -48,7 +43,7 @@ function Dashboard() {
                 )}
             </Card>
 
-            <Card>
+            <Card title={t(translations.rentals.title)}>
                 {rentalsLoading ? (
                     <Spin size="large" />
                 ) : (
@@ -58,21 +53,16 @@ function Dashboard() {
                         renderItem={(rental) => (
                             <List.Item>
                                 <Card
+                                    title={rental.id}
                                     extra={formatDate(rental.returnDateTime)}
-                                    title={t(translations.rentals.title)}
                                 >
-                                    <p>
-                                        {rental.id}
-                                        {formatDate(rental.returnDateTime)}
-                                        <Divider />
-                                        <p>{rental.notes}</p>
-                                    </p>
+                                    <p>{rental.notes}</p>
                                 </Card>
                             </List.Item>
                         )}
                     />
                 )}
             </Card>
-        </>
+        </div>
     );
 }
