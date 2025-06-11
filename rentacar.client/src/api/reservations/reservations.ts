@@ -26,6 +26,15 @@ export const useFetchPaginatedReservationsQuery = (
     });
 };
 
+export const useFetchTodaysReservationsQuery = () => {
+    return useQuery({
+        queryKey: ["todaysReservations"],
+        queryFn: async () => {
+            return await new ReservationClient().getTodaysReservations();
+        }
+    })
+}
+
 export const useCreateReservationMutation = () => {
     const queryClient = useQueryClient();
 
@@ -35,6 +44,7 @@ export const useCreateReservationMutation = () => {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["reservations"] });
+            queryClient.invalidateQueries({ queryKey: ["todaysReservations"] });
         },
     });
 };
@@ -48,6 +58,7 @@ export const useUpdateReservationMutation = () => {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["reservations"] });
+            queryClient.invalidateQueries({ queryKey: ["todaysReservations"] });
         },
     });
 };

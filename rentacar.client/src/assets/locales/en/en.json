@@ -36,6 +36,9 @@
             "lastName": "Last name",
             "phoneNumber": "Phone number"
         },
+        "dashboard": {
+            "title": "Dashboard"
+        },
         "people": {
             "title": "People",
             "firstName": "First name",

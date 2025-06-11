@@ -35,6 +35,9 @@ const translations = {
         lastName: 'profile.lastName',
         phoneNumber: 'profile.phoneNumber'
     },
+    dashboard: {
+        title: 'dashboard.title'
+    },
     people: {
         title: 'people.title',
         firstName: 'profile.firstName',

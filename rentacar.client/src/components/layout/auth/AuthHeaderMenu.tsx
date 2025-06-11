@@ -1,6 +1,7 @@
 import {
     CarOutlined,
     GlobalOutlined,
+    HomeOutlined,
     LoginOutlined,
     LogoutOutlined,
     OrderedListOutlined,
@@ -56,6 +57,15 @@ function AuthHeaderMenu() {
     if (isAuth) {
         items = [
             {
+                key: "dashboard",
+                icon: <HomeOutlined />,
+                label: (
+                    <Link to="/dashboard">
+                        {t(translations.dashboard.title)}
+                    </Link>
+                ),
+            },
+            {
                 key: "vehicles",
                 icon: <CarOutlined />,
                 label: (
@@ -105,16 +115,16 @@ function AuthHeaderMenu() {
             },
         ];
         if (isAdmin) {
-            items = [
-                {
+            const idx = items.findIndex((item) => item?.key === "rentals");
+            if (idx >= 0) {
+                items.splice(idx + 1, 0, {
                     key: "people",
                     icon: <UserOutlined />,
                     label: (
                         <Link to="/people">{t(translations.people.title)}</Link>
                     ),
-                },
-                ...items,
-            ];
+                });
+            }
         }
     } else {
         items = [

@@ -5,6 +5,7 @@ using RentACar.Application.Reservations.Commands.CreateReservation;
 using RentACar.Application.Reservations.Commands.UpdateReservation;
 using RentACar.Application.Reservations.Dtos;
 using RentACar.Application.Reservations.Queries.GetPaginatedReservation;
+using RentACar.Application.Reservations.Queries.GetTodaysReservations;
 
 namespace RentACar.Server.Controllers
 {
@@ -16,6 +17,13 @@ namespace RentACar.Server.Controllers
         {
             var result = await mediator.Send(query);
             return TypedResults.Ok(result);
+        }
+
+        [HttpGet("todaysReservations")]
+        [ProducesResponseType(typeof(List<ReservationDto>), StatusCodes.Status200OK)]
+        public async Task<List<ReservationDto>> GetTodaysReservations()
+        {
+            return await mediator.Send(new GetTodaysReservationsQuery());
         }
 
         [HttpPost]

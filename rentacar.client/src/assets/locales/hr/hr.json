@@ -36,6 +36,9 @@
             "lastName": "Prezime",
             "phoneNumber": "Broj mobitela"
         },
+        "dashboard": {
+            "title": "Upravljačka ploča"
+        },
         "people": {
             "title": "Ljudi",
             "firstName": "Ime",

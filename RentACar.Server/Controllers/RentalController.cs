@@ -5,6 +5,7 @@ using RentACar.Application.Rentals.Commands.CreateRental;
 using RentACar.Application.Rentals.Commands.FinishRental;
 using RentACar.Application.Rentals.Dtos;
 using RentACar.Application.Rentals.Queries.GetPaginatedRentals;
+using RentACar.Application.Rentals.Queries.GetTodaysRentals;
 
 namespace RentACar.Server.Controllers
 {
@@ -16,6 +17,13 @@ namespace RentACar.Server.Controllers
         {
             var result = await mediator.Send(query);
             return TypedResults.Ok(result);
+        }
+
+        [HttpGet("todaysRentals")]
+        [ProducesResponseType(typeof(List<RentalDto>), StatusCodes.Status200OK)]
+        public async Task<List<RentalDto>> GetTodaysRentals()
+        {
+            return await mediator.Send(new GetTodaysRentalsQuery());
         }
 
         [HttpPost("create-rental")]

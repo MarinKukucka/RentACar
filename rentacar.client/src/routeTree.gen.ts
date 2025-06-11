@@ -24,6 +24,7 @@ import { Route as AuthorizedRoutesVehiclesIndexImport } from './routes/_authoriz
 import { Route as AuthorizedRoutesReservationsIndexImport } from './routes/_authorizedRoutes/reservations/index'
 import { Route as AuthorizedRoutesRentalsIndexImport } from './routes/_authorizedRoutes/rentals/index'
 import { Route as AuthorizedRoutesPeopleIndexImport } from './routes/_authorizedRoutes/people/index'
+import { Route as AuthorizedRoutesDashboardIndexImport } from './routes/_authorizedRoutes/dashboard/index'
 
 // Create/Update Routes
 
@@ -108,6 +109,13 @@ const AuthorizedRoutesPeopleIndexRoute =
     getParentRoute: () => AuthorizedRoutesRoute,
   } as any)
 
+const AuthorizedRoutesDashboardIndexRoute =
+  AuthorizedRoutesDashboardIndexImport.update({
+    id: '/dashboard/',
+    path: '/dashboard/',
+    getParentRoute: () => AuthorizedRoutesRoute,
+  } as any)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -175,6 +183,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicRoutesIndexImport
       parentRoute: typeof rootRoute
     }
+    '/_authorizedRoutes/dashboard/': {
+      id: '/_authorizedRoutes/dashboard/'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthorizedRoutesDashboardIndexImport
+      parentRoute: typeof AuthorizedRoutesImport
+    }
     '/_authorizedRoutes/people/': {
       id: '/_authorizedRoutes/people/'
       path: '/people'
@@ -210,6 +225,7 @@ declare module '@tanstack/react-router' {
 
 interface AuthorizedRoutesRouteChildren {
   AuthorizedRoutesProfileRoute: typeof AuthorizedRoutesProfileRoute
+  AuthorizedRoutesDashboardIndexRoute: typeof AuthorizedRoutesDashboardIndexRoute
   AuthorizedRoutesPeopleIndexRoute: typeof AuthorizedRoutesPeopleIndexRoute
   AuthorizedRoutesRentalsIndexRoute: typeof AuthorizedRoutesRentalsIndexRoute
   AuthorizedRoutesReservationsIndexRoute: typeof AuthorizedRoutesReservationsIndexRoute
@@ -218,6 +234,7 @@ interface AuthorizedRoutesRouteChildren {
 
 const AuthorizedRoutesRouteChildren: AuthorizedRoutesRouteChildren = {
   AuthorizedRoutesProfileRoute: AuthorizedRoutesProfileRoute,
+  AuthorizedRoutesDashboardIndexRoute: AuthorizedRoutesDashboardIndexRoute,
   AuthorizedRoutesPeopleIndexRoute: AuthorizedRoutesPeopleIndexRoute,
   AuthorizedRoutesRentalsIndexRoute: AuthorizedRoutesRentalsIndexRoute,
   AuthorizedRoutesReservationsIndexRoute:
@@ -238,6 +255,7 @@ export interface FileRoutesByFullPath {
   '/SearchResults': typeof PublicRoutesSearchResultsRoute
   '/Success': typeof PublicRoutesSuccessRoute
   '/': typeof PublicRoutesIndexRoute
+  '/dashboard': typeof AuthorizedRoutesDashboardIndexRoute
   '/people': typeof AuthorizedRoutesPeopleIndexRoute
   '/rentals': typeof AuthorizedRoutesRentalsIndexRoute
   '/reservations': typeof AuthorizedRoutesReservationsIndexRoute
@@ -254,6 +272,7 @@ export interface FileRoutesByTo {
   '/SearchResults': typeof PublicRoutesSearchResultsRoute
   '/Success': typeof PublicRoutesSuccessRoute
   '/': typeof PublicRoutesIndexRoute
+  '/dashboard': typeof AuthorizedRoutesDashboardIndexRoute
   '/people': typeof AuthorizedRoutesPeopleIndexRoute
   '/rentals': typeof AuthorizedRoutesRentalsIndexRoute
   '/reservations': typeof AuthorizedRoutesReservationsIndexRoute
@@ -271,6 +290,7 @@ export interface FileRoutesById {
   '/_publicRoutes/SearchResults': typeof PublicRoutesSearchResultsRoute
   '/_publicRoutes/Success': typeof PublicRoutesSuccessRoute
   '/_publicRoutes/': typeof PublicRoutesIndexRoute
+  '/_authorizedRoutes/dashboard/': typeof AuthorizedRoutesDashboardIndexRoute
   '/_authorizedRoutes/people/': typeof AuthorizedRoutesPeopleIndexRoute
   '/_authorizedRoutes/rentals/': typeof AuthorizedRoutesRentalsIndexRoute
   '/_authorizedRoutes/reservations/': typeof AuthorizedRoutesReservationsIndexRoute
@@ -289,6 +309,7 @@ export interface FileRouteTypes {
     | '/SearchResults'
     | '/Success'
     | '/'
+    | '/dashboard'
     | '/people'
     | '/rentals'
     | '/reservations'
@@ -304,6 +325,7 @@ export interface FileRouteTypes {
     | '/SearchResults'
     | '/Success'
     | '/'
+    | '/dashboard'
     | '/people'
     | '/rentals'
     | '/reservations'
@@ -319,6 +341,7 @@ export interface FileRouteTypes {
     | '/_publicRoutes/SearchResults'
     | '/_publicRoutes/Success'
     | '/_publicRoutes/'
+    | '/_authorizedRoutes/dashboard/'
     | '/_authorizedRoutes/people/'
     | '/_authorizedRoutes/rentals/'
     | '/_authorizedRoutes/reservations/'
@@ -372,6 +395,7 @@ export const routeTree = rootRoute
       "filePath": "_authorizedRoutes.ts",
       "children": [
         "/_authorizedRoutes/Profile",
+        "/_authorizedRoutes/dashboard/",
         "/_authorizedRoutes/people/",
         "/_authorizedRoutes/rentals/",
         "/_authorizedRoutes/reservations/",
@@ -402,6 +426,10 @@ export const routeTree = rootRoute
     },
     "/_publicRoutes/": {
       "filePath": "_publicRoutes/index.tsx"
+    },
+    "/_authorizedRoutes/dashboard/": {
+      "filePath": "_authorizedRoutes/dashboard/index.tsx",
+      "parent": "/_authorizedRoutes"
     },
     "/_authorizedRoutes/people/": {
       "filePath": "_authorizedRoutes/people/index.tsx",

@@ -19,6 +19,15 @@ export const useFetchPaginatedRentalsQuery = (request: RentalsFilters) => {
     });
 };
 
+export const useFetchTodaysRentalsQuery = () => {
+    return useQuery({
+        queryKey: ["todaysRentals"],
+        queryFn: async () => {
+            return await new RentalClient().getTodaysRentals();
+        }
+    })
+}
+
 export const useCreateRentalMutation = () => {
     const queryClient = useQueryClient();
 
@@ -28,6 +37,7 @@ export const useCreateRentalMutation = () => {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["rentals"] });
+            queryClient.invalidateQueries({ queryKey: ["todaysRentals"] });
         },
     });
 };
@@ -47,6 +57,7 @@ export const useFinishRentalMutation = () => {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["rentals"] });
+            queryClient.invalidateQueries({ queryKey: ["todaysRentals"] });
         },
     });
 };

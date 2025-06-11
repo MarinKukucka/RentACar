@@ -19,7 +19,10 @@ function AuthLayout() {
         <AntLayout style={{ minHeight: "100vh" }}>
             <Header className="header-layout">
                 <div className="logo">
-                    <Link to="/" style={{ color: "white" }}>
+                    <Link
+                        to="/dashboard"
+                        style={{ color: "white", fontSize: "1.2rem" }}
+                    >
                         <CarOutlined style={{ marginRight: "0.5rem" }} />
                         {t(translations.general.appName)}
                     </Link>
