@@ -3,6 +3,9 @@ import { Header } from "antd/es/layout/layout";
 import { Link, Outlet } from "@tanstack/react-router";
 import HeaderMenu from "./AuthHeaderMenu";
 import "../Layout.css";
+import { CarOutlined } from "@ant-design/icons";
+import { useTranslation } from "react-i18next";
+import translations from "../../../config/localization/translations";
 
 const { Content } = AntLayout;
 
@@ -10,16 +13,15 @@ function AuthLayout() {
     const {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
+    const { t } = useTranslation();
 
     return (
         <AntLayout style={{ minHeight: "100vh" }}>
             <Header className="header-layout">
                 <div className="logo">
-                    <Link className="logo-link" to="/">
-                        <img
-                            src="src\assets\logo.png"
-                            style={{ width: "100%" }}
-                        />
+                    <Link to="/" style={{ color: "white" }}>
+                        <CarOutlined style={{ marginRight: "0.5rem" }} />
+                        {t(translations.general.appName)}
                     </Link>
                 </div>
                 <HeaderMenu />
