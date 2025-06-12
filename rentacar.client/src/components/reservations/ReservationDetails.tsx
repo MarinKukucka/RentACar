@@ -117,12 +117,17 @@ function ReservationDetails({ reservation }: Props) {
             <Row>
                 <Col span={3} offset={21}>
                     <Space style={{ float: "right", marginBottom: 15 }}>
-                        <Button
-                            icon={<EditOutlined />}
-                            onClick={() => handleDrawerMode(DrawerState.Edit)}
-                        >
-                            {t(translations.rentals.createRental)}
-                        </Button>
+                        {reservation?.status ===
+                            ReservationStatus.Confirmed && (
+                            <Button
+                                icon={<EditOutlined />}
+                                onClick={() =>
+                                    handleDrawerMode(DrawerState.Edit)
+                                }
+                            >
+                                {t(translations.rentals.createRental)}
+                            </Button>
+                        )}
                         {(reservation?.status === ReservationStatus.Pending ||
                             reservation?.status ===
                                 ReservationStatus.Confirmed) && (

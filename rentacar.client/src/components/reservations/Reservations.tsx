@@ -214,7 +214,7 @@ function Reservations() {
             key: "actions",
             render: (record: ReservationDto) => {
                 const menutItems = [
-                    {
+                    record?.status === ReservationStatus.Confirmed && {
                         key: "create",
                         label: (
                             <Button
@@ -230,7 +230,8 @@ function Reservations() {
                             </Button>
                         ),
                     },
-                    {
+                    (record?.status === ReservationStatus.Pending ||
+                        record?.status === ReservationStatus.Confirmed) && {
                         key: "cancel",
                         label: (
                             <Button
@@ -242,7 +243,7 @@ function Reservations() {
                             </Button>
                         ),
                     },
-                ];
+                ].filter((item) => !!item);
 
                 return (
                     <div onClick={(event) => event.stopPropagation()}>
