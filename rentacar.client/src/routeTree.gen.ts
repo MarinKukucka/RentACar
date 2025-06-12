@@ -25,6 +25,7 @@ import { Route as AuthorizedRoutesReservationsIndexImport } from './routes/_auth
 import { Route as AuthorizedRoutesRentalsIndexImport } from './routes/_authorizedRoutes/rentals/index'
 import { Route as AuthorizedRoutesPeopleIndexImport } from './routes/_authorizedRoutes/people/index'
 import { Route as AuthorizedRoutesDashboardIndexImport } from './routes/_authorizedRoutes/dashboard/index'
+import { Route as AuthorizedRoutesReservationsIdTabImport } from './routes/_authorizedRoutes/reservations/$id/$tab'
 
 // Create/Update Routes
 
@@ -113,6 +114,13 @@ const AuthorizedRoutesDashboardIndexRoute =
   AuthorizedRoutesDashboardIndexImport.update({
     id: '/dashboard/',
     path: '/dashboard/',
+    getParentRoute: () => AuthorizedRoutesRoute,
+  } as any)
+
+const AuthorizedRoutesReservationsIdTabRoute =
+  AuthorizedRoutesReservationsIdTabImport.update({
+    id: '/reservations/$id/$tab',
+    path: '/reservations/$id/$tab',
     getParentRoute: () => AuthorizedRoutesRoute,
   } as any)
 
@@ -218,6 +226,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthorizedRoutesVehiclesIndexImport
       parentRoute: typeof AuthorizedRoutesImport
     }
+    '/_authorizedRoutes/reservations/$id/$tab': {
+      id: '/_authorizedRoutes/reservations/$id/$tab'
+      path: '/reservations/$id/$tab'
+      fullPath: '/reservations/$id/$tab'
+      preLoaderRoute: typeof AuthorizedRoutesReservationsIdTabImport
+      parentRoute: typeof AuthorizedRoutesImport
+    }
   }
 }
 
@@ -230,6 +245,7 @@ interface AuthorizedRoutesRouteChildren {
   AuthorizedRoutesRentalsIndexRoute: typeof AuthorizedRoutesRentalsIndexRoute
   AuthorizedRoutesReservationsIndexRoute: typeof AuthorizedRoutesReservationsIndexRoute
   AuthorizedRoutesVehiclesIndexRoute: typeof AuthorizedRoutesVehiclesIndexRoute
+  AuthorizedRoutesReservationsIdTabRoute: typeof AuthorizedRoutesReservationsIdTabRoute
 }
 
 const AuthorizedRoutesRouteChildren: AuthorizedRoutesRouteChildren = {
@@ -240,6 +256,8 @@ const AuthorizedRoutesRouteChildren: AuthorizedRoutesRouteChildren = {
   AuthorizedRoutesReservationsIndexRoute:
     AuthorizedRoutesReservationsIndexRoute,
   AuthorizedRoutesVehiclesIndexRoute: AuthorizedRoutesVehiclesIndexRoute,
+  AuthorizedRoutesReservationsIdTabRoute:
+    AuthorizedRoutesReservationsIdTabRoute,
 }
 
 const AuthorizedRoutesRouteWithChildren =
@@ -260,6 +278,7 @@ export interface FileRoutesByFullPath {
   '/rentals': typeof AuthorizedRoutesRentalsIndexRoute
   '/reservations': typeof AuthorizedRoutesReservationsIndexRoute
   '/vehicles': typeof AuthorizedRoutesVehiclesIndexRoute
+  '/reservations/$id/$tab': typeof AuthorizedRoutesReservationsIdTabRoute
 }
 
 export interface FileRoutesByTo {
@@ -277,6 +296,7 @@ export interface FileRoutesByTo {
   '/rentals': typeof AuthorizedRoutesRentalsIndexRoute
   '/reservations': typeof AuthorizedRoutesReservationsIndexRoute
   '/vehicles': typeof AuthorizedRoutesVehiclesIndexRoute
+  '/reservations/$id/$tab': typeof AuthorizedRoutesReservationsIdTabRoute
 }
 
 export interface FileRoutesById {
@@ -295,6 +315,7 @@ export interface FileRoutesById {
   '/_authorizedRoutes/rentals/': typeof AuthorizedRoutesRentalsIndexRoute
   '/_authorizedRoutes/reservations/': typeof AuthorizedRoutesReservationsIndexRoute
   '/_authorizedRoutes/vehicles/': typeof AuthorizedRoutesVehiclesIndexRoute
+  '/_authorizedRoutes/reservations/$id/$tab': typeof AuthorizedRoutesReservationsIdTabRoute
 }
 
 export interface FileRouteTypes {
@@ -314,6 +335,7 @@ export interface FileRouteTypes {
     | '/rentals'
     | '/reservations'
     | '/vehicles'
+    | '/reservations/$id/$tab'
   fileRoutesByTo: FileRoutesByTo
   to:
     | ''
@@ -330,6 +352,7 @@ export interface FileRouteTypes {
     | '/rentals'
     | '/reservations'
     | '/vehicles'
+    | '/reservations/$id/$tab'
   id:
     | '__root__'
     | '/_authorizedRoutes'
@@ -346,6 +369,7 @@ export interface FileRouteTypes {
     | '/_authorizedRoutes/rentals/'
     | '/_authorizedRoutes/reservations/'
     | '/_authorizedRoutes/vehicles/'
+    | '/_authorizedRoutes/reservations/$id/$tab'
   fileRoutesById: FileRoutesById
 }
 
@@ -399,7 +423,8 @@ export const routeTree = rootRoute
         "/_authorizedRoutes/people/",
         "/_authorizedRoutes/rentals/",
         "/_authorizedRoutes/reservations/",
-        "/_authorizedRoutes/vehicles/"
+        "/_authorizedRoutes/vehicles/",
+        "/_authorizedRoutes/reservations/$id/$tab"
       ]
     },
     "/_authorization/Login": {
@@ -445,6 +470,10 @@ export const routeTree = rootRoute
     },
     "/_authorizedRoutes/vehicles/": {
       "filePath": "_authorizedRoutes/vehicles/index.tsx",
+      "parent": "/_authorizedRoutes"
+    },
+    "/_authorizedRoutes/reservations/$id/$tab": {
+      "filePath": "_authorizedRoutes/reservations/$id/$tab.tsx",
       "parent": "/_authorizedRoutes"
     }
   }

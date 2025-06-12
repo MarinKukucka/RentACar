@@ -15,7 +15,7 @@ import { getCheckboxFilter, getSearchFilter } from "../../helpers/FilterHelper";
 import { PageHeader } from "@ant-design/pro-layout";
 import { defaultTablePagination, DRAWER_WIDTH } from "../../config/constants";
 import { getRentalStatusOptions } from "../../helpers/OptionsMappingHelper";
-import { formatDate } from "../../helpers/FormatHelper";
+import { formatDateTime } from "../../helpers/FormatHelper";
 import { DrawerState } from "../../models/enums";
 import RentalForm from "./RentalForm";
 import FileLink from "../files/FileLink";
@@ -101,13 +101,13 @@ function Rentals() {
             title: t(translations.rentals.pickupDateTime),
             dataIndex: "pickupDateTime",
             sorter: true,
-            render: (value: Date) => formatDate(value),
+            render: (value: Date) => formatDateTime(value),
         },
         {
             title: t(translations.rentals.returnDateTime),
             dataIndex: "returnDateTime",
             sorter: true,
-            render: (value: Date) => formatDate(value),
+            render: (value: Date) => formatDateTime(value),
         },
         {
             title: t(translations.rentals.odometerStart),

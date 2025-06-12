@@ -29,7 +29,7 @@ import translations from "../../config/localization/translations";
 import { getCheckboxFilter, getSearchFilter } from "../../helpers/FilterHelper";
 import { PageHeader } from "@ant-design/pro-layout";
 import { defaultTablePagination, DRAWER_WIDTH } from "../../config/constants";
-import { formatDate } from "../../helpers/FormatHelper";
+import { formatDateTime } from "../../helpers/FormatHelper";
 import { getReservationStatusOptions } from "../../helpers/OptionsMappingHelper";
 import { DrawerState } from "../../models/enums";
 import RentalForm from "../rentals/RentalForm";
@@ -130,6 +130,16 @@ function Reservations() {
         setReservationToCancel(undefined);
     }, []);
 
+    const handleOnRowClick = useCallback(
+        (reservation: ReservationDto) => {
+            navigate({
+                to: "/reservations/$id/$tab",
+                params: { id: reservation.id.toString(), tab: "details" },
+            });
+        },
+        [navigate]
+    );
+
     // #endregion
 
     const columns = [
@@ -143,13 +153,13 @@ function Reservations() {
             title: t(translations.reservations.startDateTime),
             dataIndex: "startDateTime",
             sorter: true,
-            render: (value: Date) => formatDate(value),
+            render: (value: Date) => formatDateTime(value),
         },
         {
             title: t(translations.reservations.endDateTime),
             dataIndex: "endDateTime",
             sorter: true,
-            render: (value: Date) => formatDate(value),
+            render: (value: Date) => formatDateTime(value),
         },
         {
             title: t(translations.reservations.status),
@@ -228,7 +238,7 @@ function Reservations() {
                                 danger
                                 onClick={() => showCancelModal(record)}
                             >
-                                {t(translations.rentals.cancelRental)}
+                                {t(translations.reservations.cancelReservation)}
                             </Button>
                         ),
                     },
@@ -266,6 +276,9 @@ function Reservations() {
                     total: reservations?.totalItems,
                 }}
                 onChange={handleTableChange}
+                onRow={(reservation: ReservationDto) => ({
+                    onClick: () => handleOnRowClick(reservation),
+                })}
                 bordered
             />
 

@@ -16,7 +16,8 @@
             "actions": "Actions",
             "aboutUs": "About us",
             "contact": "Contact",
-            "upload": "Upload"
+            "upload": "Upload",
+            "details": "Details"
         },
         "authorization": {
             "email": "Email",
@@ -95,6 +96,7 @@
             "invoice": "Invoice",
             "pickupLocation": "Pickup location",
             "returnLocation": "Return location",
+            "cancelReservation": "Cancel reservation",
             "confirmCancelReservation": "Are you sure that you want to cancel this reservation"
         },
         "rentals": {

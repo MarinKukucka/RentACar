@@ -35,6 +35,15 @@ export const useFetchTodaysReservationsQuery = () => {
     })
 }
 
+export const useFetchReservationByIdQuery = (id: number) => {
+    return useQuery({
+        queryKey: ['reservationById', id],
+        queryFn: async () => {
+            return await new ReservationClient().getReservationById(id);
+        }
+    })
+}
+
 export const useCreateReservationMutation = () => {
     const queryClient = useQueryClient();
 

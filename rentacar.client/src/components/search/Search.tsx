@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import translations from "../../config/localization/translations";
 import {
     datePickerFormatProps,
-    defaultDateFormat,
+    defaultDateTimeFormat,
 } from "../../helpers/FormatHelper";
 import { useCallback, useState } from "react";
 import * as v from "valibot";
@@ -181,7 +181,10 @@ function Search({ resultSearch, onClose, searchFilter }: Props) {
                         style={{ marginBottom: 0 }}
                     >
                         <DatePicker
-                            format={defaultDateFormat}
+                            showTime
+                            showHour
+                            showMinute
+                            format={defaultDateTimeFormat}
                             size="large"
                             style={{ minWidth: 180 }}
                         />
@@ -199,7 +202,10 @@ function Search({ resultSearch, onClose, searchFilter }: Props) {
                         style={{ marginBottom: 0 }}
                     >
                         <DatePicker
-                            format={defaultDateFormat}
+                            showTime
+                            showHour
+                            showMinute
+                            format={defaultDateTimeFormat}
                             size="large"
                             style={{ minWidth: 180 }}
                         />

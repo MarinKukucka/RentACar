@@ -5,7 +5,7 @@ import { useFetchSearchResultVehiclesQuery } from "../../api/vehicles/vehicles";
 import { Card, Col, Row } from "antd";
 import { Transmission, VehicleType } from "../../api/api";
 import { UserOutlined } from "@ant-design/icons";
-import { formatDate } from "../../helpers/FormatHelper";
+import { formatDateTime } from "../../helpers/FormatHelper";
 import { useCallback, useMemo, useState } from "react";
 import { useFetchLocationByIdQuery } from "../../api/locations/locations";
 
@@ -88,8 +88,8 @@ function SearchResults() {
                             >
                                 {pickupLocation?.name} {"->"}{" "}
                                 {returnLocation?.name} <br />
-                                {formatDate(pickupDate)} -{" "}
-                                {formatDate(dropOffDate)}
+                                {formatDateTime(pickupDate)} -{" "}
+                                {formatDateTime(dropOffDate)}
                             </div>
                         )}
                         <Row gutter={[24, 24]}>

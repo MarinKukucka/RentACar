@@ -15,7 +15,8 @@ const translations = {
         actions: 'general.actions',
         aboutUs: 'general.aboutUs',
         contact: 'general.contact',
-        upload: 'general.upload'
+        upload: 'general.upload',
+        details: 'general.details'
     },
     authorization: {
         email: 'authorization.email',
@@ -94,6 +95,7 @@ const translations = {
         returnLocation: 'reservations.returnLocation',
         extraServices: 'reservations.extraServices',
         invoice: 'reservations.invoice',
+        cancelReservation: 'reservations.cancelReservation',
         confirmCancelReservation: 'reservations.confirmCancelReservation'
     },
     rentals: {
