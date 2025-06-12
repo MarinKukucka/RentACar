@@ -80,6 +80,16 @@ function Rentals() {
         [updateFilters]
     );
 
+    const handleOnRowClick = useCallback(
+        (rental: RentalDto) => {
+            navigate({
+                to: "/rentals/$id/$tab",
+                params: { id: rental.id.toString(), tab: "details" },
+            });
+        },
+        [navigate]
+    );
+
     // #endregion
 
     const columns = [
@@ -180,6 +190,9 @@ function Rentals() {
                     total: rentals?.totalItems,
                 }}
                 onChange={handleTableChange}
+                onRow={(rental: RentalDto) => ({
+                    onClick: () => handleOnRowClick(rental),
+                })}
                 bordered
             />
 

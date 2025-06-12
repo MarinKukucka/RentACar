@@ -28,6 +28,15 @@ export const useFetchTodaysRentalsQuery = () => {
     })
 }
 
+export const useFetchRentalByIdQuery = (id: number) => {
+    return useQuery({
+        queryKey: ["rentalById", id],
+        queryFn: async () => {
+            return await new RentalClient().getRentalById(id);
+        }
+    })
+}
+
 export const useCreateRentalMutation = () => {
     const queryClient = useQueryClient();
 

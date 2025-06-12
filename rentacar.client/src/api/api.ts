@@ -1140,7 +1140,7 @@ export class RentalClient extends ApiClientBase {
     }
 
     getPaginatedVehicles(paginationFilter_Filter_Id: number | null | undefined, paginationFilter_Filter_Status: number | null | undefined, paginationFilter_CurrentPage: number | undefined, paginationFilter_PageSize: number | undefined, paginationFilter_SortBy: string | undefined, paginationFilter_SortOrder: string | undefined): Promise<PaginationResponseOfRentalDto> {
-        let url_ = this.baseUrl + "/api/Rental?";
+        let url_ = this.baseUrl + "/api/Rental/paginated?";
         if (paginationFilter_Filter_Id !== undefined && paginationFilter_Filter_Id !== null)
             url_ += "PaginationFilter.Filter.Id=" + encodeURIComponent("" + paginationFilter_Filter_Id) + "&";
         if (paginationFilter_Filter_Status !== undefined && paginationFilter_Filter_Status !== null)
@@ -1264,6 +1264,59 @@ export class RentalClient extends ApiClientBase {
             });
         }
         return Promise.resolve<RentalDto[]>(null as any);
+    }
+
+    getRentalById(id: number): Promise<RentalDto> {
+        let url_ = this.baseUrl + "/api/Rental/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.transformResult(url_, _response, (_response: Response) => this.processGetRentalById(_response));
+        });
+    }
+
+    protected processGetRentalById(response: Response): Promise<RentalDto> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 401) {
+            return response.text().then((_responseText) => {
+            let result401: any = null;
+            let resultData401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result401 = ProblemDetails.fromJS(resultData401);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result401);
+            });
+        } else if (status === 403) {
+            return response.text().then((_responseText) => {
+            let result403: any = null;
+            let resultData403 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result403 = ProblemDetails.fromJS(resultData403);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result403);
+            });
+        } else if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = RentalDto.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<RentalDto>(null as any);
     }
 
     createRental(command: CreateRentalCommand): Promise<NoContent> {

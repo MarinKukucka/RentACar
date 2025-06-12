@@ -19,7 +19,7 @@ namespace RentACar.Application.Reservations.Queries.GetReservationById
                 .Include(r => r.ReturnLocation)
                 .Include(r => r.ExtraServices)
                 .Include(r => r.Invoices)
-                .Where(r => r.Person != null)
+                .Where(r => r.Person != null && r.Id == request.Id)
                 .Select(r => new ReservationDto
                 {
                     Id = r.Id,

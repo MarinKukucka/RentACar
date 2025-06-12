@@ -5,13 +5,14 @@ using RentACar.Application.Rentals.Commands.CreateRental;
 using RentACar.Application.Rentals.Commands.FinishRental;
 using RentACar.Application.Rentals.Dtos;
 using RentACar.Application.Rentals.Queries.GetPaginatedRentals;
+using RentACar.Application.Rentals.Queries.GetRentalById;
 using RentACar.Application.Rentals.Queries.GetTodaysRentals;
 
 namespace RentACar.Server.Controllers
 {
     public class RentalController(IMediator mediator) : ApiController
     {
-        [HttpGet]
+        [HttpGet("paginated")]
         [ProducesResponseType(typeof(PaginationResponse<RentalDto>), StatusCodes.Status200OK)]
         public async Task<Results<Ok<PaginationResponse<RentalDto>>, ValidationProblem>> GetPaginatedVehicles([FromQuery] GetPaginatedRentalsQuery query)
         {
@@ -24,6 +25,13 @@ namespace RentACar.Server.Controllers
         public async Task<List<RentalDto>> GetTodaysRentals()
         {
             return await mediator.Send(new GetTodaysRentalsQuery());
+        }
+
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(RentalDto), StatusCodes.Status200OK)]
+        public async Task<RentalDto> GetRentalById(int id)
+        {
+            return await mediator.Send(new GetRentalByIdQuery(id));
         }
 
         [HttpPost("create-rental")]

@@ -3,30 +3,28 @@ import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { Tabs } from "antd";
 import { useTranslation } from "react-i18next";
 import translations from "../../../../config/localization/translations";
-import { useFetchReservationByIdQuery } from "../../../../api/reservations/reservations";
-import ReservationDetails from "../../../../components/reservations/ReservationDetails";
+import RentalDetails from "../../../../components/rentals/RentalDetails";
+import { useFetchRentalByIdQuery } from "../../../../api/rentals/rentals";
 
-export const Route = createFileRoute(
-    `/_authorizedRoutes/reservations/$id/$tab`
-)({
-    component: ReservationPage,
+export const Route = createFileRoute("/_authorizedRoutes/rentals/$id/$tab")({
+    component: RentalPage,
 });
 
-function ReservationPage() {
+function RentalPage() {
     const { t } = useTranslation();
     const router = useRouter();
 
     const { id, tab } = Route.useParams();
 
-    const { data: reservation } = useFetchReservationByIdQuery(+id);
+    const { data: rental } = useFetchRentalByIdQuery(+id);
 
     return (
         <>
-            <PageHeader title={"Reservation #" + reservation?.id} />
+            <PageHeader title={"Rental #" + rental?.id} />
             <Tabs
                 onChange={(activeKey: string) => {
                     router.navigate({
-                        to: "/reservations/$id/$tab",
+                        to: "/rentals/$id/$tab",
                         params: { id: id, tab: activeKey },
                     });
                 }}
@@ -36,9 +34,7 @@ function ReservationPage() {
                     {
                         key: "details",
                         label: t(translations.general.details),
-                        children: (
-                            <ReservationDetails reservation={reservation} />
-                        ),
+                        children: <RentalDetails rental={rental} />,
                         destroyInactiveTabPane: true,
                     },
                 ]}
@@ -46,5 +42,3 @@ function ReservationPage() {
         </>
     );
 }
-
-export default ReservationPage;

@@ -219,7 +219,9 @@ function ReservationDetails({ reservation }: Props) {
                         <Form.Item
                             label={t(translations.reservations.extraServices)}
                         >
-                            {reservation?.extraServices?.map((x) => x)}
+                            {reservation?.extraServices?.map((x) => (
+                                <div>{x}</div>
+                            ))}
                         </Form.Item>
                     </Form>
                 </Col>
