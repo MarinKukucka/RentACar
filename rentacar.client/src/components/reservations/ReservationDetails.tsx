@@ -187,6 +187,9 @@ function ReservationDetails({ reservation }: Props) {
                                 addonAfter="€"
                             />
                         </Form.Item>
+                        <Form.Item label="Notes">
+                            <Input readOnly value={reservation?.notes} />
+                        </Form.Item>
                     </Form>
                 </Col>
                 <Col span={12}>
