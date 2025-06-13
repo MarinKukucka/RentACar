@@ -188,7 +188,12 @@ function ReservationDetails({ reservation }: Props) {
                             />
                         </Form.Item>
                         <Form.Item label="Notes">
-                            <Input readOnly value={reservation?.notes} />
+                            <Input.TextArea
+                                rows={5}
+                                style={{ resize: "none" }}
+                                readOnly
+                                value={reservation?.notes}
+                            />
                         </Form.Item>
                     </Form>
                 </Col>

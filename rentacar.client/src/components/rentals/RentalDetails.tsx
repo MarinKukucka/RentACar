@@ -179,7 +179,7 @@ function RentalDetails({ rental }: Props) {
                 <RentalForm
                     onClose={() => handleDrawerMode(DrawerState.Closed)}
                     onSuccess={() => handleDrawerMode(DrawerState.Closed)}
-                    reservationId={rental?.id}
+                    rentalId={rental?.id}
                 />
             </Drawer>
         </>

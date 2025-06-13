@@ -162,9 +162,10 @@ function Rentals() {
                     record.status !== RentalStatus.Returned && (
                         <Button
                             type="primary"
-                            onClick={() =>
-                                handleDrawerMode(DrawerState.Edit, record.id)
-                            }
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                handleDrawerMode(DrawerState.Edit, record.id);
+                            }}
                         >
                             {t(translations.rentals.finishRental)}
                         </Button>

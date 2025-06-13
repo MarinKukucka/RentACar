@@ -15,7 +15,7 @@ function PublicLayout({ children }: Props) {
                 {children}
             </AntLayout.Content>
             <Footer style={{ textAlign: "center", background: "#fff" }}>
-                Rent A Car ©2025 Created by Marin Kukučka
+                Rent A Car CARcarAPP ©2025 Created by Marin Kukučka
             </Footer>
         </AntLayout>
     );
