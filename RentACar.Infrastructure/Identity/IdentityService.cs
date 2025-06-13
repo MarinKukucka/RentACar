@@ -15,7 +15,7 @@ namespace RentACar.Infrastructure.Identity
     IHttpContextAccessor httpContextAccessor,
     RoleManager<IdentityRole> roleManager,
     IUserClaimsPrincipalFactory<ApplicationUser> userClaimsPrincipalFactory,
-    Services.IEmailSender<ApplicationUser> emailSender,
+    Application.Common.Interfaces.IEmailSender<ApplicationUser> emailSender,
     IAuthorizationService authorizationService) : IIdentityService
     {
         public async Task<string?> GetUserNameAsync(string userId)

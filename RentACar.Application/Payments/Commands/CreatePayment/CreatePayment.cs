@@ -25,7 +25,7 @@ namespace RentACar.Application.Payments.Commands.CreatePayment
         public int? ReservationId { get; set; }
     }
 
-    public class CreatePaymentCommandHandler(IApplicationDbContext _context, IFileService _fileService) : IRequestHandler<CreatePaymentCommand, NewPaymentResponse>
+    public class CreatePaymentCommandHandler(IApplicationDbContext _context, IFileService _fileService, IEmailSender<ApplicationUser> _emailSender) : IRequestHandler<CreatePaymentCommand, NewPaymentResponse>
     {
         public async ValueTask<NewPaymentResponse> Handle(CreatePaymentCommand request, CancellationToken cancellationToken)
         {
@@ -74,6 +74,31 @@ namespace RentACar.Application.Payments.Commands.CreatePayment
             };
 
             await _context.SaveChangesAsync(cancellationToken);
+
+            var emailInvoice = await _context.Invoices
+                .Include(i => i.Reservation)
+                    .ThenInclude(r => r!.Person)
+                .Where(i => i.Id == invoice.Id)
+                .FirstOrDefaultAsync(cancellationToken);
+
+            if (emailInvoice != null && emailInvoice.Reservation?.Person?.Email is string customerEmail)
+            {
+                var fullName = emailInvoice.Reservation.Person.FirstName + " " + emailInvoice.Reservation.Person.LastName ?? "Customer";
+
+                await _emailSender.SendEmailWithAttachmentAsync(
+                    toEmail: customerEmail,
+                    subject: $"Your Invoice #{emailInvoice.InvoiceNumber}",
+                    htmlMessage: $"""
+            <p>Dear {fullName},</p>
+            <p>Thank you for your payment of <strong>{emailInvoice.TotalAmount:C}</strong>.</p>
+            <p>Your invoice is attached as a PDF document.</p>
+            <p>Best regards,<br/>RentACar Support</p>
+        """,
+                    attachment: pdfBytes,
+                    attachmentName: $"{emailInvoice.InvoiceNumber}.pdf"
+                );
+            }
+
 
             return new NewPaymentResponse
             {

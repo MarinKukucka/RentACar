@@ -15,7 +15,7 @@ using System.Text;
 
 namespace RentACar.Server.Controllers
 {
-    public class IdentityController(UserManager<ApplicationUser> userManager, Infrastructure.Services.IEmailSender<ApplicationUser> emailSender, LinkGenerator linkGenerator, IMediator mediator) : ApiController
+    public class IdentityController(UserManager<ApplicationUser> userManager, Application.Common.Interfaces.IEmailSender<ApplicationUser> emailSender, LinkGenerator linkGenerator, IMediator mediator) : ApiController
     {
         [HttpGet("confirm-email")]
         [ProducesResponseType(StatusCodes.Status302Found)]

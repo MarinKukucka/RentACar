@@ -24,7 +24,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ApplicationDbContextInitialiser>();
 builder.Services.AddScoped<IAuthService, IdentityAuthService>();
 builder.Services.AddScoped<IIdentityService, IdentityService>();
-builder.Services.AddScoped<RentACar.Infrastructure.Services.IEmailSender<ApplicationUser>, SmtpEmailSender>();
+builder.Services.AddScoped<RentACar.Application.Common.Interfaces.IEmailSender<ApplicationUser>, SmtpEmailSender>();
 builder.Services.AddScoped<IFileService, FileService>();
 
 builder.Services.AddScoped<IApplicationDbContext, ApplicationDbContext>();

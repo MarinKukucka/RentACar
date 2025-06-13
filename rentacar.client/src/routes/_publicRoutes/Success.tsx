@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createFileRoute } from "@tanstack/react-router";
 import { useUpdateReservationMutation } from "../../api/reservations/reservations";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
     CreatePaymentCommand,
     ReservationStatus,
@@ -28,7 +28,11 @@ function Success() {
     const { mutateAsync: updateReservation } = useUpdateReservationMutation();
     const { mutateAsync: createPayment } = useCreatePaymentMutation();
 
+    const didRunRef = useRef(false);
+
     useEffect(() => {
+        if (didRunRef.current) return;
+        didRunRef.current = true;
         const checkPayment = async () => {
             try {
                 const params = new URLSearchParams(window.location.search);
