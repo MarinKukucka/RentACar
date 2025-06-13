@@ -26,7 +26,6 @@ function VehiclesCarousel() {
                 {simpleVehicles.map((vehicle: SimpleVehicleDto) => (
                     <div key={vehicle.id} className="slide-item">
                         <Card
-                            hoverable
                             cover={
                                 <img
                                     src={`https://localhost:7159/${vehicle.image}`}
