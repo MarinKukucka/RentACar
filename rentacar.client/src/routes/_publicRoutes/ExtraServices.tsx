@@ -38,11 +38,16 @@ function ExtraServices() {
     );
 
     const daysOfRent = useMemo(() => {
-        return (
-            (dropOffDate.getTime() - pickupDate.getTime()) /
-                (1000 * 60 * 60 * 24) +
-            1
-        );
+        const msInDay = 1000 * 60 * 60 * 24;
+
+        const pickup = new Date(pickupDate);
+        const dropoff = new Date(dropOffDate);
+        pickup.setHours(0, 0, 0, 0);
+        dropoff.setHours(0, 0, 0, 0);
+
+        const diffInDays = (dropoff.getTime() - pickup.getTime()) / msInDay;
+
+        return diffInDays + 1;
     }, [pickupDate, dropOffDate]);
 
     const handleToggleExtraService = useCallback(
@@ -92,7 +97,21 @@ function ExtraServices() {
         } catch (err) {
             console.error("Form validation failed:", err);
         }
-    }, [createPaymentIntent, createReservation, daysOfRent, dropOffDate, extraServicePrice, form, navigate, pickupDate, search.pickupLocationId, search.returnLocationId, search.vehicleId, selectedExtras, vehicle]);
+    }, [
+        createPaymentIntent,
+        createReservation,
+        daysOfRent,
+        dropOffDate,
+        extraServicePrice,
+        form,
+        navigate,
+        pickupDate,
+        search.pickupLocationId,
+        search.returnLocationId,
+        search.vehicleId,
+        selectedExtras,
+        vehicle,
+    ]);
 
     if (!vehicle) return;
 
