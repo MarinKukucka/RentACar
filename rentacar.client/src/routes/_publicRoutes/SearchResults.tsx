@@ -81,15 +81,44 @@ function SearchResults() {
                             />
                         ) : (
                             <div
-                                style={{
-                                    marginBottom: 20,
-                                }}
                                 onClick={handleOpenSearch}
+                                style={{
+                                    display: "inline-block",
+                                    padding: "12px 16px",
+                                    marginBottom: 20,
+                                    backgroundColor: "#ffffff",
+                                    borderRadius: 12,
+                                    boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+                                    fontFamily:
+                                        "system-ui, -apple-system, BlinkMacSystemFont, sans-serif",
+                                    cursor: "pointer",
+                                    userSelect: "none",
+                                }}
                             >
-                                {pickupLocation?.name} {"->"}{" "}
-                                {returnLocation?.name} <br />
-                                {formatDateTime(pickupDate)} -{" "}
-                                {formatDateTime(dropOffDate)}
+                                <div
+                                    style={{
+                                        fontWeight: 600,
+                                        color: "#333333",
+                                        margin: 10,
+                                        fontSize: "1rem",
+                                        lineHeight: 1.2,
+                                    }}
+                                >
+                                    {pickupLocation?.name}
+                                    {" -> "}
+                                    {returnLocation?.name}
+                                </div>
+                                <div
+                                    style={{
+                                        color: "#666666",
+                                        fontSize: "0.875rem",
+                                        lineHeight: 1.4,
+                                    }}
+                                >
+                                    {formatDateTime(pickupDate)}
+                                    {"-"}
+                                    {formatDateTime(dropOffDate)}
+                                </div>
                             </div>
                         )}
                         <Row gutter={[24, 24]}>
