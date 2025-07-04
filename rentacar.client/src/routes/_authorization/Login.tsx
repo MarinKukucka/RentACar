@@ -6,6 +6,7 @@ import { LoginDto } from "../../api/api";
 import "./Authorization.css";
 import { useTranslation } from "react-i18next";
 import translations from "../../config/localization/translations";
+import { CarOutlined } from "@ant-design/icons";
 
 export const Route = createFileRoute("/_authorization/Login")({
     component: Login,
@@ -34,6 +35,10 @@ function Login() {
 
     return (
         <div className="authorization-container">
+            <div style={{ fontSize: "50px" }}>
+                <CarOutlined style={{ marginRight: "0.5rem" }} />
+                {t(translations.general.appName)}
+            </div>
             <Card className="authorization-card">
                 <Flex gap={18} vertical>
                     <Form
