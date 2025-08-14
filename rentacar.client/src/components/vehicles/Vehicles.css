@@ -14,6 +14,6 @@
 }
 .slide-image {
   height: 250px;
-  object-fit: cover;
+  object-fit: fill;
   padding: 20px;
 }
