@@ -6,75 +6,163 @@ using System.Globalization;
 
 namespace RentACar.Application.Common.Helpers
 {
-    public class InvoiceDocument(Invoice model) : IDocument
+    public class InvoiceDocument(Invoice model, Person person) : IDocument
     {
-        private static readonly CultureInfo EuroCulture = new("hr-HR")
+        private static readonly CultureInfo EuroCulture = new("en-US")
         {
             NumberFormat = { CurrencySymbol = "€" }
         };
 
+        private const decimal DefaultVatRate = 0.25m;
+
         public Invoice Model { get; } = model;
 
-        public DocumentMetadata GetMetadata() => DocumentMetadata.Default;
+        public Person Person { get; } = person;
+
+        public DocumentMetadata GetMetadata() =>
+            new()
+            { Title = $"Invoice #{Model?.InvoiceNumber ?? "—"}" };
 
         public void Compose(IDocumentContainer container)
         {
-            container
-                .Page(page =>
+            container.Page(page =>
+            {
+                page.Size(PageSizes.A4);
+                page.Margin(40);
+                page.PageColor(Colors.White);
+                page.DefaultTextStyle(x => x.FontSize(11));
+
+                page.Header().Element(ComposeHeader);
+                page.Content().Element(ComposeContent);
+                page.Footer().Element(footer =>
                 {
-                    page.Margin(50);
-
-                    page.Header().Element(ComposeHeader);
-                    page.Content().Element(ComposeContent);
-
-                    page.Footer().AlignCenter().Text(text =>
+                    footer.AlignCenter().Text(text =>
                     {
+                        text.Span("Page ").SemiBold();
                         text.CurrentPageNumber();
                         text.Span(" / ");
                         text.TotalPages();
                     });
                 });
+            });
         }
 
         void ComposeHeader(IContainer container)
         {
             container.Row(row =>
             {
-                row.RelativeItem().Column(column =>
+                row.RelativeItem().Column(col =>
                 {
-                    column
-                        .Item().Text($"Invoice #{Model.InvoiceNumber}")
-                        .FontSize(20).SemiBold().FontColor(Colors.Blue.Medium);
+                    col.Item().AlignLeft().Text("CARcarAPP").SemiBold().FontSize(18).FontColor(Colors.Blue.Medium);
+                    col.Item().PaddingTop(6).Text("Ulica kralja Tomislava 8\n" +
+                                                  "31400 Đakovo, Croatia\n" +
+                                                  "CARcarAPP@gmail.com\n" +
+                                                  "(031) 456 789"
+                    ).FontSize(9).FontColor(Colors.Grey.Darken1);
+                });
 
-                    column.Item().Text(text =>
-                    {
-                        text.Span("Issue date: ").SemiBold();
-                        text.Span($"{Model.IssuedAt:d}");
-                    });
+                row.ConstantItem(220).Column(col =>
+                {
+                    col.Item().AlignRight().Text("INVOICE").SemiBold().FontSize(22).FontColor(Colors.Blue.Medium);
+                    col.Item().PaddingTop(8).Text($"Invoice #: {Model?.InvoiceNumber ?? "—"}\nIssue date: {Model?.IssuedAt:d}")
+                   .AlignRight().FontSize(10);
                 });
             });
         }
 
         void ComposeContent(IContainer container)
         {
-            container.PaddingVertical(40).Column(column =>
+            container.PaddingVertical(10).Column(column =>
             {
-                column.Spacing(20);
+                column.Spacing(12);
 
-                column.Item().Element(ComposeTable);
-
-                if(Model.Reservation != null)
+                column.Item().Row(row =>
                 {
-                    var totalPrice = Model.Reservation.TotalPrice;
-                    column.Item().PaddingRight(5).AlignRight().Text($"Grand total: {totalPrice.ToString("C", EuroCulture)}").SemiBold();
-                }
+                    row.RelativeItem().Element(c =>
+                    {
+                        c.Column(col =>
+                        {
+                            col.Item().Text("Bill from").SemiBold();
+                            col.Item().PaddingTop(4).Text("CARcarAPP");
+                            col.Item().Text("Ulica kralja Tomislava 8");
+                            col.Item().Text("31400 Đakovo, Croatia");
+                            col.Item().Text("(031) 456 789");
+                            col.Item().Text("CARcarAPP@gmail.com");
+                        });
+                    });
 
-                if (Model.Reservation != null && !string.IsNullOrWhiteSpace(Model.Reservation.Notes))
-                    column.Item().PaddingTop(25).Element(ComposeComments);
+                    row.ConstantItem(220);
+
+                    row.RelativeItem().Element(c =>
+                    {
+                        c.Column(col =>
+                        {
+                            col.Item().Text("Bill to").SemiBold();
+
+                            var customerName = Person != null
+                                ? $"{Person.FirstName ?? string.Empty} {Person.LastName ?? string.Empty}".Trim()
+                                : "Customer";
+
+                            col.Item().PaddingTop(4).Text(customerName);
+
+                            if (!string.IsNullOrWhiteSpace(Person?.Email))
+                                col.Item().Text(Person.Email);
+
+                            if (!string.IsNullOrWhiteSpace(Person?.PhoneNumber))
+                                col.Item().Text(Person.PhoneNumber);
+                        });
+                    });
+                });
+
+                column.Item().Element(ComposeItemsTable);
+
+                column.Item().PaddingTop(50).Row(row =>
+                {
+                    row.RelativeItem().Column(col =>
+                    {
+                        col.Item().Text("Payment details").SemiBold();
+                        col.Item().PaddingTop(6).Text("Bank: Example Bank d.d.\n" + 
+                                                      "IBAN: HR12 3456 7890 1234 5678 9\n" + 
+                                                      "SWIFT/BIC: EXAMPLHR"
+                        ).FontSize(10);
+
+                        if (!string.IsNullOrWhiteSpace(Model?.Reservation?.Notes))
+                        {
+                            col.Item().PaddingTop(12).Text("Notes").SemiBold();
+                            col.Item().Text(Model.Reservation.Notes).FontSize(9);
+                        }
+                    });
+
+                    row.ConstantItem(220).Element(c =>
+                    {
+                        var (subtotal, vatTotal, grandTotal) = CalculateTotals();
+
+                        c.Column(col =>
+                        {
+                            col.Item().AlignRight().Row(r =>
+                            {
+                                r.RelativeItem().Text("Subtotal:").SemiBold();
+                                r.ConstantItem(110).AlignRight().Text(subtotal.ToString("C", EuroCulture));
+                            });
+
+                            col.Item().AlignRight().Row(r =>
+                            {
+                                r.RelativeItem().Text($"VAT ({GetVatPercent():0.#}%):").SemiBold();
+                                r.ConstantItem(110).AlignRight().Text(vatTotal.ToString("C", EuroCulture));
+                            });
+
+                            col.Item().PaddingTop(6).AlignRight().Row(r =>
+                            {
+                                r.RelativeItem().Text("Total: ").SemiBold();
+                                r.ConstantItem(110).AlignRight().Text(grandTotal.ToString("C", EuroCulture)).FontSize(14).SemiBold();
+                            });
+                        });
+                    });
+                });
             });
         }
 
-        void ComposeTable(IContainer container)
+        void ComposeItemsTable(IContainer container)
         {
             var headerStyle = TextStyle.Default.SemiBold();
 
@@ -82,88 +170,109 @@ namespace RentACar.Application.Common.Helpers
             {
                 table.ColumnsDefinition(columns =>
                 {
-                    columns.RelativeColumn(3);  // Service name
-                    columns.RelativeColumn();   // Unit price
-                    columns.RelativeColumn();   // Days
-                    columns.RelativeColumn();   // Total
+                    columns.RelativeColumn(4);
+                    columns.RelativeColumn();  
+                    columns.RelativeColumn();  
+                    columns.RelativeColumn();
+                    columns.RelativeColumn();
                 });
 
-                // Table header
                 table.Header(header =>
                 {
-                    header.Cell().Text("Service").Style(headerStyle);
-                    header.Cell().AlignRight().Text("Unit Price").Style(headerStyle);
-                    header.Cell().AlignRight().Text("Days").Style(headerStyle);
-                    header.Cell().AlignRight().Text("Total").Style(headerStyle);
+                    header.Cell().PaddingTop(50).Element(CellHeader).Text("Description").Style(headerStyle);
+                    header.Cell().PaddingTop(50).AlignRight().Element(CellHeader).Text("Unit Price").Style(headerStyle);
+                    header.Cell().PaddingTop(50).AlignRight().Element(CellHeader).Text("Qty").Style(headerStyle);
+                    header.Cell().PaddingTop(50).AlignRight().Element(CellHeader).Text("VAT").Style(headerStyle);
+                    header.Cell().PaddingTop(50).AlignRight().Element(CellHeader).Text("Line Total").Style(headerStyle);
 
-                    header.Cell().ColumnSpan(4).PaddingTop(5).BorderBottom(1).BorderColor(Colors.Black);
+                    header.Cell().ColumnSpan(5).PaddingTop(6).BorderBottom(1).BorderColor(Colors.Grey.Lighten2);
                 });
 
-                if (Model.Reservation is not null)
+                if (Model?.Reservation != null)
                 {
                     var reservation = Model.Reservation;
-                    var days = (reservation.EndDateTime - reservation.StartDateTime).Days;
+                    var days = Math.Max(1, (reservation.EndDateTime - reservation.StartDateTime).Days) + 1;
+                    var vatRate = DefaultVatRate;
 
-                    // 🚗 Vehicle row
-                    if (reservation.Vehicle != null && reservation.Vehicle.Model != null && reservation.Vehicle.Model.Brand != null)
+                    if (reservation.Vehicle != null)
                     {
-                        var vehicleName = $"{reservation.Vehicle.Model.Brand.Name} {reservation.Vehicle.Model.Name}";
-                        var vehiclePrice = reservation.Vehicle.Price;
+                        var vehicleName = BuildVehicleName(reservation.Vehicle);
 
-                        table.Cell().Element(CellStyle).Text(vehicleName);
-                        table.Cell().Element(CellStyle).AlignRight().Text(vehiclePrice.ToString("C", EuroCulture));
-                        table.Cell().Element(CellStyle).AlignRight().Text($"{days}");
-                        table.Cell().Element(CellStyle).AlignRight().Text((vehiclePrice * days).ToString("C", EuroCulture))
-;
+                        var unitPrice = reservation.Vehicle.Price / 1.25m;
+                        var qty = days;
+                        var lineTotal = unitPrice * 1.25m * qty;
+                        AppendItemRow(table, vehicleName, unitPrice, qty, vatRate, lineTotal);
                     }
 
-                    // 🛠️ Extra services
-                    if (reservation.ExtraServices != null)
+                    if (reservation.ExtraServices != null && reservation.ExtraServices.Count != 0)
                     {
                         foreach (var service in reservation.ExtraServices)
                         {
-                            table.Cell().Element(CellStyle).Text(service.Name);
-                            table.Cell().Element(CellStyle).AlignRight().Text(service.Price.ToString("C", EuroCulture));
-                            table.Cell().Element(CellStyle).AlignRight().Text($"{days}");
-                            table.Cell().Element(CellStyle).AlignRight().Text((service.Price * days).ToString("C", EuroCulture));
+                            var unitPrice = service.Price / 1.25m;
+                            var qty = days;
+                            var lineTotal = unitPrice * 1.25m * qty;
+                            AppendItemRow(table, service.Name, unitPrice, qty, vatRate, lineTotal);
                         }
                     }
                 }
+                else
+                {
+                    table.Cell().ColumnSpan(5).Element(CellStyle).Text("No items").Italic();
+                }
 
-                static IContainer CellStyle(IContainer container) =>
-                    container.BorderBottom(1).BorderColor(Colors.Grey.Lighten2).PaddingVertical(5);
+                static IContainer CellHeader(IContainer c) =>
+                    c.PaddingBottom(6);
+
+                static IContainer CellStyle(IContainer c) =>
+                    c.BorderBottom(1).BorderColor(Colors.Grey.Lighten2).PaddingVertical(6);
+
+                static void AppendItemRow(TableDescriptor tableRef, string description, decimal unitPrice, decimal qty, decimal vatRateLocal, decimal lineTotal)
+                {
+                    tableRef.Cell().Element(CellStyle).Text(description);
+                    tableRef.Cell().Element(CellStyle).AlignRight().Text(unitPrice.ToString("C", EuroCulture));
+                    tableRef.Cell().Element(CellStyle).AlignRight().Text(qty.ToString("0") + " days");
+                    tableRef.Cell().Element(CellStyle).AlignRight().Text($"{vatRateLocal:P0}");
+                    tableRef.Cell().Element(CellStyle).AlignRight().Text(lineTotal.ToString("C", EuroCulture));
+                }
             });
         }
 
-
-        void ComposeComments(IContainer container)
+        (decimal subtotal, decimal vatTotal, decimal grandTotal) CalculateTotals()
         {
-            container.ShowEntire().Background(Colors.Grey.Lighten3).Padding(10).Column(column =>
+            decimal subtotal = 0m;
+            decimal vatRate = DefaultVatRate;
+
+            if (Model?.Reservation != null)
             {
-                column.Spacing(5);
-                column.Item().Text("Comments").FontSize(14).SemiBold();
-                column.Item().Text(Model.Reservation != null ? Model.Reservation.Notes : "");
-            });
+                var r = Model.Reservation;
+                var days = Math.Max(1, (r.EndDateTime - r.StartDateTime).Days) + 1;
+
+                if (r.Vehicle != null)
+                {
+                    subtotal += r.Vehicle.Price / 1.25m * days;
+                }
+
+                if (r.ExtraServices != null && r.ExtraServices.Count != 0)
+                {
+                    subtotal += r.ExtraServices.Sum(s => s.Price / 1.25m * days);
+                }
+            }
+
+            var vatTotal = Math.Round(subtotal * vatRate, 2);
+            var grandTotal = subtotal + vatTotal;
+
+            return (subtotal, vatTotal, grandTotal);
         }
-    }
 
-    public class AddressComponent(string title) : IComponent
-    {
-        public void Compose(IContainer container)
+        static decimal GetVatPercent() => DefaultVatRate * 100m;
+
+        static string BuildVehicleName(Vehicle vehicle)
         {
-            container.ShowEntire().Column(column =>
-            {
-                column.Spacing(2);
-
-                column.Item().Text(title).SemiBold();
-                column.Item().PaddingBottom(5).LineHorizontal(1);
-
-                column.Item().Text("CARcarAPP");
-                column.Item().Text("Mjau ulica 8");
-                column.Item().Text("31400 Đakovo");
-                column.Item().Text("RentACar@gmail.com");
-                column.Item().Text("1234567890");
-            });
+            var brand = vehicle?.Model?.Brand?.Name ?? string.Empty;
+            var model = vehicle?.Model?.Name ?? string.Empty;
+            var plate = !string.IsNullOrWhiteSpace(vehicle?.LicensePlate) ? $" ({vehicle.LicensePlate})" : "";
+            var name = $"{brand} {model}".Trim();
+            return string.IsNullOrWhiteSpace(name) ? "Vehicle" + plate : name + plate;
         }
     }
 }

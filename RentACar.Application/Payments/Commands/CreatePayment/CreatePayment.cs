@@ -59,7 +59,11 @@ namespace RentACar.Application.Payments.Commands.CreatePayment
 
             QuestPDF.Settings.License = LicenseType.Community;
 
-            var document = new InvoiceDocument(invoiceModel!);
+            var reservation = await _context.Reservations
+                .Include(r => r.Person)
+                .FirstOrDefaultAsync(r => r.Id == request.ReservationId, cancellationToken);
+
+            var document = new InvoiceDocument(invoiceModel!, reservation!.Person!);
 
             var pdfBytes = document.GeneratePdf();
 
