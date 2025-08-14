@@ -2914,6 +2914,8 @@ export class RentalDto implements IRentalDto {
     odometerStart!: number;
     odometerEnd!: number | undefined;
     totalPrice!: number | undefined;
+    personName!: string | undefined;
+    reservationEnd!: Date | undefined;
     files!: FileDto[] | undefined;
     notes!: string | undefined;
 
@@ -2935,6 +2937,8 @@ export class RentalDto implements IRentalDto {
             this.odometerStart = _data["odometerStart"];
             this.odometerEnd = _data["odometerEnd"];
             this.totalPrice = _data["totalPrice"];
+            this.personName = _data["personName"];
+            this.reservationEnd = _data["reservationEnd"] ? new Date(_data["reservationEnd"].toString()) : <any>undefined;
             if (Array.isArray(_data["files"])) {
                 this.files = [] as any;
                 for (let item of _data["files"])
@@ -2960,6 +2964,8 @@ export class RentalDto implements IRentalDto {
         data["odometerStart"] = this.odometerStart;
         data["odometerEnd"] = this.odometerEnd;
         data["totalPrice"] = this.totalPrice;
+        data["personName"] = this.personName;
+        data["reservationEnd"] = this.reservationEnd ? this.reservationEnd.toISOString() : <any>undefined;
         if (Array.isArray(this.files)) {
             data["files"] = [];
             for (let item of this.files)
@@ -2978,6 +2984,8 @@ export interface IRentalDto {
     odometerStart: number;
     odometerEnd: number | undefined;
     totalPrice: number | undefined;
+    personName: string | undefined;
+    reservationEnd: Date | undefined;
     files: FileDto[] | undefined;
     notes: string | undefined;
 }

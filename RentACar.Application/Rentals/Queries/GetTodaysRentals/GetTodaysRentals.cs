@@ -13,8 +13,19 @@ namespace RentACar.Application.Rentals.Queries.GetTodaysRentals
         {
             return await _context.Rentals
                 .AsNoTrackingWithIdentityResolution()
-                .Where(r => r.ReturnDateTime.HasValue && r.ReturnDateTime.Value.Date == DateTime.Today)
-                .ProjectToType<RentalDto>()
+                .Where(r => r.Reservation != null && r.Reservation.EndDateTime.Date == DateTime.Today)
+                .Select(rental => new RentalDto
+                {
+                    Id = rental.Id,
+                    Status = rental.Status,
+                    PickupDateTime = rental.PickupDateTime,
+                    ReturnDateTime = rental.ReturnDateTime,
+                    OdometerStart = rental.OdometerStart,
+                    OdometerEnd = rental.OdometerEnd,
+                    TotalPrice = rental.TotalPrice,
+                    PersonName = rental.Reservation!.Person!.FirstName + " " + rental.Reservation.Person.LastName,
+                    ReservationEnd = rental.Reservation.EndDateTime
+                })
                 .ToListAsync(cancellationToken);
         }
     }

@@ -20,6 +20,10 @@ namespace RentACar.Application.Rentals.Dtos
 
         public decimal? TotalPrice { get; set; }
 
+        public string? PersonName { get; set; }
+
+        public DateTime? ReservationEnd { get; set; }
+
         public List<FileDto>? Files { get; set; }
 
         [StringLength(500)]

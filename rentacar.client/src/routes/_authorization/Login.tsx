@@ -25,7 +25,7 @@ function Login() {
 
                 window.dispatchEvent(new Event("authChange"));
 
-                navigate({ to: "/people" });
+                navigate({ to: "/dashboard" });
             } catch {
                 console.log("Failed");
             }

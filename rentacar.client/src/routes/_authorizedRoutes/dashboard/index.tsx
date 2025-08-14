@@ -31,7 +31,7 @@ function Dashboard() {
                         renderItem={(reservation) => (
                             <List.Item>
                                 <Card
-                                    title={reservation.id}
+                                    title={"#" + reservation.id}
                                     extra={formatDateTime(
                                         reservation.startDateTime
                                     )}
@@ -45,6 +45,8 @@ function Dashboard() {
                                         })
                                     }
                                 >
+                                    <div>{reservation.personName}</div>
+                                    <hr />
                                     <p>{reservation.notes}</p>
                                 </Card>
                             </List.Item>
@@ -63,12 +65,12 @@ function Dashboard() {
                         renderItem={(rental) => (
                             <List.Item>
                                 <Card
-                                    title={rental.id}
+                                    title={"#" + rental.id}
                                     extra={formatDateTime(
-                                        rental.returnDateTime
+                                        rental.reservationEnd
                                     )}
                                 >
-                                    <p>{rental.notes}</p>
+                                    <div>{rental.personName}</div>
                                 </Card>
                             </List.Item>
                         )}
