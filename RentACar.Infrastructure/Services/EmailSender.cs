@@ -11,21 +11,21 @@ namespace RentACar.Infrastructure.Services
         private const string SmtpHost = "smtp-relay.brevo.com";
         private const int SmtpPort = 587;
         private const bool EnableSsl = true;
-        private const string SenderEmail = "capcarap.noreply@gmail.com"; // This should be a verified sender email in Brevo, maybe your company email
-        private const string SmtpUser = "8f891e002@smtp-brevo.com"; // Your SMTP login from Brevo
-        private const string SmtpPassword = "fApFs5WUxMb9qakP"; // Your Master Password (or SMTP key)
+        private const string SenderEmail = "capcarap.noreply@gmail.com"; 
+        private const string SmtpUser = "8f891e002@smtp-brevo.com"; 
+        private const string SmtpPassword = "fApFs5WUxMb9qakP"; 
 
 
 
 
         public async Task SendConfirmationLinkAsync(
-            ApplicationUser user,
+            Person person,
             string toEmail,
             string link)
         {
             var subject = "Your Agent Account Invitation";
             var html = $@"
-                <p>Hello {user.UserName},</p>
+                <p>Hello {person.FirstName} {person.LastName},</p>
                 <p>You have been invited as an Agent. Please <a href=""{link}"">click here</a> 
                    to set your password and activate your account.</p>
                 <p>If you didn’t expect this, please ignore this email.</p>";

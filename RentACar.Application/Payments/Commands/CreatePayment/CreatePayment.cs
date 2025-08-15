@@ -113,7 +113,7 @@ namespace RentACar.Application.Payments.Commands.CreatePayment
         public class ByteArrayFormFile(byte[] content, string fileName) : IFormFile
         {
             public string ContentType { get; } = "application/pdf";
-            public string ContentDisposition { get; set; }
+            public string ContentDisposition { get; set; } = string.Empty;
             public IHeaderDictionary Headers { get; } = new HeaderDictionary();
             public long Length { get; } = content.Length;
             public string Name { get; } = "file";

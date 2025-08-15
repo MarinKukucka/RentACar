@@ -10,8 +10,6 @@ namespace RentACar.Application.Common.Interfaces
 
         Task<bool> AuthorizeAsync(string userId, string policyName);
 
-        Task<string> CreateUserAsync(CreateUserDto createUserDto);
-
         Task DisableUserAsync(string userId);
         Task EnableUserAsync(string id);
     }

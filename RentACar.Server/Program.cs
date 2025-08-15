@@ -53,6 +53,11 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.Configure<DataProtectionTokenProviderOptions>(opt =>
+{
+    opt.TokenLifespan = TimeSpan.FromHours(24);
+});
+
 Stripe.StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
 
 

@@ -477,11 +477,11 @@ export class IdentityClient extends ApiClientBase {
         return Promise.resolve<UserInfoResponse>(null as any);
     }
 
-    manageUserInfo(updateUserInfo: UpdateUserInfoRequest): Promise<UserInfoResponse> {
-        let url_ = this.baseUrl + "/api/Identity/manage/info";
+    setPassword(model: SetPasswordDto): Promise<UserInfoResponse> {
+        let url_ = this.baseUrl + "/api/Identity/SetPassword";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(updateUserInfo);
+        const content_ = JSON.stringify(model);
 
         let options_: RequestInit = {
             body: content_,
@@ -495,11 +495,11 @@ export class IdentityClient extends ApiClientBase {
         return this.transformOptions(options_).then(transformedOptions_ => {
             return this.http.fetch(url_, transformedOptions_);
         }).then((_response: Response) => {
-            return this.transformResult(url_, _response, (_response: Response) => this.processManageUserInfo(_response));
+            return this.transformResult(url_, _response, (_response: Response) => this.processSetPassword(_response));
         });
     }
 
-    protected processManageUserInfo(response: Response): Promise<UserInfoResponse> {
+    protected processSetPassword(response: Response): Promise<UserInfoResponse> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 401) {
@@ -522,20 +522,6 @@ export class IdentityClient extends ApiClientBase {
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
             result200 = UserInfoResponse.fromJS(resultData200);
             return result200;
-            });
-        } else if (status === 400) {
-            return response.text().then((_responseText) => {
-            let result400: any = null;
-            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result400 = ProblemDetails.fromJS(resultData400);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
-            });
-        } else if (status === 404) {
-            return response.text().then((_responseText) => {
-            let result404: any = null;
-            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result404 = ProblemDetails.fromJS(resultData404);
-            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
             });
         } else if (status !== 200 && status !== 204) {
             return response.text().then((_responseText) => {
@@ -2421,45 +2407,48 @@ export interface IUserInfoResponse {
     isEmailConfirmed: boolean;
 }
 
-export class UpdateUserInfoRequest extends UserInfoResponse implements IUpdateUserInfoRequest {
-    newPassword!: string | undefined;
-    oldPassword!: string | undefined;
-    clientId!: string;
+export class SetPasswordDto implements ISetPasswordDto {
+    email!: string;
+    token!: string;
+    password!: string;
 
-    constructor(data?: IUpdateUserInfoRequest) {
-        super(data);
-    }
-
-    init(_data?: any) {
-        super.init(_data);
-        if (_data) {
-            this.newPassword = _data["newPassword"];
-            this.oldPassword = _data["oldPassword"];
-            this.clientId = _data["clientId"];
+    constructor(data?: ISetPasswordDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
         }
     }
 
-    static fromJS(data: any): UpdateUserInfoRequest {
+    init(_data?: any) {
+        if (_data) {
+            this.email = _data["email"];
+            this.token = _data["token"];
+            this.password = _data["password"];
+        }
+    }
+
+    static fromJS(data: any): SetPasswordDto {
         data = typeof data === 'object' ? data : {};
-        let result = new UpdateUserInfoRequest();
+        let result = new SetPasswordDto();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["newPassword"] = this.newPassword;
-        data["oldPassword"] = this.oldPassword;
-        data["clientId"] = this.clientId;
-        super.toJSON(data);
+        data["email"] = this.email;
+        data["token"] = this.token;
+        data["password"] = this.password;
         return data;
     }
 }
 
-export interface IUpdateUserInfoRequest extends IUserInfoResponse {
-    newPassword: string | undefined;
-    oldPassword: string | undefined;
-    clientId: string;
+export interface ISetPasswordDto {
+    email: string;
+    token: string;
+    password: string;
 }
 
 export class LocationDto implements ILocationDto {
@@ -2794,8 +2783,7 @@ export class CreateUserAndPersonCommand implements ICreateUserAndPersonCommand {
     firstName!: string | undefined;
     lastName!: string | undefined;
     phoneNumber!: string | undefined;
-    email!: string | undefined;
-    password!: string | undefined;
+    email!: string;
     role!: string | undefined;
 
     constructor(data?: ICreateUserAndPersonCommand) {
@@ -2813,7 +2801,6 @@ export class CreateUserAndPersonCommand implements ICreateUserAndPersonCommand {
             this.lastName = _data["lastName"];
             this.phoneNumber = _data["phoneNumber"];
             this.email = _data["email"];
-            this.password = _data["password"];
             this.role = _data["role"];
         }
     }
@@ -2831,7 +2818,6 @@ export class CreateUserAndPersonCommand implements ICreateUserAndPersonCommand {
         data["lastName"] = this.lastName;
         data["phoneNumber"] = this.phoneNumber;
         data["email"] = this.email;
-        data["password"] = this.password;
         data["role"] = this.role;
         return data;
     }
@@ -2841,8 +2827,7 @@ export interface ICreateUserAndPersonCommand {
     firstName: string | undefined;
     lastName: string | undefined;
     phoneNumber: string | undefined;
-    email: string | undefined;
-    password: string | undefined;
+    email: string;
     role: string | undefined;
 }
 

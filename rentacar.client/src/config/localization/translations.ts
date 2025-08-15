@@ -22,7 +22,9 @@ const translations = {
         email: 'authorization.email',
         password: 'authorization.password',
         login: 'authorization.login',
-        logout: 'authorization.logout'
+        logout: 'authorization.logout',
+        setPassword: 'authorization.setPassword',
+        confirmPassword: 'authorization.confirmPassword'
     },
     profile: {
         title: 'profile.title',

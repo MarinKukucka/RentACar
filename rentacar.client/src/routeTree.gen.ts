@@ -19,6 +19,7 @@ import { Route as PublicRoutesPaymentImport } from './routes/_publicRoutes/Payme
 import { Route as PublicRoutesExtraServicesImport } from './routes/_publicRoutes/ExtraServices'
 import { Route as PublicRoutesAboutUsImport } from './routes/_publicRoutes/AboutUs'
 import { Route as AuthorizedRoutesProfileImport } from './routes/_authorizedRoutes/Profile'
+import { Route as AuthorizationSetPasswordImport } from './routes/_authorization/SetPassword'
 import { Route as AuthorizationLoginImport } from './routes/_authorization/Login'
 import { Route as AuthorizedRoutesVehiclesIndexImport } from './routes/_authorizedRoutes/vehicles/index'
 import { Route as AuthorizedRoutesReservationsIndexImport } from './routes/_authorizedRoutes/reservations/index'
@@ -75,6 +76,12 @@ const AuthorizedRoutesProfileRoute = AuthorizedRoutesProfileImport.update({
   id: '/Profile',
   path: '/Profile',
   getParentRoute: () => AuthorizedRoutesRoute,
+} as any)
+
+const AuthorizationSetPasswordRoute = AuthorizationSetPasswordImport.update({
+  id: '/_authorization/SetPassword',
+  path: '/SetPassword',
+  getParentRoute: () => rootRoute,
 } as any)
 
 const AuthorizationLoginRoute = AuthorizationLoginImport.update({
@@ -148,6 +155,13 @@ declare module '@tanstack/react-router' {
       path: '/Login'
       fullPath: '/Login'
       preLoaderRoute: typeof AuthorizationLoginImport
+      parentRoute: typeof rootRoute
+    }
+    '/_authorization/SetPassword': {
+      id: '/_authorization/SetPassword'
+      path: '/SetPassword'
+      fullPath: '/SetPassword'
+      preLoaderRoute: typeof AuthorizationSetPasswordImport
       parentRoute: typeof rootRoute
     }
     '/_authorizedRoutes/Profile': {
@@ -283,6 +297,7 @@ const AuthorizedRoutesRouteWithChildren =
 export interface FileRoutesByFullPath {
   '': typeof AuthorizedRoutesRouteWithChildren
   '/Login': typeof AuthorizationLoginRoute
+  '/SetPassword': typeof AuthorizationSetPasswordRoute
   '/Profile': typeof AuthorizedRoutesProfileRoute
   '/AboutUs': typeof PublicRoutesAboutUsRoute
   '/ExtraServices': typeof PublicRoutesExtraServicesRoute
@@ -302,6 +317,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '': typeof AuthorizedRoutesRouteWithChildren
   '/Login': typeof AuthorizationLoginRoute
+  '/SetPassword': typeof AuthorizationSetPasswordRoute
   '/Profile': typeof AuthorizedRoutesProfileRoute
   '/AboutUs': typeof PublicRoutesAboutUsRoute
   '/ExtraServices': typeof PublicRoutesExtraServicesRoute
@@ -322,6 +338,7 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/_authorizedRoutes': typeof AuthorizedRoutesRouteWithChildren
   '/_authorization/Login': typeof AuthorizationLoginRoute
+  '/_authorization/SetPassword': typeof AuthorizationSetPasswordRoute
   '/_authorizedRoutes/Profile': typeof AuthorizedRoutesProfileRoute
   '/_publicRoutes/AboutUs': typeof PublicRoutesAboutUsRoute
   '/_publicRoutes/ExtraServices': typeof PublicRoutesExtraServicesRoute
@@ -343,6 +360,7 @@ export interface FileRouteTypes {
   fullPaths:
     | ''
     | '/Login'
+    | '/SetPassword'
     | '/Profile'
     | '/AboutUs'
     | '/ExtraServices'
@@ -361,6 +379,7 @@ export interface FileRouteTypes {
   to:
     | ''
     | '/Login'
+    | '/SetPassword'
     | '/Profile'
     | '/AboutUs'
     | '/ExtraServices'
@@ -379,6 +398,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/_authorizedRoutes'
     | '/_authorization/Login'
+    | '/_authorization/SetPassword'
     | '/_authorizedRoutes/Profile'
     | '/_publicRoutes/AboutUs'
     | '/_publicRoutes/ExtraServices'
@@ -399,6 +419,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   AuthorizedRoutesRoute: typeof AuthorizedRoutesRouteWithChildren
   AuthorizationLoginRoute: typeof AuthorizationLoginRoute
+  AuthorizationSetPasswordRoute: typeof AuthorizationSetPasswordRoute
   PublicRoutesAboutUsRoute: typeof PublicRoutesAboutUsRoute
   PublicRoutesExtraServicesRoute: typeof PublicRoutesExtraServicesRoute
   PublicRoutesPaymentRoute: typeof PublicRoutesPaymentRoute
@@ -410,6 +431,7 @@ export interface RootRouteChildren {
 const rootRouteChildren: RootRouteChildren = {
   AuthorizedRoutesRoute: AuthorizedRoutesRouteWithChildren,
   AuthorizationLoginRoute: AuthorizationLoginRoute,
+  AuthorizationSetPasswordRoute: AuthorizationSetPasswordRoute,
   PublicRoutesAboutUsRoute: PublicRoutesAboutUsRoute,
   PublicRoutesExtraServicesRoute: PublicRoutesExtraServicesRoute,
   PublicRoutesPaymentRoute: PublicRoutesPaymentRoute,
@@ -430,6 +452,7 @@ export const routeTree = rootRoute
       "children": [
         "/_authorizedRoutes",
         "/_authorization/Login",
+        "/_authorization/SetPassword",
         "/_publicRoutes/AboutUs",
         "/_publicRoutes/ExtraServices",
         "/_publicRoutes/Payment",
@@ -453,6 +476,9 @@ export const routeTree = rootRoute
     },
     "/_authorization/Login": {
       "filePath": "_authorization/Login.tsx"
+    },
+    "/_authorization/SetPassword": {
+      "filePath": "_authorization/SetPassword.tsx"
     },
     "/_authorizedRoutes/Profile": {
       "filePath": "_authorizedRoutes/Profile.tsx",

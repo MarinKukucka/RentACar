@@ -76,14 +76,6 @@ function PeopleForm({ person, onClose, onSuccess }: Props) {
             </Form.Item>
 
             <Form.Item
-                name="password"
-                label={t(translations.people.password)}
-                rules={[{ required: true }]}
-            >
-                <Input.Password />
-            </Form.Item>
-
-            <Form.Item
                 name="role"
                 label={t(translations.people.role)}
                 rules={[

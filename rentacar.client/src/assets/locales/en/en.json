@@ -23,7 +23,9 @@
             "email": "Email",
             "password": "Password",
             "login": "LOG IN",
-            "logout": "LOG OUT"
+            "logout": "LOG OUT",
+            "setPassword": "Set password",
+            "confirmPassword": "Confirm password"
         },
         "profile": {
             "title": "Profile",

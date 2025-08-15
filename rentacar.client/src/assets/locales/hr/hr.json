@@ -23,7 +23,9 @@
             "email": "Email",
             "password": "Lozinka",
             "login": "PRIJAVA",
-            "logout": "ODJAVA"
+            "logout": "ODJAVA",
+            "setPassword": "Postavi lozinku",
+            "confirmPassword": "Ponovi lozinku"
         },
         "profile": {
             "title": "Profil",
