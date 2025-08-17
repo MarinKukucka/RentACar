@@ -80,7 +80,10 @@ function SetPassword() {
                 <CarOutlined style={{ marginRight: "0.5rem" }} />
                 {t(translations.general.appName)}
             </div>
-            <Card className="authorization-card">
+            <Card
+                className="authorization-card"
+                style={{ backgroundColor: "white" }}
+            >
                 <Flex gap={18} vertical>
                     <Form
                         onFinish={handleSubmit}
