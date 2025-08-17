@@ -191,7 +191,7 @@ namespace RentACar.Application.Common.Helpers
                 if (Model?.Reservation != null)
                 {
                     var reservation = Model.Reservation;
-                    var days = Math.Max(1, (reservation.EndDateTime - reservation.StartDateTime).Days) + 1;
+                    var days = (decimal)Math.Ceiling((reservation.EndDateTime - reservation.StartDateTime).TotalDays);
                     var vatRate = DefaultVatRate;
 
                     if (reservation.Vehicle != null)
@@ -245,7 +245,7 @@ namespace RentACar.Application.Common.Helpers
             if (Model?.Reservation != null)
             {
                 var r = Model.Reservation;
-                var days = Math.Max(1, (r.EndDateTime - r.StartDateTime).Days) + 1;
+                var days = (decimal)Math.Ceiling((r.EndDateTime - r.StartDateTime).TotalDays);
 
                 if (r.Vehicle != null)
                 {

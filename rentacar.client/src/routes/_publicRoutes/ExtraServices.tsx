@@ -38,16 +38,10 @@ function ExtraServices() {
     );
 
     const daysOfRent = useMemo(() => {
-        const msInDay = 1000 * 60 * 60 * 24;
-
-        const pickup = new Date(pickupDate);
-        const dropoff = new Date(dropOffDate);
-        pickup.setHours(0, 0, 0, 0);
-        dropoff.setHours(0, 0, 0, 0);
-
-        const diffInDays = (dropoff.getTime() - pickup.getTime()) / msInDay;
-
-        return diffInDays + 1;
+        return Math.ceil(
+            (dropOffDate.getTime() - pickupDate.getTime()) /
+                (1000 * 60 * 60 * 24)
+        );
     }, [pickupDate, dropOffDate]);
 
     const handleToggleExtraService = useCallback(

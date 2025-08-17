@@ -187,8 +187,7 @@ function SearchResults() {
                                                             (1000 *
                                                                 60 *
                                                                 60 *
-                                                                24) +
-                                                            1
+                                                                24)
                                                     )}{" "}
                                                 total
                                             </p>

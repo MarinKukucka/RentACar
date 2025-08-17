@@ -94,7 +94,7 @@ namespace RentACar.Application.Payments.Commands.CreatePayment
                     subject: $"Your Invoice #{emailInvoice.InvoiceNumber}",
                     htmlMessage: $"""
             <p>Dear {fullName},</p>
-            <p>Thank you for your payment of <strong>{emailInvoice.TotalAmount:C}</strong>.</p>
+            <p>Your reservation is confirmed. Thank you for your payment of <strong>{emailInvoice.TotalAmount} €</strong>.</p>
             <p>Your invoice is attached as a PDF document.</p>
             <p>Best regards,<br/>RentACar Support</p>
         """,
